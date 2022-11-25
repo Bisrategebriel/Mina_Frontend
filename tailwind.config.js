@@ -4,7 +4,16 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'mina-orange-light' : '#F59603',
+        'mina-blue-dark' : '#06373B',
+        'mina-blue-light' : '#58797C',
+      },
+      fontFamily: {
+        'comfortaa': ['Comfortaa', 'cursive']
+      }
+    },
   },
   plugins: [],
 }
