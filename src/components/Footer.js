@@ -17,13 +17,13 @@ function Footer(props) {
                 </div>
 
                 <div className="col-span-6 md:col-span-12 flex flex-col md:flex-row justify-center gap-4 my-8">
-                    <img src={playstore} alt="playstore icon" srcset="" className="h-[50px] object-contain "/>
-                    <img src={appstore} alt="playstore icon" srcset="" className="h-[50px] object-contain"/>
+                    <img src={playstore} alt="playstore icon" srcSet="" className="h-[50px] object-contain "/>
+                    <img src={appstore} alt="playstore icon" srcSet="" className="h-[50px] object-contain"/>
                 </div>
 
                 <div className="col-span-12 flex justify-around text-white mt-12">
                     <p>Mina Plays © 2022 All rights reserved</p>
-                    <a href="www.kuraztech.com">Powered by Kuraz Technologies</a>
+                    <a href="https://www.kuraztech.com">Powered by Kuraz Technologies</a>
                 </div>
                 </div>
             </div>

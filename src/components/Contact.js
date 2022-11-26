@@ -33,7 +33,7 @@ function Contact(props) {
                 </form>
             
                 {/* Map */}
-                <iframe title="map" className="w-full h-[500px] h-max-[500px] border-0 my-5" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63048.83754591408!2d38.70171053355015!3d9.013272616275021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85b8bc10a8f9%3A0xec6b9ab54ab50cb6!2z4YiD4YqT4YqVIOGKrCDhjZXhiIvhi5sgSEFOQU4gSyBQTEFaQQ!5e0!3m2!1sen!2sus!4v1669382784200!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe title="map" className="w-full h-[500px] h-max-[500px] border-0 my-5" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63048.83754591408!2d38.70171053355015!3d9.013272616275021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85b8bc10a8f9%3A0xec6b9ab54ab50cb6!2z4YiD4YqT4YqVIOGKrCDhjZXhiIvhi5sgSEFOQU4gSyBQTEFaQQ!5e0!3m2!1sen!2sus!4v1669382784200!5m2!1sen!2sus" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     );

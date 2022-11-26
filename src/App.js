@@ -1,54 +1,21 @@
-import logo from './images/logo.png';
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
 
-import Navbar from './components/Navbar';
-import './App.css';
-import Landing from './components/Landing';
-import GetStarted from './components/GetStarted';
-import AdBanner from './components/AdBanner';
-import HowToRegister from './components/HowToRegister';
-import FAQs from './components/FAQs';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import Signup from "./pages/Signup";
+import Signin from "./pages/Signin";
+import Home from "./pages/Home";
 
 function App() {
-  return (
-    <div className="App relative font-comfortaa">
-
-      {/* Navbar */}
-      <Navbar></Navbar>
-
-      {/* Landing */}
-      <Landing></Landing>
-
-      {/* Get Started */}
-      <GetStarted></GetStarted>
-
-
-      {/* Banner 1 */}
-      <AdBanner></AdBanner>
-      
-
-      {/* How to Register */}
-      <HowToRegister></HowToRegister>
-      
-
-      {/* Banner 1 */}
-      <AdBanner></AdBanner>
-
-      {/* FAQs */}
-      <FAQs></FAQs>
-      
-
-      {/* Contact  */}
-      <Contact></Contact>
-      
-
-      {/* Footer */}
-      <Footer></Footer>
-
-
-    </div>
-  );
+	return (
+		<div className="App relative font-comfortaa">
+			<Routes>
+	  		<Route exact path="/" element={<Home />}></Route>
+				<Route exact path="/signup" element={<Signup />}></Route>
+			  <Route exact path="/signin" element={<Signin />}></Route>
+			</Routes>
+       
+		</div>
+	);
 }
 
 export default App;

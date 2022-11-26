@@ -28,8 +28,9 @@ function FAQs(props) {
                     <div className="w-[300px] h-[300px] bg-mina-orange-light absolute -bottom-12 -right-24 rounded-full"></div>
 
                     {
-                        contents.map((content)=>(
+                        contents.map((content, key)=>(
                             <FAQ
+                            key={key}
                             question={content.question}
                             answer={content.answer}
                             ></FAQ>
