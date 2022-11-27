@@ -1,17 +1,38 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
+import Confirm from "./pages/Confirm";
 import Home from "./pages/Home";
+import axios from "axios";
+import ProtectedWrapper from "./components/ProtectedWrapper";
+import { useEffect, useState } from "react";
+
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.headers.post["Accept"] = "application/json";
+
+axios.defaults.withCredentials = true;
+axios.interceptors.request.use(function (config){
+    const token = localStorage.getItem("auth_token");
+    config.headers.Authorization = token ? `Bearer ${token}` : '';
+    return config;
+});
 
 function App() {
+    const location = useLocation();
+    
 	return (
-		<div className="App relative font-comfortaa">
+		<div className="App relative font-comfortaa scroll-smooth">
 			<Routes>
-	  		<Route exact path="/" element={<Home />}></Route>
-				<Route exact path="/signup" element={<Signup />}></Route>
-			  <Route exact path="/signin" element={<Signin />}></Route>
+	  		    <Route path="/" element={<ProtectedWrapper/>}></Route>
+                
+			    <Route path="/signin" element={localStorage.getItem("auth_token") ? <Navigate to="/" replace state={{location}} />:<Signin />}>
+                </Route>
+				<Route path="/signup" element={localStorage.getItem("auth_token") ? <Navigate to="/" replace state={{location}} />: <Signup />}>
+                </Route>
+			    
 			</Routes>
        
 		</div>

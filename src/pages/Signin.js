@@ -1,8 +1,52 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png';
+import swal from 'sweetalert';
 
 function Signup() {
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loginInputs, setLoginInputs] = useState({
+        email : '',
+        password : '',
+        error_list : [],
+    });
+
+    const handleLogininput = (e)=>{
+        e.persist();
+
+        setLoginInputs({
+            ...loginInputs,
+            [e.target.name] : e.target.value
+        })
+    }
+
+    const loginSubmit = (e)=>{
+        e.preventDefault();
+        setErrorMessage("")
+        const data = {
+            email : loginInputs.email,
+            password : loginInputs.password
+        }
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post(`api/auth/login`, data).then( res=>{
+                if(res.data.status === 200){
+                    console.log(res.data);
+                    localStorage.setItem("auth_token", res.data.token);
+                    localStorage.setItem("auth_name", res.data.user.first_name+ ' '+res.data.user.last_name);
+                    localStorage.setItem("confirmed", res.data.user.status);
+                    navigate("/");
+                    // swal("Success", res.data.message, "success");
+                    // res.data.user.status ? navigate("/") : navigate("/confirmPayment")
+                } else if(res.data.status === 403){
+                    setLoginInputs({ ...loginInputs, error_list: res.data.errors});
+                } else {
+                    setErrorMessage(res.data.message);
+                }
+            });
+        });
+    }
     return (
         <>
             <div className="w-screen h-24 p-3 md:px-24 px-6 flex justify-between items-center fixed z-50 bg-mina-blue-dark">
@@ -25,20 +69,23 @@ function Signup() {
                         </div>
 
 
-                        <form className="col-span-12 grid-cols-12 grid gap-4">
+                        <form className="col-span-12 grid-cols-12 grid gap-4" onSubmit={loginSubmit}>
                             {/* signin form */}
                             <div  className="col-span-12 grid-cols-12 grid gap-4">
                                 <div className="col-span-12 flex flex-col space-y-2 justify-start">
                                     <label className="text-sm text-start" htmlFor="email">Email</label>
-                                    <input type="email" name="email" id="email" placeholder="Email" className="p-3 bg-gray-200 rounded-lg" required />
+                                    <input type="email" name="email" id="email" placeholder="Email" className="p-3 bg-gray-200 rounded-lg" onChange={handleLogininput} value={loginInputs.email} required />
+                                    <span>{loginInputs.error_list.email}</span>
                                 </div>
                                 <div className="col-span-12 flex flex-col space-y-2 justify-start">
                                     <label className="text-sm text-start" htmlFor="password">Password</label>
-                                    <input type="password" name="password" id="password" placeholder="Password" className="p-3 bg-gray-200 rounded-lg" required />
+                                    <input type="password" name="password" id="password" placeholder="Password" className="p-3 bg-gray-200 rounded-lg" onChange={handleLogininput} value={loginInputs.password} required />
                                 </div>
                                 <div className="col-span-12 flex justify-end">
-                                    <input type="submit" value="Submit" className="bg-mina-blue-light py-2 px-4 text-white rounded-lg"/>
+                                    <input type="submit" value="Submit" className="cursor-pointer hover:bg-mina-blue-dark bg-mina-blue-light py-2 px-4 text-white rounded-lg"/>
+                                    <span>{loginInputs.error_list.password}</span>
                                 </div>
+                                    <span className="col-span-12">{errorMessage}</span>
                             </div>
 
                         </form>

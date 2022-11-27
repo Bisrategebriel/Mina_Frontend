@@ -16,7 +16,7 @@ function Landing(props) {
 
                     <p className="font-semibold text-mina-orange-light text-xl md:text-2xl my-3 text-center md:text-start">Discover fun at your fingertips. Ready to watch?</p>
                     <div className="flex space-x-4">
-                    <button className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">Get Started</button>
+                    <a href="#getStarted" className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">Get Started</a>
                     <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-white  text-mina-orange-light font-bold rounded-lg">Download the App</button>
 
                     </div>
