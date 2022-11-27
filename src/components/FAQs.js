@@ -36,7 +36,6 @@ function FAQs(props) {
                             ></FAQ>
                         ))
                     }
-
                 </div>
 
             </div>

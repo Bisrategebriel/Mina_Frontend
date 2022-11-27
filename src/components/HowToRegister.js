@@ -5,7 +5,7 @@ import step3 from '../images/step3.png';
 
 function HowToRegister(props) {
     return (
-        <div>
+        <div id="howToRegister">
             <div className="w-screen my-24">
                 <h1 className="text-5xl mb-12">How to Register</h1>
 

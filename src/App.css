@@ -1,3 +1,8 @@
+::selection {
+  background: orange;
+  color: #13564D;
+}
+
 .App {
   text-align: center;
 }
@@ -11,6 +16,15 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.bg-mina{
+  /* background: #13564D; */
+  background: #06373B;
+}
+
+#getStarted, #howToRegister, #contact {
+  scroll-behavior: smooth;
 }
 
 .App-header {
