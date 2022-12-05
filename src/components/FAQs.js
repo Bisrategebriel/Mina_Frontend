@@ -23,9 +23,9 @@ function FAQs(props) {
     ]
 
     return (
-        <div>
-            <div className="w-full md:px-12 lg:px-36 xl:px-48  my-12  overflow-x-hidden md:overflow-x-auto">
-                <h1 className="text-5xl text-center my-12">Frequently Asked Questions</h1>
+        <div className='px-2 overflow-x-hidden overflow-y-visible'>
+            <div className="w-full md:px-12 lg:px-36 xl:px-48  my-12 ">
+                <h1 className="text-3xl md:text-5xl text-center my-12">Frequently Asked Questions</h1>
 
                 <div className="w-full flex flex-col space-y-4 relative">
                     <div className="w-[200px] h-[200px] bg-mina-blue-light absolute -top-12 -left-24 rounded-full"></div>

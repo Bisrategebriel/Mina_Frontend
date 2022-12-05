@@ -37,7 +37,10 @@ function ProtectedWrapper(props) {
                     }
                     // console.log(val)
                     setConfirmed(val);
-                });
+                }).catch(error => {
+                    // console.log(error.response.data.error)
+                    setConfirmed(false);
+                 });
             });
         }
         fetchData()

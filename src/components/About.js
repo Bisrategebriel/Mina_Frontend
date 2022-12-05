@@ -5,21 +5,21 @@ function About(props) {
     
 
     return (
-        <div>
-            <div id="about" className="w-full grid grid-cols-12 px-3 md:px-24 lg:px-48 grid-rows-6 overflow-x-hidden md:overflow-x-auto">
-                <div className="col-span-12 xl:col-span-8 xl:col-start-3 row-start-2 row-span-4 p-12 rounded-lg relative">
+        <div className='h-full'>
+            <div id="about" className="w-full grid grid-cols-12 px-3 md:px-24 lg:px-48 ">
+                <div className="col-span-12 xl:col-span-8 xl:col-start-3  p-3 md:p-12 rounded-lg relative overflow-hidden md:overflow-visible">
                     <div className="w-[200px] h-[200px] bg-mina-orange-light absolute -top-12 -right-24 rounded-full"></div>
                     <div className="w-[200px] h-[200px] bg-mina-orange-light absolute -bottom-12 -left-24 rounded-full"></div>
 
                     <div className="absolute top-0 right-0 left-0 bottom-0 z-10 backdrop-blur-md bg-white/10 shadow-lg rounded-lg"></div>
 
-                    <div className="grid grid-cols-12 px-1 md:px-6 xl:px-18 relative z-20 gap-4">
+                    <div className="grid grid-cols-12 px-3 md:px-6 xl:px-18 relative z-20 gap-4">
                         <div className="col-span-12 flex flex-col items-center space-y-4">
-                            <p className="text-5xl">About Us</p>
+                            <p className="text-3xl md:text-5xl">About Us</p>
                         </div>
                         
                         <div className="col-span-12 flex flex-col items-center space-y-4">
-                            <p className="text-lg text-justify">
+                            <p className="text-md md:text-lg text-justify">
 
                             Mina play is the first Ethiopian website and application where you can make money by watching YouTube videos. Once you join mina play, you can earn money using links which you can find on the website and simply, copy the links from the website and past on YouTube.
                             <br></br>
