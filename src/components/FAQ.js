@@ -9,7 +9,7 @@ function FAQ(props) {
           <h1 className="text-xl font-semibold">{props.question}</h1>
         </div>
         <div className="w-full text-start p-8 border-2 border-gray-200 rounded-lg backdrop-blur-lg">
-          <p className="text-sm text-justify">{props.answer}</p>
+          <p className="text-md text-justify">{props.answer}</p>
         </div>
       </div>
     </div>

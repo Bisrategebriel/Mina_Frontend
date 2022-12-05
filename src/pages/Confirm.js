@@ -35,8 +35,9 @@ function Confirm() {
                 {/* <Link to="/">
                     <img src={logo} alt="mina logo" className="h-16 object-cover" />
                 </Link> */}
-                
-                <img src={logo} alt="mina logo" className="h-16 object-cover" />
+                <Link to="/">
+                    <img src={logo} alt="mina logo" className="h-16 object-cover" />
+                </Link>
 
                 <div className=" font-comfortaa space-x-3">
                     {
@@ -64,8 +65,8 @@ function Confirm() {
                     
                 </div>
             </div>
-            <div className="w-full grid grid-cols-12 px-12 md:px-24 lg:px-48 grid-rows-6">
-                <div className="col-span-12 xl:col-span-8 xl:col-start-3 row-start-2 row-span-4 p-12 rounded-lg relative">
+            <div className="w-full grid grid-cols-12 px-6 md:px-24 lg:px-48 grid-rows-6">
+                <div className="col-span-12 xl:col-span-8 xl:col-start-3 row-start-2 row-span-4 p-3  rounded-lg relative">
                     <div className="w-[200px] h-[200px] bg-mina-orange-light absolute -top-12 -right-24 rounded-full"></div>
                     <div className="w-[200px] h-[200px] bg-mina-orange-light absolute -bottom-12 -left-24 rounded-full"></div>
 

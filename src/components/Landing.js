@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import moviePoster from '../images/movie_poster.png';
 import phones from '../images/phones.png';
 
@@ -14,10 +15,12 @@ function Landing(props) {
                     WATCH VIDEOS AND EARN MONEY
                     </h1>
 
-                    <p className="font-semibold text-mina-orange-light text-xl md:text-2xl my-3 text-center md:text-start">Discover fun at your fingertips. Ready to watch?</p>
+                    <p className="font-semibold text-mina-orange-light text-xl md:text-2xl my-3 text-center md:text-start">This is the time to make money on your mobile phones and laptops Being anywhere in Ethiopia.</p>
                     <div className="flex space-x-4">
-                    <a href="#getStarted" className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">Get Started</a>
-                    <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-white  text-mina-orange-light font-bold rounded-lg">Download the App</button>
+                    <a href="#getStarted" className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-white  text-mina-orange-light font-bold rounded-lg ">Get Started</a>
+                    <Link to="/dashboard" >
+                        <button className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">Dashboard</button>
+                    </Link>
 
                     </div>
 

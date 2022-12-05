@@ -8,17 +8,17 @@ function Footer(props) {
     <div>
       <div className="w-screen p-12 bg-mina-blue-dark">
         <div className="grid grid-cols-12">
-          <div className="col-span-6 md:col-span-12 flex md:flex-row flex-col items-start md:justify-center space-y-4 md:space-y-0 md:space-x-4 text-white text-xl">
+          <div className="col-span-12 md:col-span-12 flex md:flex-row flex-col justify-center space-y-4 md:space-y-0 md:space-x-4 text-white text-xl">
             <a href="#getStarted" className="transition-all">
               Get Started
             </a>
             <a href="#howToRegister">How to Register</a>
             <a href="#contact">Contact</a>
-            <a href="#">Terms</a>
+            <a href="#about">About Us</a>
             <a href="#">Privacy</a>
           </div>
 
-          <div className="col-span-6 md:col-span-12 flex flex-col md:flex-row justify-center gap-4 my-8">
+          <div className="col-span-12 md:col-span-12 flex flex-wrap flex-row justify-center gap-4 my-8">
             <img
               src={playstore}
               alt="playstore icon"
@@ -33,7 +33,7 @@ function Footer(props) {
             />
           </div>
 
-          <div className="col-span-12 flex justify-around text-white mt-12">
+          <div className="col-span-12 flex flex-wrap justify-around text-white mt-12">
             <p>Mina Plays © 2022 All rights reserved</p>
             <a
               href="https://www.kuraztech.com"

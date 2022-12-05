@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 // Import Components
 import Landing from "../components/Landing";
 import GetStarted from "../components/GetStarted";
+import About from "../components/About";
 import AdBanner from "../components/AdBanner";
 import HowToRegister from "../components/HowToRegister";
 import FAQs from "../components/FAQs";
@@ -19,6 +20,9 @@ function Home() {
 
 			{/* Get Started */}
 			<GetStarted></GetStarted>
+			
+            {/* About */}
+			<About></About>
 
 			{/* Banner 1 */}
 			<AdBanner></AdBanner>

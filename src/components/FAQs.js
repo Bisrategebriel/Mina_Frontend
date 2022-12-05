@@ -5,22 +5,26 @@ function FAQs(props) {
     
     const contents = [
         {
-            "question": "What is Mina?",
-            "answer": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum  has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised ."
+            "question": "What is Mina play?",
+            "answer": "Mina play is the first Ethiopian website and application where you can earn money by watching YouTube videos and accomplishing simple tasks."
         },
         {
-            "question": "How to register on Mina?",
-            "answer": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum  has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised ."
+            "question": "How does Mina play work?",
+            "answer": "After completing the registration process, you get a membership, which allows you to access the money making links and videos. Once you register, you have a personal code to access your account."
         },
         {
-            "question": "How to get Paid on Mina?",
-            "answer": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum  has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised ."
+            "question": "Is Mina play legit?",
+            "answer": "Mina play is a legit website and application which you do as a side hassle."
+        },
+        {
+            "question": "How to withdraw money?",
+            "answer": "The collected coins or points from mina play can be converted into cash and can be withdrawn or transferred via tele birr."
         }
     ]
 
     return (
         <div>
-            <div className="w-full md:px-12 lg:px-36 xl:px-48  my-12 ">
+            <div className="w-full md:px-12 lg:px-36 xl:px-48  my-12  overflow-x-hidden md:overflow-x-auto">
                 <h1 className="text-5xl text-center my-12">Frequently Asked Questions</h1>
 
                 <div className="w-full flex flex-col space-y-4 relative">

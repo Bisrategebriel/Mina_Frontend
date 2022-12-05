@@ -6,9 +6,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'mina-orange-light' : '#F59603',
-        'mina-blue-dark' : '#06373B',
-        'mina-blue-light' : '#58797C',
+        'mina-orange-light' : '#DA9B45',
+        'mina-blue-dark' : '#001C17',
+        'mina-blue-light' : '#04564E',
       },
       fontFamily: {
         'comfortaa': ['Comfortaa', 'cursive']

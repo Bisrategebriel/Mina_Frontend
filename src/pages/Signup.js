@@ -59,14 +59,14 @@ function Signup() {
                     <img src={logo} alt="mina logo" className="h-16 object-cover" />
                 </Link>
             </div>
-            <div className="w-full grid grid-cols-12 px-12 md:px-24 lg:px-48 grid-rows-6">
+            <div className="w-full grid grid-cols-12 px-6 md:px-24 lg:px-48 grid-rows-6 overflow-x-hidden md:overflow-x-auto">
                 <div className="col-span-12 xl:col-span-8 xl:col-start-3 row-start-2 row-span-4 p-12 rounded-lg relative">
                     <div className="w-[200px] h-[200px] bg-mina-orange-light absolute -top-12 -right-24 rounded-full"></div>
                     <div className="w-[200px] h-[200px] bg-mina-orange-light absolute -bottom-12 -left-24 rounded-full"></div>
 
                     <div className="absolute top-0 right-0 left-0 bottom-0 z-10 backdrop-blur-md bg-white/10 shadow-lg rounded-lg"></div>
 
-                    <div className="grid grid-cols-12 px-6 xl:px-24 relative z-20 gap-4">
+                    <div className="grid grid-cols-12 px-1 md:px-6 xl:px-24 relative z-20 gap-4">
                         <div className="col-span-12 flex flex-col items-center space-y-4">
                             <img className="w-36" src={logo} alt="mina logo" srcSet="" />
                             <p className="text-lg">Sign up and start earning</p>
