@@ -9,6 +9,8 @@ import AdminHome from "./admin/Home";
 import axios from "axios";
 import ProtectedWrapper from "./components/ProtectedWrapper";
 import { useEffect, useState } from "react";
+import Watch from "./pages/Watch";
+import VideoPlayer from "./components/dashboard/VideoPlayer";
 
 axios.defaults.baseURL = "https://api.minaplay.com";
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -28,6 +30,7 @@ function App() {
 			<Routes>
 	  		    <Route path="/" element={<Home/>}></Route>  
 	  		    <Route path="/dashboard" element={<ProtectedWrapper/>}></Route>  
+	  		    <Route path="/watch/:id" element={<VideoPlayer/>}  replace key="1" state={{location}}></Route>  
                 
 			    <Route path="/signin" element={localStorage.getItem("auth_token") ? <Navigate to="/" replace state={{location}} />:<Signin />}>
                 </Route>

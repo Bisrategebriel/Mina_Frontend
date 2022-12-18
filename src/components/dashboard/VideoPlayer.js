@@ -6,54 +6,25 @@ function VideoPlayer(props) {
 	const playerRef = useRef(null);
 	var [currentPoint, setCurrentPoint] = useState(0);
 	var classNames = props.className;
+	var player;
+	var YT;
+	// var video = '1cH2cerUpMQ'
+	// var video = 'ars_rEC3oP8'
 	const { id } = useParams();
 	var video = id;
 
 	useEffect(() => {
-		// init();
-		// window.onYouTubeIframeAPIReady = function() {
 		if (window.YT) {
 			onYouTubeIframeAPIReady();
 		} else{
             init();
         }
-		// }
-
-		//     if(playerRef.current){
-		//       console.log(playerRef.current.toString()+"k")
-		//         window.onYouTubeIframeAPIReady()
-		//     // console.log(playerRef.current.getVideoLoadedFraction())
-		//   } else {
-		//     window.onYouTubeIframeAPIReady = function() {
-		//         // window['onYouTubeIframeAPIReady'] = (e) => {
-		//             YT = window['YT'];
-		//             console.log("youtube ready")
-		//             // reframed = false;
-		//             playerRef.current = new window['YT'].Player('player', {
-		//               videoId: id,
-		//               events: {
-		//                 'onStateChange': onPlayerStateChange,
-		//                 'onError': onPlayerError,
-		//                 'onReady': onReady
-		//               },
-		//               playerVars: {
-		//                 controls: 0,
-		//                 enablejsapi: 1,
-		//                 modestbranding: 1,
-		//                 disablekb: 1,
-		//                 start: 0
-		//               }
-		//             });
-
-		//             //   };
-		//         }
-		//         window.onYouTubeIframeAPIReady()
-		//   }
 	}, [id]);
+
+
     function onYouTubeIframeAPIReady() {
         YT = window["YT"];
         console.log("youtube ready");
-        // reframed = false;
         playerRef.current = new window["YT"].Player("player", {
             videoId: id,
             events: {
@@ -75,13 +46,11 @@ function VideoPlayer(props) {
 	useEffect(() => {
 		setCurrentPoint(0);
 		//Update points every 5 second
-		// if(playerRef.current){
 		const interval = setInterval(() => {
 			updatePoint();
 		}, 5000);
 
 		return () => clearInterval(interval);
-		// }
 	}, []);
 
 	function onPlayerStateChange(event) {
@@ -123,6 +92,7 @@ function VideoPlayer(props) {
 
 		// setInterval(console.log(playerRef.current.getVideoLoadedFraction()), 10)
 	}
+
 	//utility
 	function cleanTime() {
 		return Math.round(playerRef.current.getCurrentTime());
@@ -130,7 +100,6 @@ function VideoPlayer(props) {
 	function updatePoint() {
 		// Multiply the percentage of video watched currently with the total available points of the video divided by hundred
 		// setCurrentPoint((Math.ceil(playerRef.current.getVideoLoadedFraction()*100)*point)/100)
-        // console.log(playerRef.current)
 		setCurrentPoint(Math.ceil(playerRef.current.getVideoLoadedFraction() * 100));
 	}
 	function onPlayerError(event) {
@@ -168,18 +137,22 @@ function VideoPlayer(props) {
 	}
 
 	return (
-		<div className={classNames}>
-			<div
-				id="player"
-				className="h-full w-full rounded-xl overflow-hidden aspect-video "
-			></div>
-			<div className="w-24 p-3 bg-mina-blue-dark text-white text-xl font-bold ">
-				{currentPoint}
-			</div>
-			<div className="w-full p-3">
-				<button onClick={changeVid}>change</button>
-			</div>
-		</div>
+        <div className='w-screen h-screen bg-gray-200 grid grid-cols-12 overflow-y-auto gap-2 justify-start content-start p-3'>
+            <div className="md:col-span-8 bg-white col-span-12 p-3 rounded-2xl overflow-hidden relative h-fit flex flex-col space-y-2">
+                <div
+                    id="player"
+                    className="h-full w-full rounded-xl overflow-hidden aspect-video "
+                ></div>
+
+                <div className="w-24 p-3 bg-mina-blue-dark text-white text-xl font-bold ">
+                    {currentPoint}
+                </div>
+
+                <div className="w-full p-3">
+                    <button onClick={changeVid}>change</button>
+                </div>
+            </div>
+        </div>
 	);
 }
 
