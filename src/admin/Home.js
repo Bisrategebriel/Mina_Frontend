@@ -1,150 +1,102 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import logo from "../images/logo.png";
-
-import Table from "rc-table";
-import axios from "axios";
-import swal from "sweetalert2";
+import Payments from "./components/Payments";
+import Transactions from "./components/Transactions";
+import Users from "./components/Users";
+import Videos from "./components/Videos";
 
 function Home(props) {
-	const [confirmed, setConfirmed] = useState(
-        {
-            user_id: '',
-                user: [],
-                payments: []
-        },
 
-    );
-	useEffect(() => {
-		let val;
-		if (localStorage.getItem("auth_token" == null)) {
-			setConfirmed(false);
-			return false;
-		}
-		const fetchData = async () => {
-			val = await axios.get("/sanctum/csrf-cookie").then((response) => {
-				axios
-					.get(`api/payment/get`, {
-						headers: { "X-XSRF-TOKEN": `${response.data}` },
-					})
-					.then((res) => {
-                        // if (res.data.user == null) {
-                            // 	setConfirmed(...confirmed, res.data);
-                            // 	return;
-                            // }
-                        if (res.data.status === 200) {
-                            console.log(res.data.payments)
-                            setConfirmed({...confirmed, payments : res.data.payments});
-							// val = res.data.user.status ? true : false;
-							// return res.data.user.status ? true : false;
-                            // console.log(confirmed.payments[1].paid_at)
-						} else {
-							val = false;
-							// return false;
-						}
-						// setConfirmed(val);
-					});
-			});
-		};
-		fetchData();
-	}, []);
+    const [page, setPage] = useState('users');
 
+    const switchPage = () => {
+        switch (page) {
+            case 'users':
+                return <Users />
+                break;
+            case 'payments':
+                return <Payments />
+                break;
+            case 'transactions':
+                return <Transactions />
+                break;
+            case 'videos':
+                return <Videos />
+                break;
 
-    const handleAllow = (e)=>{
-        let userId = e.target.getAttribute("data-id");
-        let url = ""
-        url = e.target.getAttribute("data-action") == "allow" ? `api/payment/verify/${userId}` : `api/payment/revoke/${userId}`
-			axios.get("/sanctum/csrf-cookie").then((response) => {
-				axios
-					.post(url, {
-						headers: { "X-XSRF-TOKEN": `${response.data}` },
-					})
-					.then((res) => {
-                        // if (res.data.user == null) {
-                            // 	setConfirmed(...confirmed, res.data);
-                            // 	return;
-                            // }
-                            // console.log(res.data.status)
-                            // swal("success", "hello", "success")
-                            if (res.data.status == 200) {
-                            swal.fire({
-                                title: "Success",
-                                text: res.data.messages,
-                                icon: "success",
-                                toast: true,
-                                // confirmButtonText: "OK",
-                            })
-                            console.log(res.data.messages)
-                            // setConfirmed({...confirmed, payments : res.data.payments});
-							// val = res.data.user.status ? true : false;
-							// return res.data.user.status ? true : false;
-                            // console.log(confirmed.payments[1].paid_at)
-						} else {
-							// val = false;
-							// return false;
-						}
-						// setConfirmed(val);
-					})
-                    
-                })
-            }
-	return (
-		<div className="w-screen h-screen grid-cols-12 grid">
-			<div className="hidden col-span-12 lg:col-span-3 xl:col-span-2 h-screen flex flex-col space-y-4 bg-gray-100">
-				<div className="w-full h-24 bg-mina-blue-dark items-center justify-center flex">
-					<Link to="/">
-						<img src={logo} alt="mina logo" className="h-16 object-cover" />
-					</Link>
-				</div>
+            default:
 
-				<div className="w-full h-12 items-center justify-center flex">
-					<Link
-						to="/admin"
-						className="bg-white shadow-sm hover:shadow-lg w-full py-3 mx-2 font-bold rounded-lg"
-					>
-						<button>Users</button>
-                        {/* {confirmed.payments[1].user_id} */}
-                        
-					</Link>
-				</div>
-			</div>
-			<div className="col-span-12 lg:col-span-9 xl:col-span-10 grid grid-cols-12 p-3">
-				<div className="col-span-12 bg-mina-blue-dark h-16 rounded-lg p-3"></div>
-				<div className="col-span-12">
-                    <table className="w-full">
-                        <thead className="w-full">
-                            <tr className="grid grid-cols-12">
-                                <th className="col-span-2">ID</th>
-                                <th className="col-span-2">User ID</th>
-                                <th className="col-span-2">Gateway</th>
-                                <th className="col-span-2">Paid at</th>
-                                <th className="col-span-2">Transaction No.</th>
-                                <th className="col-span-2">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className="w-full">
-                            {confirmed.payments.map(item => 
-                                <tr className="grid grid-cols-12">
-                                    <td className="col-span-2">{item.id}</td>
-                                    <td className="col-span-2">{item.user_id}</td>
-                                    <td className="col-span-2">{item.gateway}</td>
-                                    <td className="col-span-2">{item.paid_at.split("T")[0]}</td>
-                                    <td className="col-span-2">{item.transaction_number}</td>
-                                    <td className="col-span-2">
-                                        <button onClick={handleAllow} data-action="allow" data-id={item.user_id}>Allow</button>
-                                        <button onClick={handleAllow} data-action="deny" data-id={item.user_id}>Deny</button>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
+                break;
+        }
+    }
+    return (
+        <div className="w-screen h-screen grid-cols-12 grid justify-start items-start auto-rows-min gap-3">
+            <div className="col-span-12 lg:col-span-3 xl:col-span-2 h-fit lg:h-screen flex flex-col space-y-4 bg-gray-100">
+                <div className="w-full h-24 bg-mina-blue-dark items-center justify-center flex">
+                    <Link to="/">
+                        <img src={logo} alt="mina logo" className="h-16 object-cover" />
+                    </Link>
+                </div>
 
-                    </table>
+                <div 
+                    onClick={() => { setPage('users') }}
+                    className="w-full h-12 items-center justify-center flex">
+                    <div
+                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                    >
+                        Users
+                    </div>
 
                 </div>
-			</div>
-		</div>
-	);
+                <div 
+                    onClick={() => { setPage('payments') }}
+                    className="w-full h-12 items-center justify-center flex">
+                    <div
+                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                    >
+                        Payments
+                    </div>
+
+                </div>
+                <div 
+                    onClick={() => { setPage('videos') }}
+                    className="w-full h-12 items-center justify-center flex">
+                    <div
+                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                    >
+                        Videos
+                    </div>
+
+                </div>
+                <div 
+                    onClick={() => { setPage('transactions') }}
+                    className="w-full h-12 items-center justify-center flex">
+                    <div
+                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                    >
+                        Transactions
+                    </div>
+                </div>
+            </div>
+            <div className="col-span-12 lg:col-span-9 xl:col-span-10 grid grid-cols-12 p-3">
+                {/* <div className="col-span-12 bg-mina-blue-dark h-16 rounded-lg p-3"></div> */}
+
+                <div className="col-span-12 overflow-x-auto">
+                    {/* <Payments/> */}
+                    {/* <Videos/> */}
+                    {/* <Transactions/> */}
+                    {/* <Users /> */}
+
+                    {
+                        switchPage()
+                    }
+                </div>
+            </div>
+            {/* <Table srcSet={names}/> */}
+        </div>
+    );
 }
 
 export default Home;

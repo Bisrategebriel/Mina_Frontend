@@ -11,8 +11,10 @@ import ProtectedWrapper from "./components/ProtectedWrapper";
 import { useEffect, useState } from "react";
 import Watch from "./pages/Watch";
 import VideoPlayer from "./components/dashboard/VideoPlayer";
+import Profile from "./pages/Profile";
 
-axios.defaults.baseURL = "https://api.minaplay.com";
+// axios.defaults.baseURL = "https://api.minaplay.com";
+axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
 
@@ -23,6 +25,10 @@ axios.interceptors.request.use(function (config){
     return config;
 });
 
+// axios.get('/sanctum/csrf-cookie').then(response => {
+//     localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
+//     // console.log(response.config.headers["X-XSRF-TOKEN"])
+// })
 function App() {
     const location = useLocation();
 	return (
@@ -30,13 +36,14 @@ function App() {
 			<Routes>
 	  		    <Route path="/" element={<Home/>}></Route>  
 	  		    <Route path="/dashboard" element={<ProtectedWrapper/>}></Route>  
+	  		    <Route path="/profile" element={<Profile/>}></Route>  
 	  		    <Route path="/watch/:id" element={<VideoPlayer/>}  replace key="1" state={{location}}></Route>  
                 
 			    <Route path="/signin" element={localStorage.getItem("auth_token") ? <Navigate to="/" replace state={{location}} />:<Signin />}>
                 </Route>
 				<Route path="/signup" element={localStorage.getItem("auth_token") ? <Navigate to="/" replace state={{location}} />: <Signup />}>
                 </Route>
-			    
+        
 				<Route path="/admin" element={<AdminHome/>}>
 	  		    {/* <Route path="/*" element={<Home/>}></Route>   */}
                 </Route>

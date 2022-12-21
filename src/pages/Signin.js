@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png';
 import swal from 'sweetalert';
 
-function Signup() {
+function Signin() {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [loginInputs, setLoginInputs] = useState({
@@ -28,7 +28,7 @@ function Signup() {
         const data = {
             email : loginInputs.email,
             password : loginInputs.password,
-            _token : "{{csrf_token()}}"
+            _token : "{{ csrf_token() }}"
         }
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post(`api/auth/login`, data).then( res=>{
@@ -102,4 +102,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default Signin;
