@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGift, faPlayCircle, faPauseCircle, faUserCircle, faSignOut   } from '@fortawesome/free-solid-svg-icons';
+import { faGift, faPlayCircle, faPauseCircle, faUserCircle, faSignOut, faUpload   } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../images/logo.png";
 import YouTube from "react-youtube";
 import axios from "axios";
+import swal from "sweetalert2";
 
 function VideoPlayer(props) {
 	const playerRef = useRef(null);
 	var [currentPoint, setCurrentPoint] = useState(0);
     var [isPlaying, setIsPlaying] = useState(false);
+    var [isWatched, setIsWatched] = useState(true);
 	var classNames = props.className;
 	var player;
 	var YT;
@@ -25,12 +27,10 @@ function VideoPlayer(props) {
         }
     ]);
     // Fetch available Videos
-    const videoLinks = [
-        "1cH2cerUpMQ",
-        "ars_rEC3oP8"
-    ]
+    const [videoLinks, setVideoLinks] = useState([
+    ])
     useEffect(()=>{
-        
+
             const YOUTUBE_API_KEY = "AIzaSyCQhPy1H5xcfYiI6igvyBCgv7M22ls5RmQ";
             var url;
             const uninterceptedAxiosInstance = axios.create();
@@ -49,10 +49,32 @@ function VideoPlayer(props) {
                         res.data
                       ]);
                 })
-        
+                
             })
 
-    }, [])
+    }, [videoLinks])
+
+    useEffect(()=>{
+        // Fetch Video Links
+        axios.get("/sanctum/csrf-cookie").then((response) => {
+            // setIsLoading(true)
+            console.log(currentPoint)
+            axios.get(`/api/video/index`, { 
+                params:{
+                    asc: 'desc',
+                    per_page: 50
+                }
+            }).then((res) => {
+                // setIsLoading(false)
+                if (res.data.status === 200) {
+                    console.log(res.data.videos.data)
+                    setVideoLinks(res.data.videos.data.map(video => video.video_id))
+                } else {
+
+                }
+            });
+        });
+    },[])
 
     function watch(video_id){
         console.log(video_id);
@@ -67,6 +89,7 @@ function VideoPlayer(props) {
 		} else{
             init();
         }
+        isViewed();
 	}, [id]);
 
 
@@ -93,14 +116,17 @@ function VideoPlayer(props) {
 
 
 	useEffect(() => {
-		setCurrentPoint(0);
-		//Update points every 5 second
-		const interval = setInterval(() => {
-			updatePoint();
-		}, 5000);
-
-		return () => clearInterval(interval);
-	}, []);
+        if(!isWatched){
+            // setCurrentPoint()
+            setCurrentPoint(0);
+            //Update points every 5 second
+            const interval = setInterval(() => {
+                updatePoint();
+            }, 5000);
+    
+            return () => clearInterval(interval);
+        }
+	}, [isWatched]);
 
 	function onPlayerStateChange(event) {
 		// console.log(event)
@@ -153,7 +179,8 @@ function VideoPlayer(props) {
 	function updatePoint() {
 		// Multiply the percentage of video watched currently with the total available points of the video divided by hundred
 		// setCurrentPoint((Math.ceil(playerRef.current.getVideoLoadedFraction()*100)*point)/100)
-		setCurrentPoint(Math.ceil(playerRef.current.getVideoLoadedFraction() * 100));
+		setCurrentPoint(playerRef.current.getVideoLoadedFraction());
+        console.log(currentPoint)
 	}
 	function onPlayerError(event) {
 		switch (event.data) {
@@ -193,6 +220,33 @@ function VideoPlayer(props) {
         setIsPlaying(!isPlaying);   
 	}
 
+    function isViewed() {
+        // Fetch Video Links
+        axios.get("/sanctum/csrf-cookie").then((response) => {
+            // setIsLoading(true)
+            console.log(currentPoint)
+            axios.get(`/api/view/isViewed`, { 
+                params:{
+                    video_id: id
+                }
+            }).then((res) => {
+                // setIsLoading(false)
+                if (res.data.status === 200) {
+                    console.log(res.data.view_exists)
+                    // res.data.view_exists.length == 0 ? setIsWatched(false) : setIsWatched(true)
+                    if(res.data.view_exists){
+                        setIsWatched(true)
+                        setCurrentPoint(res.data.view_exists.points)
+                    } else {
+                        setIsWatched(false)
+                    }
+                    // setIsWatched(true)
+                } else {
+
+                }
+            });
+        });
+    }
     
     const logout = (e) => {
         e.preventDefault();
@@ -212,6 +266,40 @@ function VideoPlayer(props) {
         });
     }
 
+    const submitPoint = (e) => {
+        swal.fire({
+            title : "warning",
+            icon : "warning",
+            text: "After submitting your point, you won't be able to collect any more points from this video. Make sure you watched the whole video if you want to get the maximum point",
+            showCancelButton : true
+        }
+        ).then((res)=>{
+            if(res.isConfirmed){
+                // Submit point 
+                axios.get("/sanctum/csrf-cookie").then((response) => {
+                    // setIsLoading(true)
+                    console.log(currentPoint)
+                    axios.post(`/api/view/create`, { 
+                        points: currentPoint,
+                        video_id: id
+                    }).then((res) => {
+                        // setIsLoading(false)
+                        if (res.data.status === 200) {
+                            console.log(res.data.user)
+                            swal.fire({
+                                title: "success",
+                                icon: "success",
+                                text: "Successfully Submitted Point"
+                            })
+                        } else {
+
+                        }
+                    });
+                });
+            }
+        })
+    }
+
 	return (
         <div className='w-screen h-screen bg-slate-200 grid grid-cols-12 overflow-y-auto gap-2 justify-start content-start'>
             <div className="col-span-12 h-24 p-3 md:px-24 px-6 flex justify-between items-center  z-50 bg-mina-blue-dark">
@@ -227,13 +315,13 @@ function VideoPlayer(props) {
                         <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                             <FontAwesomeIcon icon={faUserCircle}/>
                             &nbsp;
-                            Profile
+                            <p className="md:inline-block hidden"> Profile </p> 
                         </button>
                     </Link>
                     <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                         <FontAwesomeIcon icon={faSignOut}/>
-                            &nbsp;
-                        Logout  
+                        &nbsp;
+                        <p className="md:inline-block hidden">Logout</p>
                     </button>
                     
                 </div>
@@ -253,6 +341,17 @@ function VideoPlayer(props) {
                         <p>
                             {currentPoint}
                         </p>
+                    </div>
+                    <div className="">
+                        <button 
+                            className="p-3 bg-slate-100 rounded-xl hover:bg-slate-200"
+                            onClick={()=>{submitPoint()}}>
+                            {!isWatched &&
+                            <>
+                                <FontAwesomeIcon icon={faUpload}/> Submit 
+                            </>
+                            }
+                        </button>
                     </div>
 
                     <div className="">
@@ -275,13 +374,14 @@ function VideoPlayer(props) {
             </div>
 
             <div className="md:col-span-4 col-span-12 grid grid-cols-12 gap-4 items-center p-3 grid-auto-rows auto-rows-max">
+                <div className="h-48 col-span-12 bg-slate-600 rounded-xl items-center flex justify-center">AD SPACE</div>
                 <div className="col-span-12 p-3 text-start bg-white rounded-lg">
                     Suggested Videos
                 </div>
             {
                     videos.map((content,key)=>(
                         // <Link to="/watch/103">
-                            <div onClick={()=>{watch(content.video_id)}} className='h-full md:col-span-6 col-span-6 max-w-[480px] p-3 bg-white rounded-2xl cursor-pointer hover:shadow-xl hover:shadow-slate-400/10 hover:-translate-y-1 duration-100'>
+                            <div key={key} onClick={()=>{watch(content.video_id)}} className='h-full md:col-span-6 col-span-6 max-w-[480px] p-3 bg-white rounded-2xl cursor-pointer hover:shadow-xl hover:shadow-slate-400/10 hover:-translate-y-1 duration-100'>
                                 <div className="w-full aspect-video overflow-hidden rounded-xl ">
                                     <img src={content.thumbnail_url} alt="" srcSet="" className='object-center w-full overflow-hidden aspect-video object-cover' />
                                 </div>

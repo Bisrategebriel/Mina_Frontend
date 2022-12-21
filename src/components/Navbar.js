@@ -5,6 +5,8 @@ import useScrollPosition from "../hooks/useScrollPosition";
 import "../App.css";
 import axios from "axios";
 import swal from "sweetalert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDashboard, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -45,8 +47,15 @@ function Navbar(props) {
         {
             localStorage.getItem("auth_token") ? 
                 <>
+                    <Link to="/dashboard" replace>
+						<button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
+							<FontAwesomeIcon icon={faDashboard} />
+							<p className="md:inline-block hidden">&nbsp; Dashboard</p>
+						</button>
+					</Link>
                     <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
-                        Logout
+                    <FontAwesomeIcon icon={faSignOut} />
+                        <p className="md:inline-block hidden">&nbsp; Logout </p>
                     </button>
                     {/* {localStorage.getItem("auth_name")} */}
                 </>
