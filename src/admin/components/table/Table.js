@@ -42,7 +42,7 @@ function Table({ columns, data, tableData, setTableData, tableRefreshed, setTabl
     // Render the UI for your table
     return (    
         <>
-            <table {...getTableProps()} className="w-full">
+            <table {...getTableProps()} className="w-full ">
                 <thead>
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}
@@ -58,11 +58,11 @@ function Table({ columns, data, tableData, setTableData, tableRefreshed, setTabl
                         </tr>
                     ))}
                 </thead>
-                <tbody {...getTableBodyProps()}>
+                <tbody {...getTableBodyProps()} className="">
                     {page.map((row, i) => {
                         prepareRow(row);
                         return (
-                            <tr className='hover:bg-slate-50' {...row.getRowProps()}>
+                            <tr className='hover:bg-slate-50 odd:bg-slate-100' {...row.getRowProps()}>
                                 {row.cells.map(cell => {
                                     return <td className='p-2 text-start' {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                                 })}

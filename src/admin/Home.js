@@ -15,24 +15,19 @@ function Home(props) {
         switch (page) {
             case 'users':
                 return <Users />
-                break;
             case 'payments':
                 return <Payments />
-                break;
             case 'transactions':
                 return <Transactions />
-                break;
             case 'videos':
                 return <Videos />
-                break;
 
             default:
-
                 break;
         }
     }
     return (
-        <div className="w-screen h-screen grid-cols-12 grid justify-start items-start auto-rows-min gap-3">
+        <div className="w-screen h-screen grid-cols-12 grid justify-start items-start grid-flow-row auto-rows-max gap-3">
             <div className="col-span-12 lg:col-span-3 xl:col-span-2 h-fit lg:h-screen flex flex-col space-y-4 bg-gray-100">
                 <div className="w-full h-24 bg-mina-blue-dark items-center justify-center flex">
                     <Link to="/">
@@ -42,9 +37,9 @@ function Home(props) {
 
                 <div 
                     onClick={() => { setPage('users') }}
-                    className="w-full h-12 items-center justify-center flex">
+                    className= { page==='users' ? "w-full h-12 items-center justify-center flex bg-mina-blue-light text-white hover:bg-mina-blue-dark" : "w-full h-12 items-center justify-center flex bg-white shadow-sm hover:bg-slate-200" }>
                     <div
-                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                        className=" cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
                     >
                         Users
                     </div>
@@ -52,9 +47,9 @@ function Home(props) {
                 </div>
                 <div 
                     onClick={() => { setPage('payments') }}
-                    className="w-full h-12 items-center justify-center flex">
+                    className={ page==='payments' ? "w-full h-12 items-center justify-center flex bg-mina-blue-light text-white hover:bg-mina-blue-dark" : "w-full h-12 items-center justify-center flex bg-white shadow-sm hover:bg-slate-200" }>
                     <div
-                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                        className="cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
                     >
                         Payments
                     </div>
@@ -62,9 +57,9 @@ function Home(props) {
                 </div>
                 <div 
                     onClick={() => { setPage('videos') }}
-                    className="w-full h-12 items-center justify-center flex">
+                    className={ page==='videos' ? "w-full h-12 items-center justify-center flex bg-mina-blue-light text-white hover:bg-mina-blue-dark" : "w-full h-12 items-center justify-center flex bg-white shadow-sm hover:bg-slate-200" }>
                     <div
-                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                        className="cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
                     >
                         Videos
                     </div>
@@ -72,18 +67,18 @@ function Home(props) {
                 </div>
                 <div 
                     onClick={() => { setPage('transactions') }}
-                    className="w-full h-12 items-center justify-center flex">
+                    className={ page==='transactions' ? "w-full h-12 items-center justify-center flex bg-mina-blue-light text-white hover:bg-mina-blue-dark" : "w-full h-12 items-center justify-center flex bg-white shadow-sm hover:bg-slate-200" }>
                     <div
-                        className="bg-white shadow-sm hover:bg-slate-200 cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                        className="cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
                     >
                         Transactions
                     </div>
                 </div>
             </div>
-            <div className="col-span-12 lg:col-span-9 xl:col-span-10 grid grid-cols-12 p-3">
+            <div className="col-span-12 lg:col-span-9 xl:col-span-10 grid grid-cols-12 p-3 h-screen overflow-y-auto">
                 {/* <div className="col-span-12 bg-mina-blue-dark h-16 rounded-lg p-3"></div> */}
 
-                <div className="col-span-12 overflow-x-auto">
+                <div className="col-span-12 overflow-x-auto grid">
                     {/* <Payments/> */}
                     {/* <Videos/> */}
                     {/* <Transactions/> */}

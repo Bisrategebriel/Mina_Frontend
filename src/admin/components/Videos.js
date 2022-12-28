@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Table from "./table/Table";
 import axios from "axios";
@@ -21,6 +21,11 @@ function Videos(props) {
             {
                 Header: 'Points',
                 accessor: 'points',
+                Cell: ({value}) => value && parseFloat(value).toFixed(2)
+            },
+            {
+                Header: 'Views',
+                accessor: 'viewers',
             },
             {
                 Header: 'Actions',
@@ -57,26 +62,29 @@ function Videos(props) {
         }
     )
     let [tableRefreshed, setTableRefreshed] = useState(0)
+    let [searchQuery, setSearchQuery] = useState('')
     let [sortBy, setSortBy] = useState('id')
     let [asc, setAsc] = useState(true)
     let [pageStatus, setPageStatus] = useState(true)
     let [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         let val;
+        let url;
         if (localStorage.getItem("auth_token" == null)) {
             setConfirmed(false);
             return false;
         }
         const fetchData = async () => {
-            
+            url = searchQuery.length === 0 ?  `api/video/index?page=${tableRefreshed}` : `api/video/search?page=${tableRefreshed}` 
             val = await axios.get("/sanctum/csrf-cookie").then((response) => {
                 axios
-                    .get(`api/video/index?page=${tableRefreshed}`, {
+                    .get(url, {
                         headers: { "X-XSRF-TOKEN": `${response.data}` },
                         params: {
                             per_page: tableData.pageSize,
-                            sort_by: sortBy,
-                            asc: asc?'asc':'desc'
+                            sort_by: `videos.${sortBy}`,
+                            asc: asc?'asc':'desc',
+                            search_query: searchQuery
                         }
                     })
                     .then((res) => {
@@ -99,7 +107,7 @@ function Videos(props) {
             });
         };
         fetchData();
-    }, [tableRefreshed,asc,tableData.pageSize,pageStatus]);
+    }, [tableRefreshed,asc,tableData.pageSize,pageStatus,searchQuery]);
 
 
     const handleAllow = (e) => {
@@ -138,8 +146,40 @@ function Videos(props) {
 
         })
     }
+
+    const handleSearch = (e) => {
+        // e.persist();
+        console.log(e.target)    
+        setSearchQuery(e.target.value)
+    }
+
+    // utility to optimize search function
+    const debounce = (func) => {
+        let timer;
+        return function (...args) {
+          const context = this;
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            timer = null;
+            func.apply(context, args);
+          }, 600);
+        };
+      };
+    
+
+      const optimizedSearch = useCallback(debounce(handleSearch), []);
     return (
-        <div>
+        <div className="h-full w-full flex flex-col gap-2">
+            <input type="text" 
+                onChange={(e)=>{
+                    optimizedSearch(e)
+                }}
+                // value={searchQuery}
+                name="searchQuery"
+                id="searchQuery"
+                placeholder="Search"
+                className="p-2 border-2 border-solid border-2-mina-blue-dark rounded-md self-end"
+            />
             {
                 isLoading ?
                 <div className="w-full h-full flex justify-center items-center">

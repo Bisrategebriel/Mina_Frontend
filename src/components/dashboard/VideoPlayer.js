@@ -12,6 +12,7 @@ function VideoPlayer(props) {
 	var [currentPoint, setCurrentPoint] = useState(0);
     var [isPlaying, setIsPlaying] = useState(false);
     var [isWatched, setIsWatched] = useState(true);
+    var [watchStat, setWatchStat] = useState("Loading");
 	var classNames = props.className;
 	var player;
 	var YT;
@@ -123,8 +124,11 @@ function VideoPlayer(props) {
             const interval = setInterval(() => {
                 updatePoint();
             }, 5000);
-    
+
+            
             return () => clearInterval(interval);
+        } else {
+            // setWatchStat("Video already watched!")
         }
 	}, [isWatched]);
 
@@ -179,8 +183,8 @@ function VideoPlayer(props) {
 	function updatePoint() {
 		// Multiply the percentage of video watched currently with the total available points of the video divided by hundred
 		// setCurrentPoint((Math.ceil(playerRef.current.getVideoLoadedFraction()*100)*point)/100)
-		setCurrentPoint(playerRef.current.getVideoLoadedFraction());
-        console.log(currentPoint)
+		setCurrentPoint(playerRef.current.getVideoLoadedFraction().toFixed(2));
+        // console.log(currentPoint)
 	}
 	function onPlayerError(event) {
 		switch (event.data) {
@@ -220,6 +224,7 @@ function VideoPlayer(props) {
         setIsPlaying(!isPlaying);   
 	}
 
+    // Check if video is watched
     function isViewed() {
         // Fetch Video Links
         axios.get("/sanctum/csrf-cookie").then((response) => {
@@ -236,7 +241,8 @@ function VideoPlayer(props) {
                     // res.data.view_exists.length == 0 ? setIsWatched(false) : setIsWatched(true)
                     if(res.data.view_exists){
                         setIsWatched(true)
-                        setCurrentPoint(res.data.view_exists.points)
+                        setCurrentPoint(parseFloat(res.data.view_exists.points).toFixed(2))
+                        setWatchStat("Video already watched!")
                     } else {
                         setIsWatched(false)
                     }
@@ -335,23 +341,28 @@ function VideoPlayer(props) {
                 </div>
 
                 <div className="w-full p-3 flex justify-between">
-                    <div className="w-48 p-3 bg-mina-blue-dark text-white text-md md:text-xl font-bold flex rounded-full justify-start space-x-4 items-center">
-                        <FontAwesomeIcon icon={faGift} />
-                        <p>Points: </p>
-                        <p>
-                            {currentPoint}
-                        </p>
-                    </div>
-                    <div className="">
-                        <button 
-                            className="p-3 bg-slate-100 rounded-xl hover:bg-slate-200"
-                            onClick={()=>{submitPoint()}}>
-                            {!isWatched &&
-                            <>
-                                <FontAwesomeIcon icon={faUpload}/> Submit 
-                            </>
+                    <div className="flex sm:flex-row flex-col items-start sm:items-center sm:space-x-2 sm:space-y-0 space-y-2">
+                        <div className="w-36 md:w-48 h-fit p-2 md:p-3 bg-mina-blue-dark text-white text-sm md:text-xl font-bold flex rounded-full justify-start space-x-4 items-center">
+                            <FontAwesomeIcon icon={faGift} />
+                            <p>Points: </p>
+                            <p>
+                                {currentPoint}
+                            </p>
+                        </div>
+                        <div className="">
+                            {!isWatched ?
+                                <button 
+                                    className="p-3 bg-mina-orange-light rounded-xl hover:bg-orange-200"
+                                    onClick={()=>{submitPoint()}}>
+                                        <FontAwesomeIcon icon={faUpload}/> Submit 
+                                </button>
+                                :
+                                <div className="p-3 text-sm">
+                                    {watchStat}
+                                </div>
                             }
-                        </button>
+                        </div>
+
                     </div>
 
                     <div className="">
@@ -360,11 +371,11 @@ function VideoPlayer(props) {
                             onClick={()=>{playVid()}}>
                             {isPlaying ? 
                             <>
-                                <FontAwesomeIcon icon={faPauseCircle}/> Pause 
+                                <FontAwesomeIcon icon={faPauseCircle} className="text-mina-orange-light"/> Pause 
                             </>
                             : 
                             <>
-                                <FontAwesomeIcon icon={faPlayCircle}/> Play
+                                <FontAwesomeIcon icon={faPlayCircle} className="text-mina-blue-light"/> Play
                             </>
                             }
                         </button>
@@ -373,7 +384,7 @@ function VideoPlayer(props) {
                 </div>
             </div>
 
-            <div className="md:col-span-4 col-span-12 grid grid-cols-12 gap-4 items-center p-3 grid-auto-rows auto-rows-max">
+            <div className="md:col-span-4 col-span-12 grid grid-cols-12 gap-4 items-center p-3 grid-auto-rows auto-rows-max max-h-screen overflow-y-scroll">
                 <div className="h-48 col-span-12 bg-slate-600 rounded-xl items-center flex justify-center">AD SPACE</div>
                 <div className="col-span-12 p-3 text-start bg-white rounded-lg">
                     Suggested Videos
@@ -381,7 +392,7 @@ function VideoPlayer(props) {
             {
                     videos.map((content,key)=>(
                         // <Link to="/watch/103">
-                            <div key={key} onClick={()=>{watch(content.video_id)}} className='h-full md:col-span-6 col-span-6 max-w-[480px] p-3 bg-white rounded-2xl cursor-pointer hover:shadow-xl hover:shadow-slate-400/10 hover:-translate-y-1 duration-100'>
+                            <div key={key} onClick={()=>{watch(content.video_id)}} className='h-full lg:col-span-6 col-span-12 md:max-w-[480px] p-3 bg-white rounded-2xl cursor-pointer hover:shadow-xl hover:shadow-slate-400/10 hover:-translate-y-1 duration-100'>
                                 <div className="w-full aspect-video overflow-hidden rounded-xl ">
                                     <img src={content.thumbnail_url} alt="" srcSet="" className='object-center w-full overflow-hidden aspect-video object-cover' />
                                 </div>

@@ -116,7 +116,7 @@ function UserDashboard(props) {
                 {
                     videos.map((content,key)=>(
                         // <Link to="/watch/103">
-                            <div key={key} onClick={()=>{watch(content.video_id)}} className='xl:col-span-2 md:col-span-3 col-span-6 p-3 bg-white rounded-2xl cursor-pointer'>
+                            <div key={key} onClick={()=>{watch(content.video_id)}} className='xl:col-span-3 md:col-span-3 sm:col-span-6 col-span-12 p-3 bg-white rounded-2xl cursor-pointer'>
                                 <div className="w-full aspect-video overflow-hidden rounded-xl ">
                                     <img src={content.thumbnail_url} alt="" srcSet="" className='object-center w-full overflow-hidden aspect-video object-cover' />
                                 </div>

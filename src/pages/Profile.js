@@ -147,11 +147,10 @@ function Profile(props) {
 
 
     const handleWithdraw = ()=>{
-
-        if(registerInputs.points*pointMultiplier < withdrawAmount){
+        if(registerInputs.points*pointMultiplier < withdrawAmount || withdrawAmount<100){
             swal.fire({
-                title: "Success",
-                text: `Your withdraw amount can't be larger than ${registerInputs.points*pointMultiplier}`,
+                title: "Error",
+                text: `Your withdraw amount can't be larger than ${registerInputs.points*pointMultiplier} & less than 100 ETB`,
                 icon: "error",
             })
             return;
@@ -160,7 +159,7 @@ function Profile(props) {
         axios.get("/sanctum/csrf-cookie").then((response) => {
             // setIsLoading(true)
 			axios.post(`/api/transaction/create`, {
-                amount: withdrawAmount,
+                amount: (withdrawAmount),
                 points: (withdrawAmount/pointMultiplier).toFixed(2)
             }).then((res) => {
                 // setIsLoading(false)
@@ -168,7 +167,11 @@ function Profile(props) {
                     setTransactions([...transactions, res.data.transaction])
                     console.log(res.data.transaction)
 				} else {
-
+                    swal.fire({
+                        title: "Error",
+                        text: res.data.message,
+                        icon: "error",
+                    })
 				}
 			});
 		});
@@ -219,7 +222,7 @@ function Profile(props) {
                                     </div>
                                     <div className="flex flex-col">
                                         <h1 className="text-lg">Points:</h1>
-                                        <h1 className="text-3xl">{registerInputs.points}</h1>
+                                        <h1 className="text-3xl">{(registerInputs.points).toFixed(2)}</h1>
                                     </div>
                                 </div>
 
