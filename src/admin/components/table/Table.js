@@ -41,7 +41,7 @@ function Table({ columns, data, tableData, setTableData, tableRefreshed, setTabl
 
     // Render the UI for your table
     return (    
-        <>
+        <div className='max-w-screen overflow-x-auto'>
             <table {...getTableProps()} className="w-full ">
                 <thead>
                     {headerGroups.map(headerGroup => (
@@ -74,7 +74,7 @@ function Table({ columns, data, tableData, setTableData, tableRefreshed, setTabl
             {/* 
                 Pagination 
             */}
-            <div className="w-full flex space-x-3 justify-end p-3 mt-4">
+            <div className="w-full flex flex-wrap space-x-3 justify-end p-3 mt-4 space-y-2 items-center">
                 <button onClick={() => setTableRefreshed(1)} disabled={!canPreviousPage}>
                     {'<<'}
                 </button>{' '}
@@ -113,7 +113,7 @@ function Table({ columns, data, tableData, setTableData, tableRefreshed, setTabl
                             const page = e.target.value ? (((Number(e.target.value)>tableData.pageCount)||(Number(e.target.value)<1)) ? 1 : Number(e.target.value)) : tableData.currentPage;
                             setTableRefreshed(page)
                         }}
-                        style={{ width: '100px' }}
+                        className="p-2 w-24"
                     />
                 </span>{' '}
                 <select
@@ -133,7 +133,7 @@ function Table({ columns, data, tableData, setTableData, tableRefreshed, setTabl
                     ))}
                 </select>
             </div>
-        </>
+        </div>
     );
 }
 export default Table;

@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Table from "./table/Table";
 import axios from "axios";
 import swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faMinusCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 
 function Transactions(props) {
@@ -12,7 +14,7 @@ function Transactions(props) {
         [
             {
                 Header: 'Paid For',
-                accessor: 'paid_for',
+                accessor: 'paid_for_name',
             },
             {
                 Header: 'Points',
@@ -23,8 +25,35 @@ function Transactions(props) {
                 accessor: 'amount',
             },
             {
-                Header: 'Approved',
+                Header: 'Status',
                 accessor: 'approved',
+                Cell: ({ value }) => (
+                    
+                    value == 1 ?
+                    <>
+                            <FontAwesomeIcon icon={faCheckCircle} className='text-green-600' />
+                        </>
+                        :
+                        value == 0 ?
+                        <>
+                            <FontAwesomeIcon icon={faMinusCircle} className='text-yellow-600' />
+                        </> :
+                        <>
+                            <FontAwesomeIcon icon={faSpinner} className='text-gray-600' />
+                        </>
+                    //     <p className="px-3 py-1 rounded-full bg-green-200 w-fit">
+                    //         Approved
+                    //     </p>
+                    //     :
+                    // value == 0 ?
+                    //     <p className="px-3 py-1 rounded-full bg-red-200 w-fit">
+                    //         Denied
+                    //     </p>
+                    //     :
+                    //     <p className="px-3 py-1 rounded-full bg-yellow-200 w-fit">
+                    //         Pending
+                    //     </p>
+                  )
             },
             {
                 Header: 'Paid At',
@@ -36,8 +65,8 @@ function Transactions(props) {
                 Cell: ({ cell }) => (
                     <div className="">
                         {/* {console.log(cell.row.original.user_id)} */}
-                        <button onClick={handleAllow} data-action="activate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-green-300 rounded-full bg-green-200">Active</button>
-                        <button onClick={handleAllow} data-action="deactivate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-red-300 rounded-full bg-red-200">Inactive</button>
+                        <button onClick={handleAllow} data-action="activate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-green-300 rounded-full bg-green-200">Approve</button>
+                        <button onClick={handleAllow} data-action="deactivate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-red-300 rounded-full bg-red-200">Deny</button>
                     </div>
                   )
             },

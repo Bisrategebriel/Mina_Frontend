@@ -4,6 +4,7 @@ import {
 	faSignOut,
 	faUser,
 	faUserCircle,
+    faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -190,8 +191,8 @@ function Profile(props) {
 				<div className=" font-comfortaa space-x-3">
 					<Link to="/dashboard" replace>
 						<button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
-							<FontAwesomeIcon icon={faDashboard} />
-							<p className="md:inline-block hidden">&nbsp; Dashboard</p>
+							<FontAwesomeIcon icon={faVideo} />
+							<p className="md:inline-block hidden">&nbsp; Videos</p>
 						</button>
 					</Link>
 					<button

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGift, faPlayCircle, faPauseCircle, faUserCircle, faSignOut, faUpload   } from '@fortawesome/free-solid-svg-icons';
+import { faGift, faPlayCircle, faPauseCircle, faUserCircle, faSignOut, faUpload, faChevronCircleDown, faVideo   } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../images/logo.png";
 import YouTube from "react-youtube";
 import axios from "axios";
@@ -13,11 +13,19 @@ function VideoPlayer(props) {
     var [isPlaying, setIsPlaying] = useState(false);
     var [isWatched, setIsWatched] = useState(true);
     var [watchStat, setWatchStat] = useState("Loading");
+    let [asc, setAsc] = useState(true); //table sort using asc or desc
 	var classNames = props.className;
 	var player;
 	var YT;
 	// var video = '1cH2cerUpMQ'
 	// var video = 'ars_rEC3oP8'
+
+    let [pages, setPages] = useState({
+        currentPage : 1,
+        totalCount : 1
+
+    });
+
 	const { id } = useParams();
 	var video = id;
 
@@ -60,22 +68,57 @@ function VideoPlayer(props) {
         axios.get("/sanctum/csrf-cookie").then((response) => {
             // setIsLoading(true)
             console.log(currentPoint)
-            axios.get(`/api/video/index`, { 
+            axios.get( `api/video/user_index?page=${pages.currentPage}`, { 
                 params:{
-                    asc: 'desc',
-                    per_page: 50
+                    asc: asc ? "asc" : "desc",
+                    per_page: 20
                 }
             }).then((res) => {
                 // setIsLoading(false)
                 if (res.data.status === 200) {
+                    setPages({
+                        currentPage: res.data.videos.current_page,
+                        totalCount: res.data.videos.last_page,
+                    })
                     console.log(res.data.videos.data)
-                    setVideoLinks(res.data.videos.data.map(video => video.video_id))
+                    setVideoLinks([...videoLinks, ...res.data.videos.data.map(video => video.video_id)])
                 } else {
 
                 }
             });
         });
-    },[])
+    },[pages.currentPage])
+
+    // Get more videos
+    // useEffect(()=>{
+    //     let url;
+    //     // Fetch Video Links
+    //     axios.get("/sanctum/csrf-cookie").then((response) => {
+    //         // setIsLoading(true)
+    //         url = `api/video/user_index?page=${pages.currentPage}`
+    //         axios.get(url, { 
+    //             params:{
+    //                 per_page: 10,
+    //                 asc: asc ? "asc" : "desc",
+    //             }
+    //         }).then((res) => {
+    //             // setIsLoading(false)
+    //             if (res.data.status === 200) {
+    //                 // let filtered_videos = res.data.videos.data.filter((video) => {
+    //                 //     return video.status == 1;
+    //                 // })
+    //                 // console.log(res.data.videos.data.map(video => video.video_id))
+    //                 setPages({
+    //                     // currentPage: res.data.videos.current_page,
+    //                     totalCount: res.data.videos.last_page,
+    //                 })
+    //                 setVideoLinks([...videoLinks, ...res.data.videos.data.map(video => video.video_id)])
+    //             } else {
+
+    //             }
+    //         });
+    //     });
+    // },[pages.currentPage])
 
     function watch(video_id){
         console.log(video_id);
@@ -276,7 +319,7 @@ function VideoPlayer(props) {
         swal.fire({
             title : "warning",
             icon : "warning",
-            text: "After submitting your point, you won't be able to collect any more points from this video. Make sure you watched the whole video if you want to get the maximum point",
+            text: "After submitting your point, you won't be able to collect any more points from this video. Make sure you watched the whole video if you want to get the maximum point available",
             showCancelButton : true
         }
         ).then((res)=>{
@@ -297,6 +340,7 @@ function VideoPlayer(props) {
                                 icon: "success",
                                 text: "Successfully Submitted Point"
                             })
+                            setIsWatched(true)
                         } else {
 
                         }
@@ -317,17 +361,22 @@ function VideoPlayer(props) {
                 </Link>
 
                 <div className=" font-comfortaa space-x-3">
+                    <Link to="/dashboard" replace>
+                        <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
+                            <FontAwesomeIcon icon={faVideo}/>
+                            
+                            <p className="md:inline-block hidden">&nbsp; Videos </p> 
+                        </button>
+                    </Link>
                     <Link to="/profile" replace>
                         <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                             <FontAwesomeIcon icon={faUserCircle}/>
-                            &nbsp;
-                            <p className="md:inline-block hidden"> Profile </p> 
+                            <p className="md:inline-block hidden">&nbsp; Profile </p> 
                         </button>
                     </Link>
                     <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                         <FontAwesomeIcon icon={faSignOut}/>
-                        &nbsp;
-                        <p className="md:inline-block hidden">Logout</p>
+                        <p className="md:inline-block hidden">&nbsp;Logout</p>
                     </button>
                     
                 </div>
@@ -357,7 +406,7 @@ function VideoPlayer(props) {
                                         <FontAwesomeIcon icon={faUpload}/> Submit 
                                 </button>
                                 :
-                                <div className="p-3 text-sm">
+                                <div className="p-3 text-sm rounded-full bg-mina-orange-light/20">
                                     {watchStat}
                                 </div>
                             }
@@ -403,6 +452,20 @@ function VideoPlayer(props) {
 
                     )
                     )
+                }
+                {
+                    pages.currentPage<pages.totalCount &&
+                    // <button className="px-3 py-1 rounded-full bg-white hover:bg-slate-50 shadow-lg absolute bottom-2 right-2" onClick={()=>{
+                    <div className='col-span-12'>
+                        <button className="p-3 bg-black/5 hover:bg-black/10  w-full" onClick={()=>{
+                            setPages({
+                                ...pages,
+                                currentPage: pages.currentPage+1
+                            }
+                            );
+                        }}>Load More <FontAwesomeIcon icon={faChevronCircleDown}/> </button>
+                    </div>
+
                 }
             </div>
         </div>

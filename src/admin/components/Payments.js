@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Table from "./table/Table";
 import axios from "axios";
 import swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faMinusCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 
 function Payments(props) {
@@ -29,16 +31,28 @@ function Payments(props) {
             {
                 Header: 'Status',
                 accessor: 'status',
-            },
-            {
-                Header: 'Actions',
-                accessor: 'action',
-                Cell: ({ cell }) => (
-                    <div className="">
-                        {/* {console.log(cell.row.original.id)} */}
+                Cell: ({ value, cell }) =>
+                    value == 1 ?
+                        <>
+                            <FontAwesomeIcon icon={faCheckCircle} className='text-green-600' />
+                        </>
+                        :
+                        value == 0 ?
+                        <>
+                            <FontAwesomeIcon icon={faMinusCircle} className='text-yellow-600' />
+                        </> :
+                        <>
+                            <FontAwesomeIcon icon={faSpinner} className='text-gray-600' />
+                        </>
+                },
+                {
+                    Header: 'Actions',
+                    accessor: 'action',
+                    Cell: ({ cell }) => (
+                        cell.row.original.status == 0 ?
                         <button onClick={handleAllow} data-action="allow" data-id={cell.row.original.user_id} data-payment-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-green-300 rounded-full bg-green-200">Allow</button>
+                            :
                         <button onClick={handleAllow} data-action="deny" data-id={cell.row.original.user_id} data-payment-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-red-300 rounded-full bg-red-200">Deny</button>
-                    </div>
                   )
             },
             

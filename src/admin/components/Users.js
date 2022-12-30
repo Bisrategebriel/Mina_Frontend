@@ -48,27 +48,19 @@ function Users(props) {
                         Header: 'Confirmed',
                         accessor: 'status',
                         Cell: ({ value, cell }) =>
-                            // {
-
-                            // <div className="">
-                            // console.log(cell.row.original)
                             value == 1 ?
                                 <button onClick={handleAllow} data-action="deactivate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-orange-300 rounded-full bg-orange-200">Revoke</button>
                                 :
                                 <button onClick={handleAllow} data-action="activate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-green-300 rounded-full bg-green-200">Approve</button>
-                        // </div>
-                        // }
                     },
                     {
                         Header: 'Actions',
                         accessor: 'action',
-                        Cell: ({ cell }) => (
-                            <div className="">
-                                {/* {console.log(cell.row.original.user_id)} */}
-                                <button onClick={handleEdit} data-action="activate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-yellow-300 rounded-full bg-yellow-200">Edit</button>
-                                <button onClick={handleDelete} data-action="deactivate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-red-300 rounded-full bg-red-200">Delete</button>
-                            </div>
-                        )
+                        Cell: ({ value, cell }) =>
+                            value == 1 ?
+                                <button onClick={handleAllow} data-action="deactivate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-orange-300 rounded-full bg-orange-200">Revoke</button>
+                                :
+                                <button onClick={handleAllow} data-action="activate" data-id={cell.row.original.id} className="px-2 py-1 m-1 hover:bg-green-300 rounded-full bg-green-200">Approve</button>
                     },
 
                 ]
@@ -220,6 +212,12 @@ function Users(props) {
                     // })
                     console.log(e.target)
                     // setConfirmed({...confirmed, payments: val });
+                    swal.fire({
+                        title: "Success",
+                        text: res.data.message,
+                        icon: "success",
+                        toast: true,
+                    })
                     e.target.parentElement.parentElement.parentElement.style.display = "none"
                     // setAsc(!asc)
                     // console.log(res.data)
@@ -255,14 +253,14 @@ function Users(props) {
 
 
     const optimizedSearch = useCallback(debounce(handleSearch), []);
-
+    
     return (
-        <div className="h-full w-full flex flex-col gap-2">
+        <div className="h-full w-full flex flex-col gap-2 max-w-screen overflow-x-auto">
             <div className="w-full flex justify-end items-center space-x-2">
-                <button onClick={onOpenModal} className="text-white gap-3 bg-mina-blue-light hover:bg-mina-blue-light/80 py-2   p-3 rounded-lg">
-                    <FontAwesomeIcon icon={faUserPlus} /> &nbsp;
+                    {/* <button onClick={onOpenModal} className="text-white gap-3 bg-mina-blue-light hover:bg-mina-blue-light/80 py-2   p-3 rounded-lg">
+                        <FontAwesomeIcon icon={faUserPlus} /> &nbsp;
 
-                    Add User</button>
+                        Add User</button> */}
                 <input type="text"
                     onChange={(e) => {
                         optimizedSearch(e)
