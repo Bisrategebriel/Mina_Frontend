@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { LanguageContext } from '..';
 import FAQ from './FAQ';
 
 function About(props) {
-    
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
 
     return (
         <div className='h-full'>
@@ -15,19 +17,19 @@ function About(props) {
 
                     <div className="grid grid-cols-12 px-3 md:px-6 xl:px-18 relative z-20 gap-4">
                         <div className="col-span-12 flex flex-col items-center space-y-4">
-                            <p className="text-3xl md:text-5xl">About Us</p>
+                            <p className="text-3xl md:text-5xl">{ln.aboutUs}</p>
                         </div>
                         
                         <div className="col-span-12 flex flex-col items-center space-y-4">
                             <p className="text-md md:text-lg text-justify">
 
-                            Mina play is the first Ethiopian website and application where you can make money by watching YouTube videos. Once you join mina play, you can earn money using links which you can find on the website and simply, copy the links from the website and past on YouTube.
+                            {ln.aboutOne}
                             <br></br>
-                            A variety of videos are included to satisfy your needs, such as educational content , entertainment, news, books, different programs and shows. 
-                            Points and Rewards Mina play will give you points for watching videos and by completing some simple tasks. 
+                            {ln.aboutTwo}
                             <br></br>
-                            All the tasks have different points related to their importance and value. Such tasks are like giving feedback, liking videos, answering questions, engaging in open discussions and more. 
-                            Mina play members collect points and coins which we call them Dembulo (ድምቡሎ). 100 points is equivalent to one Dembulo; One Dumbulo is equivalent to 15 birr. <br></br> At the end of each month, members get paid or collect their Dembulos. The minimum withdrawal rate on mina play starts at 100 Birr.
+                            {ln.aboutThree}
+                            <br></br>
+                            {ln.aboutFour}
                             </p>
                         </div>
                         

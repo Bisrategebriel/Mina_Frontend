@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGift, faPlayCircle, faPauseCircle, faUserCircle, faSignOut, faUpload, faChevronCircleDown, faVideo   } from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +6,7 @@ import logo from "../../images/logo.png";
 import YouTube from "react-youtube";
 import axios from "axios";
 import swal from "sweetalert2";
+import { LanguageContext } from "../..";
 
 function VideoPlayer(props) {
 	const playerRef = useRef(null);
@@ -350,6 +351,8 @@ function VideoPlayer(props) {
         })
     }
 
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
 	return (
         <div className='w-screen h-screen bg-slate-200 grid grid-cols-12 overflow-y-auto gap-2 justify-start content-start'>
             <div className="col-span-12 h-24 p-3 md:px-24 px-6 flex justify-between items-center  z-50 bg-mina-blue-dark">
@@ -365,20 +368,26 @@ function VideoPlayer(props) {
                         <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                             <FontAwesomeIcon icon={faVideo}/>
                             
-                            <p className="md:inline-block hidden">&nbsp; Videos </p> 
+                            <p className="md:inline-block hidden">&nbsp; {ln.videos} </p> 
                         </button>
                     </Link>
                     <Link to="/profile" replace>
                         <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                             <FontAwesomeIcon icon={faUserCircle}/>
-                            <p className="md:inline-block hidden">&nbsp; Profile </p> 
+                            <p className="md:inline-block hidden">&nbsp; {ln.profile} </p> 
                         </button>
                     </Link>
                     <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                         <FontAwesomeIcon icon={faSignOut}/>
-                        <p className="md:inline-block hidden">&nbsp;Logout</p>
+                        <p className="md:inline-block hidden">&nbsp;{ln.logout}</p>
                     </button>
-                    
+                    <select className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light" value={localStorage.getItem("lang")} onChange={(val)=>{
+                        languageContext[1](val.target.value)
+                        localStorage.setItem("lang", val.target.value)
+                    }}>
+                        <option value="en">En</option>
+                        <option value="am">Am</option>
+                    </select>
                 </div>
             </div>
             <div className="md:col-span-8 bg-white col-span-12 p-1 md:p-4 rounded-2xl relative aspect-video flex flex-col space-y-2 mx-2 md:mx-3 max-w-[1280px]">
@@ -393,7 +402,7 @@ function VideoPlayer(props) {
                     <div className="flex sm:flex-row flex-col items-start sm:items-center sm:space-x-2 sm:space-y-0 space-y-2">
                         <div className="w-36 md:w-48 h-fit p-2 md:p-3 bg-mina-blue-dark text-white text-sm md:text-xl font-bold flex rounded-full justify-start space-x-4 items-center">
                             <FontAwesomeIcon icon={faGift} />
-                            <p>Points: </p>
+                            <p>{ln.points}: </p>
                             <p>
                                 {currentPoint}
                             </p>
@@ -403,7 +412,7 @@ function VideoPlayer(props) {
                                 <button 
                                     className="p-3 bg-mina-orange-light rounded-xl hover:bg-orange-200"
                                     onClick={()=>{submitPoint()}}>
-                                        <FontAwesomeIcon icon={faUpload}/> Submit 
+                                        <FontAwesomeIcon icon={faUpload}/> {ln.submit} 
                                 </button>
                                 :
                                 <div className="p-3 text-sm rounded-full bg-mina-orange-light/20">
@@ -420,11 +429,11 @@ function VideoPlayer(props) {
                             onClick={()=>{playVid()}}>
                             {isPlaying ? 
                             <>
-                                <FontAwesomeIcon icon={faPauseCircle} className="text-mina-orange-light"/> Pause 
+                                <FontAwesomeIcon icon={faPauseCircle} className="text-mina-orange-light"/> {ln.pause} 
                             </>
                             : 
                             <>
-                                <FontAwesomeIcon icon={faPlayCircle} className="text-mina-blue-light"/> Play
+                                <FontAwesomeIcon icon={faPlayCircle} className="text-mina-blue-light"/> {ln.play}
                             </>
                             }
                         </button>
@@ -436,7 +445,7 @@ function VideoPlayer(props) {
             <div className="md:col-span-4 col-span-12 grid grid-cols-12 gap-4 items-center p-3 grid-auto-rows auto-rows-max max-h-screen overflow-y-scroll">
                 <div className="h-48 col-span-12 bg-slate-600 rounded-xl items-center flex justify-center">AD SPACE</div>
                 <div className="col-span-12 p-3 text-start bg-white rounded-lg">
-                    Suggested Videos
+                    {ln.suggestedVideos}
                 </div>
             {
                     videos.map((content,key)=>(

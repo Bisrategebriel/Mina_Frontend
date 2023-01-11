@@ -2,9 +2,10 @@ import { faChevronCircleDown, faChevronDown, faSignOut, faUserCircle } from '@fo
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import logo from "../images/logo.png";
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import VideoPlayer from '../components/dashboard/VideoPlayer';
+import { LanguageContext } from '..';
 
 function UserDashboard(props) {
     var navigate = useNavigate();
@@ -131,6 +132,8 @@ function UserDashboard(props) {
     };
 
     const optimizedSearch = useCallback(debounce(handleSearch), []);
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
     return (
         <div className='w-screen h-screen bg-gray-200 grid grid-cols-12 overflow-y-auto gap-2 justify-start content-start'>
             <div className="col-span-12 h-24 p-3 md:px-24 px-6 flex justify-between items-center  z-50 bg-mina-blue-dark">
@@ -146,15 +149,21 @@ function UserDashboard(props) {
                         <button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                             <FontAwesomeIcon icon={faUserCircle}/>
                             &nbsp;
-                            <p className="md:inline-block hidden"> Profile </p> 
+                            <p className="md:inline-block hidden"> {ln.profile} </p> 
                         </button>
                     </Link>
                     <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                         <FontAwesomeIcon icon={faSignOut}/>
                         &nbsp;
-                        <p className="md:inline-block hidden">Logout</p>
+                        <p className="md:inline-block hidden">{ln.logout}</p>
                     </button>
-                    
+                    <select className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light" value={localStorage.getItem("lang")} onChange={(val)=>{
+                        languageContext[1](val.target.value)
+                        localStorage.setItem("lang", val.target.value)
+                    }}>
+                        <option value="en">En</option>
+                        <option value="am">አማ</option>
+                    </select>
                 </div>
             </div>
 
@@ -169,7 +178,7 @@ function UserDashboard(props) {
                     // value={searchQuery}
                     name="searchQuery"
                     id="searchQuery"
-                    placeholder="Search"
+                    placeholder={ln.search}
                     className="p-2 border-2 border-solid border-2-mina-blue-dark rounded-md self-end min-w-48 md:w-96"
                 />
             </div>

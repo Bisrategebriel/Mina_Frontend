@@ -46,7 +46,7 @@ function ProtectedWrapper(props) {
         fetchData()
 
     },[])
-    console.log(confirmed)
+    // console.log(confirmed)
     const location = useLocation();
     return (
         <>

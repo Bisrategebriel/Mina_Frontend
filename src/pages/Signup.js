@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
 import "../App.css";
@@ -8,6 +8,7 @@ import swal from "sweetalert";
 
 function Signup() {
 	const navigate = useNavigate();
+    const [isSignupActive, setIsSignupActive] = useState(1);
 	const [registerInputs, setRegInputs] = useState({
 		first_name: "",
 		last_name: "",
@@ -50,6 +51,19 @@ function Signup() {
 			});
 		});
 	};
+
+    useEffect(()=>{
+        axios.get("/sanctum/csrf-cookie").then((response) => {
+			axios.get(`/api/settings`).then((res) => {
+                console.log(res.data.settings.is_signup_active);
+                if (res.data.status === 200) {
+                    setIsSignupActive(res.data.settings.is_signup_active)
+				} else {
+
+				}
+			});
+		});
+    },[])
 	return (
 		<>
 			<div className="w-screen h-24 p-3 md:px-24 px-6 flex justify-between items-center fixed z-50 bg-mina-blue-dark">
@@ -64,131 +78,141 @@ function Signup() {
 
 					<div className="absolute top-0 right-0 left-0 bottom-0 z-10 backdrop-blur-md bg-white/10 shadow-lg rounded-lg"></div>
 
-					<div className="grid grid-cols-12 px-1 md:px-6 xl:px-24 relative z-20 gap-4">
-						<div className="col-span-12 flex flex-col items-center space-y-4">
-							<img className="w-36" src={logo} alt="mina logo" srcSet="" />
-							<p className="text-lg">Sign up and start earning</p>
-						</div>
-						<form
-							className="col-span-12 grid-cols-12 grid gap-4"
-							onSubmit={registerSubmit}
-						>
-							{/* signup form */}
-							<div id="personalInfo" className="col-span-12 grid-cols-12 grid gap-4">
-								<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
-									<label className="text-sm text-start" htmlFor="first_name">
-										First Name
-									</label>
-									<input
-										type="text"
-										name="first_name"
-										id="first_name"
-										placeholder="First Name"
-										className="p-3 bg-gray-200 rounded-lg"
-										onChange={handleRegInput}
-										value={registerInputs.first_name}
-										required
-									/>
-									<span>{registerInputs.error_list.first_name}</span>
-								</div>
-								<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
-									<label className="text-sm text-start" htmlFor="first_name">
-										Last Name
-									</label>
-									<input
-										type="text"
-										name="last_name"
-										id="last_name"
-										placeholder="Last Name"
-										className="p-3 bg-gray-200 rounded-lg"
-										onChange={handleRegInput}
-										value={registerInputs.last_name}
-										required
-									/>
-									<span>{registerInputs.error_list.last_name}</span>
-								</div>
-								<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
-									<label className="text-sm text-start" htmlFor="email">
-										Email
-									</label>
-									<input
-										type="email"
-										name="email"
-										id="email"
-										placeholder="Email"
-										className="p-3 bg-gray-200 rounded-lg"
-										onChange={handleRegInput}
-										value={registerInputs.email}
-										required
-									/>
-									<span>{registerInputs.error_list.email}</span>
-								</div>
-								<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
-									<label className="text-sm text-start" htmlFor="phone_number">
-										Phone Number
-									</label>
-									<input
-										type="text"
-										name="phone_number"
-										id="phone_number"
-										placeholder="Phone Number"
-										className="p-3 bg-gray-200 rounded-lg"
-										onChange={handleRegInput}
-										value={registerInputs.phone_number}
-										required
-									/>
-									<span>{registerInputs.error_list.phone_number}</span>
-								</div>
-								<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
-									<label className="text-sm text-start" htmlFor="password">
-										Password
-									</label>
-									<input
-										type="password"
-										name="password"
-										id="password"
-										placeholder="Password"
-										className="p-3 bg-gray-200 rounded-lg"
-										onChange={handleRegInput}
-										value={registerInputs.password}
-										required
-									/>
-									<span>{registerInputs.error_list.password}</span>
-								</div>
-								<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
-									<label className="text-sm text-start" htmlFor="confirm_password">
-										Confirm Password
-									</label>
-									<input
-										type="password"
-										name="confirm_password"
-										id="confirm_password"
-										placeholder="Confirm Password"
-										className="p-3 bg-gray-200 rounded-lg"
-										onChange={handleRegInput}
-										value={registerInputs.confirm_password}
-										required
-									/>
-									<span>{registerInputs.error_list.confirm_password}</span>
-								</div>
-								<div className="col-span-12 flex justify-end">
-									<input
-										type="submit"
-										value="Submit"
-										className="bg-mina-blue-light cursor-pointer hover:bg-mina-blue-dark py-2 px-4 text-white rounded-lg"
-									/>
-								</div>
-							</div>
-						</form>
-
-						<div className="col-span-12 flex justify-center">
-							Already have an account?{" "}
-							<Link className="text-mina-blue-dark font-bold" to="/signin">
-								{" "}
-								Login{" "}
-							</Link>
-						</div>
-					</div>
+                        <div className="grid grid-cols-12 px-1 md:px-6 xl:px-24 relative z-20 gap-4">
+                               
+                     
+                                    <div className="col-span-12 flex flex-col items-center space-y-4">
+                                        <img className="w-36" src={logo} alt="mina logo" srcSet="" />
+                                        <p className="text-lg">Sign up and start earning</p>
+                                    </div>           
+                    {
+                                     isSignupActive ? 
+                                     <>
+                                    <form
+                                        className="col-span-12 grid-cols-12 grid gap-4"
+                                        onSubmit={registerSubmit}
+                                    >
+                                        {/* signup form */}
+                                        <div id="personalInfo" className="col-span-12 grid-cols-12 grid gap-4">
+                                            <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                                                <label className="text-sm text-start" htmlFor="first_name">
+                                                    First Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="first_name"
+                                                    id="first_name"
+                                                    placeholder="First Name"
+                                                    className="p-3 bg-gray-200 rounded-lg"
+                                                    onChange={handleRegInput}
+                                                    value={registerInputs.first_name}
+                                                    required
+                                                />
+                                                <span>{registerInputs.error_list.first_name}</span>
+                                            </div>
+                                            <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                                                <label className="text-sm text-start" htmlFor="first_name">
+                                                    Last Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="last_name"
+                                                    id="last_name"
+                                                    placeholder="Last Name"
+                                                    className="p-3 bg-gray-200 rounded-lg"
+                                                    onChange={handleRegInput}
+                                                    value={registerInputs.last_name}
+                                                    required
+                                                />
+                                                <span>{registerInputs.error_list.last_name}</span>
+                                            </div>
+                                            <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                                                <label className="text-sm text-start" htmlFor="email">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    id="email"
+                                                    placeholder="Email"
+                                                    className="p-3 bg-gray-200 rounded-lg"
+                                                    onChange={handleRegInput}
+                                                    value={registerInputs.email}
+                                                    required
+                                                />
+                                                <span>{registerInputs.error_list.email}</span>
+                                            </div>
+                                            <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                                                <label className="text-sm text-start" htmlFor="phone_number">
+                                                    Phone Number
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="phone_number"
+                                                    id="phone_number"
+                                                    placeholder="Phone Number"
+                                                    className="p-3 bg-gray-200 rounded-lg"
+                                                    onChange={handleRegInput}
+                                                    value={registerInputs.phone_number}
+                                                    required
+                                                />
+                                                <span>{registerInputs.error_list.phone_number}</span>
+                                            </div>
+                                            <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                                                <label className="text-sm text-start" htmlFor="password">
+                                                    Password
+                                                </label>
+                                                <input
+                                                    type="password"
+                                                    name="password"
+                                                    id="password"
+                                                    placeholder="Password"
+                                                    className="p-3 bg-gray-200 rounded-lg"
+                                                    onChange={handleRegInput}
+                                                    value={registerInputs.password}
+                                                    required
+                                                />
+                                                <span>{registerInputs.error_list.password}</span>
+                                            </div>
+                                            <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                                                <label className="text-sm text-start" htmlFor="confirm_password">
+                                                    Confirm Password
+                                                </label>
+                                                <input
+                                                    type="password"
+                                                    name="confirm_password"
+                                                    id="confirm_password"
+                                                    placeholder="Confirm Password"
+                                                    className="p-3 bg-gray-200 rounded-lg"
+                                                    onChange={handleRegInput}
+                                                    value={registerInputs.confirm_password}
+                                                    required
+                                                />
+                                                <span>{registerInputs.error_list.confirm_password}</span>
+                                            </div>
+                                            <div className="col-span-12 flex justify-end">
+                                                <input
+                                                    type="submit"
+                                                    value="Submit"
+                                                    className="bg-mina-blue-light cursor-pointer hover:bg-mina-blue-dark py-2 px-4 text-white rounded-lg"
+                                                />
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </> 
+                                    :
+                                <p></p>
+                        }
+                                    <div className="col-span-12 flex justify-center">
+                                        Already have an account?{" "}
+                                        <Link className="text-mina-blue-dark font-bold" to="/signin">
+                                            {" "}
+                                            Login{" "}
+                                        </Link>
+                                    </div>
+                                   
+                                
+                            </div>
 				</div>
 			</div>
 		</>

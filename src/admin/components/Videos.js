@@ -108,6 +108,7 @@ function Videos(props) {
         setRegInputs({
         
             video_id: "",
+            title: "",
             
             error_list: [{ video_id: "" }],
         })
@@ -118,6 +119,7 @@ function Videos(props) {
     const [registerInputs, setRegInputs] = useState({
         
         video_id: "",
+        title: "",
         
         error_list: [{ video_id: "Video ID not valid" }],
     });
@@ -125,6 +127,7 @@ function Videos(props) {
 
     const handleRegInput = (e) => {
         e.persist();
+        console.log(e.target.name)
         setRegInputs({ ...registerInputs, [e.target.name]: e.target.value });
     };
 
@@ -133,6 +136,7 @@ function Videos(props) {
 
         const data = {
             video_id: registerInputs.video_id,
+            title: registerInputs.title,
         };
 
         axios.get("/sanctum/csrf-cookie").then((response) => {
@@ -146,6 +150,7 @@ function Videos(props) {
                         toast: true,
                     })
                     onCloseModal()
+                    setPageStatus((pageStatus) => !pageStatus);
                     // navigate("/signin");
                 } else {
                     swal.fire({
@@ -328,6 +333,22 @@ function Videos(props) {
                                 required
                             />
                             <span>{registerInputs.error_list.video_id}</span>
+                        </div>
+                        <div className="col-span-12 flex flex-col space-y-2 justify-start">
+                            <label className="text-sm text-start" htmlFor="video_id">
+                                Video Title
+                            </label>
+                            <input
+                                type="text"
+                                name="title"
+                                id="tilte"
+                                placeholder="Video Title"
+                                className="p-3 bg-gray-200 rounded-lg"
+                                onChange={handleRegInput}
+                                value={registerInputs.video_title}
+                                required
+                            />
+                            <span>{registerInputs.error_list.video_title}</span>
                         </div>
 
                         <div className="col-span-12 flex justify-end">

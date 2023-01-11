@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { LanguageContext } from '..';
 import moviePoster from '../images/movie_poster.png';
 import phones from '../images/phones.png';
 
 function Landing(props) {
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
     return (
         <div>
             <div className="w-screen max-h-[880px] relative overflow-hidden z-0">
@@ -12,17 +15,17 @@ function Landing(props) {
 
                 <div className="flex flex-col items-center md:items-start justify-center p-3 sm:p-12 col-span-12 md:col-span-12 lg:col-span-8 xl:col-span-7">
                     <h1 className="text-5xl md:text-7xl text-center md:text-start text-white mb-16 md:mb-36 font-bold">
-                    WATCH VIDEOS AND EARN MONEY
+                    {ln.mainHeader}
                     </h1>
 
-                    <p className="font-semibold text-mina-orange-light text-lg md:text-2xl my-3 text-center md:text-start">This is the time to make money on your mobile phones and laptops Being anywhere in Ethiopia.</p>
+                    <p className="font-semibold text-mina-orange-light text-lg md:text-2xl my-3 text-center md:text-start">{ln.cta}</p>
                     <div className="flex space-x-4 items-center">
-                    <a href="#getStarted" className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-white  text-mina-orange-light font-bold rounded-lg ">Get Started</a>
+                    <a href="#getStarted" className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-white  text-mina-orange-light font-bold rounded-lg ">{ln.getStarted}</a>
                     {
                     
                         (localStorage.getItem("auth_token") !=null) && 
                         <Link to="/dashboard" >
-                            <button className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">Dashboard</button>
+                            <button className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">{ln.dashboard}</button>
                         </Link> 
                     
                     }

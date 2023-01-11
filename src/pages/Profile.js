@@ -8,13 +8,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../images/logo.png";
 import WatchedThumbnail from "../components/dashboard/WatchedThumbnail";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import swal from "sweetalert2";
 import TransactionCard from "../components/dashboard/TransactionCard";
 import { useEffect } from "react";
+import { LanguageContext } from "..";
 
 function Profile(props) {
 	const navigate = useNavigate();
@@ -177,7 +178,8 @@ function Profile(props) {
 			});
 		});
     }
-
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
 	return (
 		<div className="w-screen h-screen bg-slate-200 grid grid-cols-12 overflow-y-auto gap-2 justify-start content-start ">
 			<div className="col-span-12 h-24 p-3 lg:px-24 px-6 flex justify-between items-center  z-50 bg-mina-blue-dark">
@@ -192,7 +194,7 @@ function Profile(props) {
 					<Link to="/dashboard" replace>
 						<button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
 							<FontAwesomeIcon icon={faVideo} />
-							<p className="md:inline-block hidden">&nbsp; Videos</p>
+							<p className="md:inline-block hidden">&nbsp; {ln.videos}</p>
 						</button>
 					</Link>
 					<button
@@ -200,8 +202,15 @@ function Profile(props) {
 						className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg"
 					>
 						<FontAwesomeIcon icon={faSignOut} />
-						<p className="md:inline-block hidden">&nbsp; Logout</p>
+						<p className="md:inline-block hidden">&nbsp; {ln.logout}</p>
 					</button>
+                    <select className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light" value={localStorage.getItem("lang")} onChange={(val)=>{
+                        localStorage.setItem("lang", val.target.value)
+                        languageContext[1](val.target.value)
+                    }}>
+                        <option value="en">En</option>
+                        <option value="am">አማ</option>
+                    </select>
 				</div>
 			</div>
 
@@ -218,11 +227,11 @@ function Profile(props) {
                             <div className="flex flex-col bg-white m-4 p-4 rounded-xl text-start ">
                                 <div className="w-full flex justify-around">
                                     <div className="flex flex-col">
-                                        <h1 className="text-lg">Wallet:</h1>
-                                        <h1 className="text-3xl">{(registerInputs.points*pointMultiplier).toFixed(2)} ETB</h1>
+                                        <h1 className="text-lg">{ln.wallet}:</h1>
+                                        <h1 className="text-3xl">{(registerInputs.points*pointMultiplier).toFixed(2)} {ln.etb}</h1>
                                     </div>
                                     <div className="flex flex-col">
-                                        <h1 className="text-lg">Points:</h1>
+                                        <h1 className="text-lg">{ln.points}:</h1>
                                         <h1 className="text-3xl">{(registerInputs.points).toFixed(2)}</h1>
                                     </div>
                                 </div>
@@ -241,14 +250,14 @@ function Profile(props) {
                                         }}
                                     />
                                     <button onClick={handleWithdraw} className="col-span-12 lg:col-span-4 bg-mina-blue-light hover:bg-mina-blue-dark p-3 rounded-xl font-bold text-white">
-                                        Withdraw
+                                        {ln.withdraw}
                                     </button>
                                 </div>
                             </div>
 
                             <div className="flex flex-col bg-white px-4 pb-4 m-4 rounded-xl relative items-stretch space-y-3 max-h-[600px] overflow-auto">
                                 <p className="text-xl font-bold my-3 sticky top-0 p-2 bg-gradient-to-b from-white via-white to-white/10">
-                                    Transaction History
+                                    {ln.transactionHistory}
                                 </p>
 
                                 {
@@ -273,7 +282,7 @@ function Profile(props) {
                                     <div id="personalInfo" className="col-span-12 grid-cols-12 grid gap-4">
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="first_name">
-                                                First Name
+                                                {ln.firstName}
                                             </label>
                                             <input
                                                 type="text"
@@ -289,7 +298,7 @@ function Profile(props) {
                                         </div>
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="first_name">
-                                                Last Name
+                                                {ln.lastName}
                                             </label>
                                             <input
                                                 type="text"
@@ -305,7 +314,7 @@ function Profile(props) {
                                         </div>
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="email">
-                                                Email
+                                                {ln.email}
                                             </label>
                                             <input
                                                 type="email"
@@ -321,7 +330,7 @@ function Profile(props) {
                                         </div>
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="phone_number">
-                                                Phone Number
+                                                {ln.phoneNumber}
                                             </label>
                                             <input
                                                 type="text"
@@ -337,7 +346,7 @@ function Profile(props) {
                                         </div>
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="password">
-                                                Old Password
+                                                {ln.oldPassword}
                                             </label>
                                             <input
                                                 type="password"
@@ -353,7 +362,7 @@ function Profile(props) {
                                         </div>
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="new_password">
-                                                New Password
+                                                {ln.newPassword}
                                             </label>
                                             <input
                                                 type="password"
@@ -369,7 +378,7 @@ function Profile(props) {
                                         </div>
                                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                                             <label className="text-sm text-start" htmlFor="confirm_password">
-                                                Confirm Password
+                                                {ln.confirmPassword}
                                             </label>
                                             <input
                                                 type="password"
@@ -386,7 +395,7 @@ function Profile(props) {
                                         <div className="col-span-12 flex justify-end">
                                             <input
                                                 type="submit"
-                                                value="Submit"
+                                                value={ln.submit}
                                                 className="bg-mina-blue-light cursor-pointer hover:bg-mina-blue-dark py-2 px-4 text-white rounded-lg"
                                             />
                                         </div>
@@ -395,7 +404,7 @@ function Profile(props) {
                             </div>
 
                             <div className="col-span-12 md:col-span-8 p-2 bg-white text-start rounded-xl">
-                                Watch History
+                                {ln.watchHistory}
                             </div>
                             <div className="col-span-12 md:col-span-8 bg-white p-4 rounded-xl overflow-x-scroll flex space-x-4">
                                 {

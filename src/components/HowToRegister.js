@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { LanguageContext } from "..";
 import step1 from "../images/step1.png";
 import step2 from "../images/step2.png";
 import step3 from "../images/step3.png";
@@ -6,10 +7,12 @@ import step4 from "../images/step4.png";
 import step5 from "../images/step5.png";
 
 function HowToRegister(props) {
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
 	return (
 		<div id="howToRegister">
 			<div className="w-screen my-24">
-				<h1 className="text-5xl mb-12">How does Mina play work?</h1>
+				<h1 className="text-5xl mb-12">{ln.howMinaWorks}</h1>
 
 				<div className="w-full grid grid-cols-12 px-6 md:px-12 lg:px-36 xl:px-48 my-8 md:my-2">
 					<div className="col-span-6 md:flex hidden items-center justify-center px-12">
@@ -22,14 +25,13 @@ function HowToRegister(props) {
 
 					<div className="col-span-12 md:col-span-6 flex flex-col items-start justify-center px-12 space-y-4">
 						<div className="flex flex-col items-center justify-center w-24 h-24 rounded-full border-4 border-mina-orange-light text-white bg-mina-blue-dark">
-							Step
+							{ln.step}
 							<br />
 							01
 						</div>
-						<h1 className="text-2xl font-bold">Open Mina Play</h1>
+						<h1 className="text-2xl font-bold">{ln.stepOne}</h1>
 						<p className="text-xl text-justify">
-							Log in to the website, check out the home page, and you will find an icon
-							for registration. Then click the register button on the home page.
+                            {ln.stepOneDetail}
 						</p>
 					</div>
 				</div>
@@ -37,14 +39,13 @@ function HowToRegister(props) {
 				<div className="w-full grid grid-cols-12 px-6 md:px-12 lg:px-36 xl:px-48  my-8 md:my-2">
 					<div className="col-span-12 md:col-span-6 flex flex-col items-start justify-center px-12 space-y-4">
 						<div className="flex flex-col items-center justify-center w-24 h-24 rounded-full border-4 border-mina-orange-light text-white bg-mina-blue-dark">
-							Step
+                            {ln.step}
 							<br />
 							02
 						</div>
-						<h1 className="text-2xl font-bold">Create an Account</h1>
+						<h1 className="text-2xl font-bold">{ln.stepTwo}</h1>
 						<p className="text-xl text-justify">
-							Complete the personal information in the Sign-up form. Create a password
-							and get confirmed. Then click the next button.
+                            {ln.stepTwoDetail}
 						</p>
 					</div>
 
@@ -68,27 +69,26 @@ function HowToRegister(props) {
 
 					<div className="col-span-12 md:col-span-6 flex flex-col items-start justify-center px-12 space-y-4">
 						<div className="flex flex-col items-center justify-center w-24 h-24 rounded-full border-4 border-mina-orange-light text-white bg-mina-blue-dark">
-							Step
+                            {ln.step}
 							<br />
 							03
 						</div>
-						<h1 className="text-2xl font-bold">Pay Registration Fee</h1>
+						<h1 className="text-2xl font-bold">{ln.stepThree}</h1>
 						<p className="text-xl text-justify">
-							Select and transfer or pay the registration fee via the listed money
-							transferring methods. Then click confirm the payment button.
+							{ln.stepThreeDetail}
 						</p>
 					</div>
 				</div>
 				<div className="w-full grid grid-cols-12 px-6 md:px-12 lg:px-36 xl:px-48  my-8 md:my-2">
 					<div className="col-span-12 md:col-span-6 flex flex-col items-start justify-center px-12 space-y-4">
 						<div className="flex flex-col items-center justify-center w-24 h-24 rounded-full border-4 border-mina-orange-light text-white bg-mina-blue-dark">
-							Step
+                            {ln.step}
 							<br />
 							04
 						</div>
-						<h1 className="text-2xl font-bold">Confirm Payment</h1>
+						<h1 className="text-2xl font-bold">{ln.stepFour}</h1>
 						<p className="text-xl text-justify">
-                        Fill in the requested questions and confirm your payment. 
+                        {ln.stepFourDetail}
 						</p>
 					</div>
 
@@ -112,13 +112,13 @@ function HowToRegister(props) {
 
 					<div className="col-span-12 md:col-span-6 flex flex-col items-start justify-center px-12 space-y-4">
 						<div className="flex flex-col items-center justify-center w-24 h-24 rounded-full border-4 border-mina-orange-light text-white bg-mina-blue-dark">
-							Step
+                            {ln.step}
 							<br />
 							05
 						</div>
-						<h1 className="text-2xl font-bold">You're Done</h1>
+						<h1 className="text-2xl font-bold">{ln.stepFive}</h1>
 						<p className="text-xl text-justify">
-							Now you can Sign-in to mina play. Get instant access to work from your comfort and earn money.
+							{ln.stepFiveDetail}
 						</p>
 					</div>
 				</div>

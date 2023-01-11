@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import logo from "../images/logo.png";
 import Payments from "./components/Payments";
+import Settings from "./components/Settings";
 import Transactions from "./components/Transactions";
 import Users from "./components/Users";
 import Videos from "./components/Videos";
@@ -19,8 +20,10 @@ function Home(props) {
                 return <Payments />
             case 'transactions':
                 return <Transactions />
-            case 'videos':
+                case 'videos':
                 return <Videos />
+            case 'settings':
+                return <Settings />
 
             default:
                 break;
@@ -72,6 +75,15 @@ function Home(props) {
                         className="cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
                     >
                         Transactions
+                    </div>
+                </div>
+                <div 
+                    onClick={() => { setPage('settings') }}
+                    className={ page==='settings' ? "w-full h-12 items-center justify-center flex bg-mina-blue-light text-white hover:bg-mina-blue-dark" : "w-full h-12 items-center justify-center flex bg-white shadow-sm hover:bg-slate-200" }>
+                    <div
+                        className="cursor-pointer w-full py-3 mx-2 font-bold rounded-lg"
+                    >
+                        Settings
                     </div>
                 </div>
             </div>

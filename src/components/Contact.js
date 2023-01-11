@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
+import { LanguageContext } from "..";
 
 function Contact(props) {
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
   return (
     <div id="contact">
       <div className="w-full text-center my-24 px-12 xl:px-48">
-        <h1 className="text-5xl mb-12">Contact Us</h1>
+        <h1 className="text-5xl mb-12">{ln.contactUs}</h1>
 
         <form>
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
               <label className="text-sm text-start" htmlFor="full_name">
-                Full Name
+              {ln.fullName}
               </label>
               <input
                 type="text"
@@ -23,7 +26,7 @@ function Contact(props) {
 
             <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
               <label className="text-sm text-start" htmlFor="email">
-                Email
+              {ln.email}
               </label>
               <input
                 type="email"
@@ -36,7 +39,7 @@ function Contact(props) {
 
             <div className="col-span-12 flex flex-col space-y-2 justify-start">
               <label className="text-sm text-start" htmlFor="message">
-                Message
+              {ln.message}
               </label>
               <textarea
                 name="message"

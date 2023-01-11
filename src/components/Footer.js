@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import playstore from "../images/playstore.png";
 import appstore from "../images/appstore.png";
 import "../App.css";
+import { LanguageContext } from "..";
 
 function Footer(props) {
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
   return (
     <div>
       <div className="w-screen p-12 bg-mina-blue-dark">
         <div className="grid grid-cols-12">
           <div className="col-span-12 md:col-span-12 flex md:flex-row flex-col justify-center space-y-4 md:space-y-0 md:space-x-4 text-white text-xl">
             <a href="#getStarted" className="transition-all">
-              Get Started
+              {ln.getStarted}
             </a>
-            <a href="#howToRegister">How to Register</a>
-            <a href="#contact">Contact</a>
-            <a href="#about">About Us</a>
-            <a href="#">Privacy</a>
+            <a href="#howToRegister">{ln.howMinaWorks}</a>
+            <a href="#contact">{ln.contactUs}</a>
+            <a href="#about">{ln.aboutUs}</a>
+            {/* <a href="#">Privacy</a> */}
           </div>
 
           <div className="col-span-12 md:col-span-12 flex flex-wrap flex-row justify-center gap-4 my-8">

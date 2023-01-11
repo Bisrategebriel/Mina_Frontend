@@ -1,31 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { LanguageContext } from '..';
 import FAQ from './FAQ';
 
 function FAQs(props) {
-    
+    const languageContext = useContext(LanguageContext);
+    const ln = languageContext[0]
     const contents = [
         {
-            "question": "What is Mina play?",
-            "answer": "Mina play is the first Ethiopian website and application where you can earn money by watching YouTube videos and accomplishing simple tasks."
+            "question": ln.q1,
+            "answer": ln.a1
         },
         {
-            "question": "How does Mina play work?",
-            "answer": "After completing the registration process, you get a membership, which allows you to access the money making links and videos. Once you register, you have a personal code to access your account."
+            "question": ln.q2,
+            "answer": ln.a2
         },
         {
-            "question": "Is Mina play legit?",
-            "answer": "Mina play is a legit website and application which you do as a side hassle."
+            "question": ln.q3,
+            "answer": ln.a3
         },
         {
-            "question": "How to withdraw money?",
-            "answer": "The collected coins or points from mina play can be converted into cash and can be withdrawn or transferred via tele birr."
+            "question": ln.q4,
+            "answer": ln.a4
         }
     ]
 
     return (
         <div className='px-2 overflow-x-hidden overflow-y-visible'>
             <div className="w-full md:px-12 lg:px-36 xl:px-48  my-12 ">
-                <h1 className="text-3xl md:text-5xl text-center my-12">Frequently Asked Questions</h1>
+                <h1 className="text-3xl md:text-5xl text-center my-12">{ln.faq}</h1>
 
                 <div className="w-full flex flex-col space-y-4 relative">
                     <div className="w-[200px] h-[200px] bg-mina-blue-light absolute -top-12 -left-24 rounded-full"></div>
