@@ -69,8 +69,9 @@ const languages = {
         wallet : "Wallet",
         points : "Points",
         suggestedVideos : "Suggested Videos",
-        withdraw : "Play",
+        withdraw : "Withdraw",
         pause : "Pause",
+        play : "Play",
 
     },
     am : {
@@ -117,7 +118,7 @@ const languages = {
         message : "መልዕክት",
         fullName : "ሙሉ ስም",
         firstName : "የመጀመሪያ ስም",
-        lastName : "የመጨረሻ ስም",
+        lastName : "የወላጅ ስም",
         email : "ኢሜል",
         phoneNumber : "ስልክ ቁጥር",
         password : "የይለፍ ቃል",
@@ -153,9 +154,6 @@ const LanguageContextProvider = ({ children }) => {
             {children}
         </LanguageContext.Provider>
     )
-}
-const setLanguage = () => {
-
 }
 root.render(
 	<React.StrictMode>

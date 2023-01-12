@@ -201,7 +201,7 @@ function Signup() {
                                     </form>
                                     </> 
                                     :
-                                <p></p>
+                                <p className="col-span-12 text-2xl p-3 rounded-lg bg-red-200">Registration is currently closed.</p>
                         }
                                     <div className="col-span-12 flex justify-center">
                                         Already have an account?{" "}
