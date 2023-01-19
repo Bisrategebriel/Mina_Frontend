@@ -4,7 +4,7 @@ import logo from "../images/logo.png";
 import useScrollPosition from "../hooks/useScrollPosition";
 import "../App.css";
 import axios from "axios";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDashboard, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { LanguageContext } from "..";

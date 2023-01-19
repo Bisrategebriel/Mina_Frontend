@@ -4,7 +4,7 @@ import logo from "../images/logo.png";
 import "../App.css";
 
 import axios from "axios";
-import swal from "sweetalert";
+import swal from "sweetalert2";
 
 function Signup() {
 	const navigate = useNavigate();
@@ -43,7 +43,7 @@ function Signup() {
 			axios.post(`/api/auth/register`, data).then((res) => {
 				console.log(res.data.status);
 				if (res.data.status === 200) {
-					swal("Success", res.data.message, "success");
+					swal.fire("Success", res.data.message, "success");
 					navigate("/signin");
 				} else {
 					setRegInputs({ ...registerInputs, error_list: res.data.errors });

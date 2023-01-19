@@ -14,6 +14,7 @@ function VideoPlayer(props) {
     var [isPlaying, setIsPlaying] = useState(false);
     var [isWatched, setIsWatched] = useState(true);
     var [watchStat, setWatchStat] = useState("Loading");
+    const [ad3, setAd3] = useState();
     let [asc, setAsc] = useState(true); //table sort using asc or desc
 	var classNames = props.className;
 	var player;
@@ -36,12 +37,37 @@ function VideoPlayer(props) {
             // title:''
         }
     ]);
+
+    //fetch Ad
+    useEffect(() => {
+        axios.get("/sanctum/csrf-cookie").then((response) => {
+            axios.get(`/api/settings`).then((res) => {
+                if (res.data.status === 200) {
+                    setAd3(res.data.settings.ad3)
+                    // setSettingsInput({
+                    //     ...settingsInput,
+                    //     is_signup_active: res.data.settings.is_signup_active,
+                    //     point_value: res.data.settings.point_value,
+                    //     bank1: res.data.settings.bank1,
+                    //     bank2: res.data.settings.bank2,
+                    //     bank3: res.data.settings.bank3,
+                    //     bank4: res.data.settings.bank4,
+                    //     registration_fee: res.data.settings.registration_fee,
+                    //     ad1: res.data.settings.ad1,
+                    //     ad2: res.data.settings.ad2,
+                    // })
+                    // setIsSignupActive(res.data.settings.is_signup_active)
+                } else {
+
+                }
+            });
+        });
+    }, [])
     // Fetch available Videos
     const [videoLinks, setVideoLinks] = useState([
     ])
     useEffect(()=>{
 
-            const YOUTUBE_API_KEY = "AIzaSyCQhPy1H5xcfYiI6igvyBCgv7M22ls5RmQ";
             var url;
             const uninterceptedAxiosInstance = axios.create();
             setVideos([])
@@ -443,7 +469,9 @@ function VideoPlayer(props) {
             </div>
 
             <div className="md:col-span-4 col-span-12 grid grid-cols-12 gap-4 items-center p-3 grid-auto-rows auto-rows-max max-h-screen overflow-y-scroll">
-                <div className="h-48 col-span-12 bg-slate-600 rounded-xl items-center flex justify-center">AD SPACE</div>
+                <div className="h-64 col-span-12 bg-mina-orange-light rounded-xl items-center flex justify-center overflow-clip">
+                    <img src={axios.defaults.baseURL+"/uploads/ads/"+ad3} alt="ad space" className="min-h-full min-w-full object-cover object-left"></img>
+                </div>
                 <div className="col-span-12 p-3 text-start bg-white rounded-lg">
                     {ln.suggestedVideos}
                 </div>

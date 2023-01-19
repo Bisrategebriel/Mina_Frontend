@@ -59,6 +59,7 @@ function Settings(props) {
         // formData.append(data)
         document.getElementById("ad1").files[0] && formData.append('ad1', document.getElementById("ad1").files[0]);
         document.getElementById("ad2").files[0] && formData.append('ad2', document.getElementById("ad2").files[0]);
+        document.getElementById("ad3").files[0] && formData.append('ad3', document.getElementById("ad3").files[0]);
         // console.log(formData)
 
 
@@ -94,6 +95,7 @@ function Settings(props) {
                         registration_fee: res.data.settings.registration_fee,
                         ad1: res.data.settings.ad1,
                         ad2: res.data.settings.ad2,
+                        ad3: res.data.settings.ad3,
                     })
                     // setIsSignupActive(res.data.settings.is_signup_active)
                 } else {
@@ -267,6 +269,17 @@ function Settings(props) {
                                 Advertisement Banner 2
                             </label>
                             <input type="file" name="ad2" id="ad2"
+                                className="p-3 bg-gray-200 rounded-lg"
+                                // onChange={handleSettingsInput}
+                                // value={settingsInput.ad2}
+                            />
+                            <span className="text-red-500 text-sm">{settingsInput.error_list.ad2}</span>
+                        </div>
+                        <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                            <label className="text-sm text-start" htmlFor="ad3">
+                                Advertisement Banner 3
+                            </label>
+                            <input type="file" name="ad3" id="ad3"
                                 className="p-3 bg-gray-200 rounded-lg"
                                 // onChange={handleSettingsInput}
                                 // value={settingsInput.ad2}

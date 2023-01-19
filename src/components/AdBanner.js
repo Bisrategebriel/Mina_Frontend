@@ -1,5 +1,4 @@
 import React from 'react';
-import adBanner1 from '../images/adBanner1.png';
 
 function AdBanner({banner}) {
     

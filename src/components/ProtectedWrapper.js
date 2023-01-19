@@ -10,6 +10,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 function ProtectedWrapper(props) {
     const [confirmed, setConfirmed] = useState();
+    const [isVerified, setIsVerified] = useState(false);
     useEffect(()=>{
         let val;
         if(localStorage.getItem("auth_token" == null)){
@@ -29,6 +30,7 @@ function ProtectedWrapper(props) {
                     }
                     if(res.data.status === 200){
                         val = res.data.user.status ? true : false;
+                        setIsVerified(res.data.user.email_verified_at ? true : false);
                         // return res.data.user.status ? true : false;
 
                     } else {
@@ -60,8 +62,9 @@ function ProtectedWrapper(props) {
             </>
             
             : //loading screen
-            (localStorage.getItem("auth_token") !=null & confirmed) ? <UserDashboard/> : //if the user is authorized and confirmed
-            (localStorage.getItem("auth_token") !=null & !confirmed) ? <Confirm/> : //if the user is authorized and not confirmed
+            (localStorage.getItem("auth_token") !=null & confirmed) ? <UserDashboard isVerified={isVerified}/> : //if the user is authorized and confirmed
+            (localStorage.getItem("auth_token") !=null & isVerified & !confirmed) ? <Confirm/> : //if the user is authorized and not confirmed
+            (localStorage.getItem("auth_token") !=null & !isVerified & !confirmed) ? <UserDashboard isVerified={isVerified}/> : //if the user is authorized and not verified, confirmed
             <Navigate to="/signin" replace state={{location}} /> //if the user is not authorized
         }
         </>

@@ -21,22 +21,7 @@ function Home() {
                 if (res.data.status === 200) {
                     setAd1(res.data.settings.ad1)
                     setAd2(res.data.settings.ad2)
-                    // setSettingsInput({
-                    //     ...settingsInput,
-                    //     is_signup_active: res.data.settings.is_signup_active,
-                    //     point_value: res.data.settings.point_value,
-                    //     bank1: res.data.settings.bank1,
-                    //     bank2: res.data.settings.bank2,
-                    //     bank3: res.data.settings.bank3,
-                    //     bank4: res.data.settings.bank4,
-                    //     registration_fee: res.data.settings.registration_fee,
-                    //     ad1: res.data.settings.ad1,
-                    //     ad2: res.data.settings.ad2,
-                    // })
-                    // setIsSignupActive(res.data.settings.is_signup_active)
-                } else {
-
-                }
+                } 
             });
         });
     }, [])
