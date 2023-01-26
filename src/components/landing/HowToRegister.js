@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { LanguageContext } from "..";
-import step1 from "../images/step1.png";
-import step2 from "../images/step2.png";
-import step3 from "../images/step3.png";
-import step4 from "../images/step4.png";
-import step5 from "../images/step5.png";
+import { LanguageContext } from "../..";
+import step1 from "../../images/step1.png";
+import step2 from "../../images/step2.png";
+import step3 from "../../images/step3.png";
+import step4 from "../../images/step4.png";
+import step5 from "../../images/step5.png";
 
 function HowToRegister(props) {
     const languageContext = useContext(LanguageContext);

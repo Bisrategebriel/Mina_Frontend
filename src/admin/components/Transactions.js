@@ -119,7 +119,7 @@ function Transactions(props) {
                     .then((res) => {
                         if (res.data.status === 200) {
                             // setAsc(!asc)
-                            console.log(res.data)
+                            // console.log(res.data)
                             // res.data.payments.paid_at = res.data.payments.paid_at.split("T")[0].split("T")[0]
                             setConfirmed({ ...confirmed, payments: res.data.transactions.data });
                             setTableData({
@@ -128,7 +128,7 @@ function Transactions(props) {
                                 currentPage: res.data.transactions.current_page,
                             })
                             setIsLoading(false)
-                            console.log(tableData)
+                            // console.log(tableData)
                         } else {
                             val = false;
                         }

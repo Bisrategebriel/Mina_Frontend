@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import phone from "../images/phone.png";
-import register from "../images/register.png";
-import watch from "../images/watch.png";
-import earn from "../images/earn.png";
-import { LanguageContext } from "..";
+import phone from "../../images/phone.png";
+import register from "../../images/register.png";
+import watch from "../../images/watch.png";
+import earn from "../../images/earn.png";
+import { LanguageContext } from "../..";
 
 function GetStarted(props) {
     const languageContext = useContext(LanguageContext);

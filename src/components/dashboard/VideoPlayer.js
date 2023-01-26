@@ -7,6 +7,8 @@ import YouTube from "react-youtube";
 import axios from "axios";
 import swal from "sweetalert2";
 import { LanguageContext } from "../..";
+import { useAds, useFetchThumbnail, useLogout, useVideos } from "../../utilities/utility";
+import LanguageSelector from "../LanguageSelector";
 
 function VideoPlayer(props) {
 	const playerRef = useRef(null);
@@ -32,90 +34,95 @@ function VideoPlayer(props) {
 	var video = id;
 
     var navigate = useNavigate();
-    var [videos, setVideos] = useState([
-        {
-            // title:''
-        }
-    ]);
+    var [videos, setVideos] = useState([]);
 
     //fetch Ad
-    useEffect(() => {
-        axios.get("/sanctum/csrf-cookie").then((response) => {
-            axios.get(`/api/settings`).then((res) => {
-                if (res.data.status === 200) {
-                    setAd3(res.data.settings.ad3)
-                    // setSettingsInput({
-                    //     ...settingsInput,
-                    //     is_signup_active: res.data.settings.is_signup_active,
-                    //     point_value: res.data.settings.point_value,
-                    //     bank1: res.data.settings.bank1,
-                    //     bank2: res.data.settings.bank2,
-                    //     bank3: res.data.settings.bank3,
-                    //     bank4: res.data.settings.bank4,
-                    //     registration_fee: res.data.settings.registration_fee,
-                    //     ad1: res.data.settings.ad1,
-                    //     ad2: res.data.settings.ad2,
-                    // })
-                    // setIsSignupActive(res.data.settings.is_signup_active)
-                } else {
+    const onAdSuccess = (data) => {
+        setAd3(data?.data.settings.ad3)
+    }
+    useAds(onAdSuccess);
 
-                }
-            });
-        });
-    }, [])
-    // Fetch available Videos
-    const [videoLinks, setVideoLinks] = useState([
-    ])
-    useEffect(()=>{
+    // // Fetch available Videos
+    // const [videoLinks, setVideoLinks] = useState([])
+    // useEffect(()=>{
 
-            var url;
-            const uninterceptedAxiosInstance = axios.create();
-            setVideos([])
-            // url = `https://www.googleapis.com/youtube/v3/videos?id=${videoLinks[0]}&key=${YOUTUBE_API_KEY}&part=snippet`
-            videoLinks.forEach((videoLink)=>{
-                url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoLink}`
-                uninterceptedAxiosInstance.get(url, {
-                    withCredentials: false
-                }).then(res =>{
-                    console.log(res.data)
-                    res.data["video_id"] = videoLink
-                    // setVideos(...videos,res.data)
-                    setVideos(videos => [
-                        ...videos,
-                        res.data
-                      ]);
-                })
+    //         var url;
+    //         const uninterceptedAxiosInstance = axios.create();
+    //         setVideos([])
+    //         // url = `https://www.googleapis.com/youtube/v3/videos?id=${videoLinks[0]}&key=${YOUTUBE_API_KEY}&part=snippet`
+    //         videoLinks.forEach((videoLink)=>{
+    //             url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoLink}`
+    //             uninterceptedAxiosInstance.get(url, {
+    //                 withCredentials: false
+    //             }).then(res =>{
+    //                 res.data["video_id"] = videoLink
+    //                 setVideos(videos => [
+    //                     ...videos,
+    //                     res.data
+    //                   ]);
+    //             })
                 
-            })
+    //         })
 
-    }, [videoLinks])
+    // }, [videoLinks])
 
-    useEffect(()=>{
-        // Fetch Video Links
-        axios.get("/sanctum/csrf-cookie").then((response) => {
-            // setIsLoading(true)
-            console.log(currentPoint)
-            axios.get( `api/video/user_index?page=${pages.currentPage}`, { 
-                params:{
-                    asc: asc ? "asc" : "desc",
-                    per_page: 20
-                }
-            }).then((res) => {
-                // setIsLoading(false)
-                if (res.data.status === 200) {
-                    setPages({
-                        currentPage: res.data.videos.current_page,
-                        totalCount: res.data.videos.last_page,
-                    })
-                    console.log(res.data.videos.data)
-                    setVideoLinks([...videoLinks, ...res.data.videos.data.map(video => video.video_id)])
-                } else {
+    // useEffect(()=>{
+    //     // Fetch Video Links
+    //     axios.get("/sanctum/csrf-cookie").then((response) => {
+    //         // setIsLoading(true)
+    //         // console.log(currentPoint)
+    //         axios.get( `api/video/user_index?page=${pages.currentPage}`, { 
+    //             params:{
+    //                 asc: asc ? "asc" : "desc",
+    //                 per_page: 20
+    //             }
+    //         }).then((res) => {
+    //             // setIsLoading(false)
+    //             if (res.data.status === 200) {
+    //                 setPages({
+    //                     currentPage: res.data.videos.current_page,
+    //                     totalCount: res.data.videos.last_page,
+    //                 })
+    //                 // console.log(res.data.videos.data)
+    //                 setVideoLinks([...videoLinks, ...res.data.videos.data.map(video => video.video_id)])
+    //             } else {
 
-                }
-            });
-        });
-    },[pages.currentPage])
+    //             }
+    //         });
+    //     });
+    // },[pages.currentPage])
 
+    // Fetch available Videos
+    const [videoLinks, setVideoLinks] = useState([])
+    const onSuccess = (data) => {
+        setVideoLinks([...videoLinks, ...data?.data.videos.data.map(video => video.video_id)])
+        setPages({
+            currentPage: data?.data.videos.current_page,
+            totalCount: data?.data.videos.last_page,
+        })
+    }
+    const onError = (data) => {
+    }
+    const { data, isLoading } = useVideos(onSuccess, onError, {
+        pages,
+        axiosParams: {
+            per_page: 20,
+            asc: asc ? "asc" : "desc",
+            search_query: '',
+        }
+    });
+
+    const onThumbnailSuccess = (data) => {
+        setVideos(videos => [
+            ...videos,
+            data.data
+        ]) 
+    }
+    const onThumbnailError = (data) => {
+    }
+    const { data: thumbnail_data } = useFetchThumbnail(onThumbnailSuccess, onThumbnailError, {
+        videoLinks
+    });
     // Get more videos
     // useEffect(()=>{
     //     let url;
@@ -148,7 +155,7 @@ function VideoPlayer(props) {
     // },[pages.currentPage])
 
     function watch(video_id){
-        console.log(video_id);
+        // console.log(video_id);
         navigate(`/watch/${video_id}`)
         window.location.reload();
     }
@@ -166,7 +173,7 @@ function VideoPlayer(props) {
 
     function onYouTubeIframeAPIReady() {
         YT = window["YT"];
-        console.log("youtube ready");
+        // console.log("youtube ready");
         playerRef.current = new window["YT"].Player("player", {
             videoId: id,
             events: {
@@ -236,7 +243,7 @@ function VideoPlayer(props) {
 	}
 
 	function onReady(event) {
-		console.log(event);
+		// console.log(event);
 		// window.onYouTubeIframeAPIReady();
 		// playerRef.current.playVideo();
         // const interval = setInterval(() => {
@@ -277,7 +284,7 @@ function VideoPlayer(props) {
 	}
 
 	function init() {
-		console.log("initing");
+		// console.log("initing");
 		var tag = document.createElement("script");
 		tag.src = "https://www.youtube.com/iframe_api";
 
@@ -299,7 +306,7 @@ function VideoPlayer(props) {
         // Fetch Video Links
         axios.get("/sanctum/csrf-cookie").then((response) => {
             // setIsLoading(true)
-            console.log(currentPoint)
+            // console.log(currentPoint)
             axios.get(`/api/view/isViewed`, { 
                 params:{
                     video_id: id
@@ -307,7 +314,7 @@ function VideoPlayer(props) {
             }).then((res) => {
                 // setIsLoading(false)
                 if (res.data.status === 200) {
-                    console.log(res.data.view_exists)
+                    // console.log(res.data.view_exists)
                     // res.data.view_exists.length == 0 ? setIsWatched(false) : setIsWatched(true)
                     if(res.data.view_exists){
                         setIsWatched(true)
@@ -324,23 +331,41 @@ function VideoPlayer(props) {
         });
     }
     
+    // const logout = (e) => {
+    //     e.preventDefault();
+
+    //     axios.post(`api/auth/logout`).then(res=>{
+    //         if(res.data.status === 200){
+    //             // console.log(res.data);
+    //             localStorage.removeItem("auth_token");
+    //             localStorage.removeItem("auth_name");
+
+    //             // swal("Success", res.data.message, "success");
+    //             navigate("/signin");
+    //         }
+    //         else {
+    //             // console.log(res.data)
+    //         }
+    //     });
+    // }
+
+    const onLogoutSuccess = (data) => {
+        if (data?.data.status === 200) {
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("auth_name");
+            // useInvalidateQuery('currentUser')
+    
+            // navigate("/signin");
+        } else {
+            console.log(data?.data);
+        }
+    };
+    const { refetch } = useLogout(onLogoutSuccess); 
     const logout = (e) => {
         e.preventDefault();
-
-        axios.post(`api/auth/logout`).then(res=>{
-            if(res.data.status === 200){
-                console.log(res.data);
-                localStorage.removeItem("auth_token");
-                localStorage.removeItem("auth_name");
-
-                // swal("Success", res.data.message, "success");
-                navigate("/signin");
-            }
-            else {
-                console.log(res.data)
-            }
-        });
-    }
+        refetch()	
+        navigate("/signin");
+	};
 
     const submitPoint = (e) => {
         swal.fire({
@@ -354,14 +379,14 @@ function VideoPlayer(props) {
                 // Submit point 
                 axios.get("/sanctum/csrf-cookie").then((response) => {
                     // setIsLoading(true)
-                    console.log(currentPoint)
+                    // console.log(currentPoint)
                     axios.post(`/api/view/create`, { 
                         points: currentPoint,
                         video_id: id
                     }).then((res) => {
                         // setIsLoading(false)
                         if (res.data.status === 200) {
-                            console.log(res.data.user)
+                            // console.log(res.data.user)
                             swal.fire({
                                 title: "success",
                                 icon: "success",
@@ -407,13 +432,14 @@ function VideoPlayer(props) {
                         <FontAwesomeIcon icon={faSignOut}/>
                         <p className="md:inline-block hidden">&nbsp;{ln.logout}</p>
                     </button>
-                    <select className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light" value={localStorage.getItem("lang")} onChange={(val)=>{
+                    {/* <select className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light" value={localStorage.getItem("lang")} onChange={(val)=>{
                         languageContext[1](val.target.value)
                         localStorage.setItem("lang", val.target.value)
                     }}>
                         <option value="en">En</option>
                         <option value="am">Am</option>
-                    </select>
+                    </select> */}
+                    <LanguageSelector/>
                 </div>
             </div>
             <div className="md:col-span-8 bg-white col-span-12 p-1 md:p-4 rounded-2xl relative aspect-video flex flex-col space-y-2 mx-2 md:mx-3 max-w-[1280px]">

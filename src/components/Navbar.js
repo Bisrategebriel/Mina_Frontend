@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "../images/logo.png";
 import useScrollPosition from "../hooks/useScrollPosition";
 import "../App.css";
@@ -8,6 +8,10 @@ import swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDashboard, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { LanguageContext } from "..";
+import LanguageSelector from "./LanguageSelector";
+import { useInvalidateQuery, useLogout,  } from "../utilities/utility";
+import { useQueryClient } from "react-query";
+import { UserContext } from "../";
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
@@ -18,21 +22,73 @@ function Navbar(props) {
 	const ln = languageContext[0];
 	const scrollPosition = useScrollPosition();
 	const navigate = useNavigate();
-	const logout = (e) => {
-		e.preventDefault();
+	// const logout = (e) => {
+        // 	e.preventDefault();
+        // 	axios.post(`api/auth/logout`).then((res) => {
+	// 		if (res.data.status === 200) {
+	// 			localStorage.removeItem("auth_token");
+	// 			localStorage.removeItem("auth_name");
+    //             // useInvalidateQuery('currentUser')
+	// 			navigate("/signin");
+	// 		} else {
+        // 			console.log(res.data);
+        // 		}
+        // 	});
+        // };
+        // const [currentUser, setCurrentUser] = useState();
+        // let userContext = useContext(UserContext)
+        let currentUser = useContext(UserContext)
+        // useEffect(()=>{
+        //     setCurrentUser(userContext)
+            // console.log(currentUser)
+        // })
+        // console.log(useContext(UserContext))
 
-		axios.post(`api/auth/logout`).then((res) => {
-			if (res.data.status === 200) {
-				console.log(res.data);
-				localStorage.removeItem("auth_token");
-				localStorage.removeItem("auth_name");
+    // const onSuccess = (data) => {
+    //     console.log(`jji`)
+    //     // console
+    //     if (data?.data.status === 500) {
+    //         localStorage.removeItem("auth_token");
+    //         setCurrentUser(null) 
+    //     } else if (data?.data.status === 200) {
+    //         // setIsVerified(data?.data.user.email_verified_at ? true : false);
+    //         setCurrentUser(data?.data)
+    //     }
+    // }
+    // const onError = (error) => {
+    //     // console.log(error.message)
+    //     setCurrentUser(null)
+    // }
+    // const { isFetching, isLoading, isFetched, data, isError, error  } = useUsers(onSuccess, onError);
 
-				// swal("Success", res.data.message, "success");
-				navigate("/signin");
-			} else {
-				console.log(res.data);
-			}
-		});
+    // const queryClient = useQueryClient();
+    // const onSuccess = (data) => {
+    //     if (data?.data.status === 200) {
+    //         localStorage.removeItem("auth_token");
+    //         localStorage.removeItem("auth_name");
+    //         // useInvalidateQuery('currentUser')
+
+    //         queryClient.removeQueries('currentUser')
+    //     } else {
+    //         console.log(data?.data);
+    //     }
+    // }
+    const onLogoutSuccess = (data) => {
+        if (data?.data.status === 200) {
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("auth_name");
+            // useInvalidateQuery('currentUser')
+    
+            // navigate("/signin");
+        } else {
+            console.log(data?.data);
+        }
+    };
+    const { refetch } = useLogout(onLogoutSuccess); 
+    const logout = (e) => {
+        e.preventDefault();
+        refetch()	
+        navigate("/signin");
 	};
 
 	return (
@@ -47,7 +103,7 @@ function Navbar(props) {
 			</Link>
 
 			<div className=" font-comfortaa space-x-3">
-				{localStorage.getItem("auth_token") ? (
+				{currentUser ? (
 					<>
 						<Link to="/dashboard" replace>
 							<button className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
@@ -62,18 +118,7 @@ function Navbar(props) {
 							<FontAwesomeIcon icon={faSignOut} />
 							<p className="md:inline-block hidden">&nbsp; {ln.logout} </p>
 						</button>
-						<select
-							className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light"
-							value={localStorage.getItem("lang")}
-							onChange={(val) => {
-								languageContext[1](val.target.value);
-								localStorage.setItem("lang", val.target.value);
-							}}
-						>
-							<option value="en">En</option>
-							<option value="am">አማ</option>
-						</select>
-						{/* {localStorage.getItem("auth_name")} */}
+                        <LanguageSelector/>
 					</>
 				) : (
 					<>
@@ -87,17 +132,7 @@ function Navbar(props) {
 								{ln.register}
 							</button>
 						</Link>
-						{/* <button onClick={languageContext[1]("am")}> lang </button> */}
-						<select
-							className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light"
-							onChange={(val) => {
-								languageContext[1](val.target.value);
-								localStorage.setItem("lang", val.target.value);
-							}}
-						>
-							<option value="en">En</option>
-							<option value="am">አማ</option>
-						</select>
+						<LanguageSelector/>
 					</>
 				)}
 			</div>

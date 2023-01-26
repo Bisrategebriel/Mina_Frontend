@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import playstore from "../images/playstore.png";
-import appstore from "../images/appstore.png";
-import "../App.css";
-import { LanguageContext } from "..";
+import playstore from "../../images/playstore.png";
+import appstore from "../../images/appstore.png";
+import "../../App.css";
+import { LanguageContext } from "../..";
 
 function Footer(props) {
     const languageContext = useContext(LanguageContext);

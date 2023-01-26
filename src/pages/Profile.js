@@ -16,6 +16,7 @@ import swal from "sweetalert2";
 import TransactionCard from "../components/dashboard/TransactionCard";
 import { useEffect } from "react";
 import { LanguageContext } from "..";
+import LanguageSelector from "../components/LanguageSelector";
 
 function Profile(props) {
 	const navigate = useNavigate();
@@ -229,9 +230,6 @@ function Profile(props) {
 	return (
 		<div className="w-screen h-screen bg-slate-200 grid grid-cols-12 overflow-y-auto gap-2 justify-start content-start ">
 			<div className="col-span-12 h-24 p-3 lg:px-24 px-6 flex justify-between items-center  z-50 bg-mina-blue-dark">
-				{/* <Link to="/">
-                    <img src={logo} alt="mina logo" className="h-16 object-cover" />
-                </Link> */}
 				<Link to="/">
 					<img src={logo} alt="mina logo" className="h-16 object-cover" />
 				</Link>
@@ -250,17 +248,7 @@ function Profile(props) {
 						<FontAwesomeIcon icon={faSignOut} />
 						<p className="md:inline-block hidden">&nbsp; {ln.logout}</p>
 					</button>
-					<select
-						className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light"
-						value={localStorage.getItem("lang")}
-						onChange={(val) => {
-							localStorage.setItem("lang", val.target.value);
-							languageContext[1](val.target.value);
-						}}
-					>
-						<option value="en">En</option>
-						<option value="am">አማ</option>
-					</select>
+					<LanguageSelector/>
 				</div>
 			</div>
 

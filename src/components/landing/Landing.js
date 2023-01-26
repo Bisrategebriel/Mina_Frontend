@@ -1,12 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LanguageContext } from '..';
-import moviePoster from '../images/movie_poster.png';
-import phones from '../images/phones.png';
+import { LanguageContext, UserContext } from '../..';
+import moviePoster from '../../images/movie_poster.png';
+import phones from '../../images/phones.png';
+// import { useUsers } from '../utilities/utility';
 
 function Landing(props) {
     const languageContext = useContext(LanguageContext);
     const ln = languageContext[0]
+    // const [currentUser, setCurrentUser] = useState();
+    // setCurrentUser(useContext(UserContext))
+
+    let currentUser = useContext(UserContext)
+
+    // const onSuccess = (data) => {
+    //     if (data?.data.status === 500) {
+    //         setCurrentUser(null) 
+    //     } else if (data?.data.status === 200) {
+    //         setCurrentUser(data?.data)
+    //     }
+    // }
+
+    // const onError = () => {
+    //     setCurrentUser(null)
+    // }
+    // const { isFetching, isLoading, isFetched, data, isError  } = useUsers(onSuccess,onError);
     return (
         <div>
             <div className="w-screen max-h-[880px] relative overflow-hidden z-0">
@@ -23,7 +41,7 @@ function Landing(props) {
                     <a href="#getStarted" className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-white  text-mina-orange-light font-bold rounded-lg ">{ln.getStarted}</a>
                     {
                     
-                        (localStorage.getItem("auth_token") !=null) && 
+                        (currentUser) && 
                         <Link to="/dashboard" >
                             <button className="p-2 px-4 hover:bg-white rounded-lg bg-mina-orange-light hover:text-orange-500 text-mina-blue-dark font-bold">{ln.dashboard}</button>
                         </Link> 
