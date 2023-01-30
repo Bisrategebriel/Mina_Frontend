@@ -21,15 +21,14 @@ export const useUsers = (onSuccess, onError) =>
 	useQuery("currentUser", fetchCurrentUser, {
 		onSuccess,
 		onError,
-		// refetchOnWindowFocus: false,
-        refetchOnMount: true,
-        // refetchInterval: 1000,
+		refetchOnWindowFocus: false,
+		refetchOnMount: true,
+		// refetchInterval: 1000,
 		retry: false,
-        // cacheTime: 1000,
-        // staleTime: 0,
-        fetchPolicy: "network-only"
+		// cacheTime: 1000,
+		// staleTime: 0,
+		fetchPolicy: "network-only",
 	});
-
 
 //Logout
 const logout = () => {
@@ -37,23 +36,26 @@ const logout = () => {
 };
 export const useLogout = (onSuccess, onError) => {
 	const queryClient = useQueryClient();
-	// queryClient.removeQueries("currentUser");
 
 	return useQuery("logout", logout, {
 		enabled: false,
 		onSuccess: () => {
 			onSuccess();
-			queryClient.removeQueries("currentUser");
-		},
+			queryClient.invalidateQueries("currentUser");
+		},  
 		onError,
 	});
 };
 
 // Fetch Advertisements
-const fetchAds = () => {
-    return axios.get(`/api/settings`);
-}
-export const useAds = (onSuccess) => useQuery('advertisements', fetchAds, { onSuccess, refetchOnWindowFocus:false });
+const fetchSettings = () => {
+	return axios.get(`/api/settings`);
+};
+export const useSettings = (onSuccess) =>
+	useQuery("settings", fetchSettings, {
+		onSuccess,
+		refetchOnWindowFocus: false,
+	});
 
 //Fetch Available Videos
 const fetchAvailableVideos = ({ queryKey }) => {
@@ -76,7 +78,6 @@ export const useVideos = (onSuccess, onError, { pages, axiosParams }) =>
 
 //Fetch Thumbnails
 const fetchThumbnail = ({ queryKey }) => {
-
 	const videoLink = queryKey[1];
 	const uninterceptedAxiosInstance = axios.create();
 	let url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoLink}`;
@@ -104,3 +105,34 @@ export const useFetchThumbnail = (
 			};
 		})
 	);
+
+export const useFetchSingleThumbnail = (
+	onThumbnailSuccess,
+	onThumbnailError,
+	{ videoLink }
+) =>
+	useQuery(["thumbnail", videoLink], fetchThumbnail, {
+		refetchOnWindowFocus: false,
+		onSuccess: onThumbnailSuccess,
+		onError: onThumbnailError,
+	});
+
+const fetchTransactionHistory = () => {
+	return axios.get(`/api/transaction/show`);
+};
+export const useTransactionHistory = (onSuccess, onError) =>
+	useQuery(["transactions"], fetchTransactionHistory, {
+		refetchOnWindowFocus: true,
+		onSuccess,
+		onError,
+	});
+
+const fetchWatchHistory = () => {
+	return axios.get(`/api/view/watchHistory`);
+};
+export const useWatchHistory = (onSuccess, onError) =>
+	useQuery(["watchHistory"], fetchWatchHistory, {
+		refetchOnWindowFocus: true,
+		onSuccess,
+		onError,
+	});

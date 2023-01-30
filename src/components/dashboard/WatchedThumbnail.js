@@ -1,28 +1,28 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-function WatchedThumbnail({video_id}) {
+import { useFetchSingleThumbnail, useFetchThumbnail } from "../../hooks/utilityHooks";
+function    WatchedThumbnail({video_id}) {
     const [video, setVideo] = useState({
         src: "",
         title: ""
     });
 
-    useEffect(()=>{
-        console.log(video_id)
-        var url;
-            const uninterceptedAxiosInstance = axios.create();
-            setVideo([])   
-            url = `https://noembed.com/embed?url=https://www.youtube.com/watch?v=${video_id}`
-            uninterceptedAxiosInstance.get(url, {
-                withCredentials: false
-            }).then(res =>{
-                console.log(res.data)
-                setVideo({
-                    src: res.data.thumbnail_url,
-                    title: res.data.title
-                })
-            })
-        
-    },[])
+    const onThumbnailSuccess = (data) => {
+		setVideo(
+            {
+                src: data.data.thumbnail_url,
+                title: data.data.title
+            }
+        );
+	};
+	const onThumbnailError = (data) => {};
+	const { data: thumbnail_data } = useFetchSingleThumbnail(
+		onThumbnailSuccess,
+		onThumbnailError,
+		{
+			videoLink: video_id,
+		}
+	);
 	return (
 		<div
 			// onClick={() => {

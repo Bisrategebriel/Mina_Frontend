@@ -37,12 +37,12 @@ function Table(props) {
                             style: "single",
                         },
                         "columns": [
-                                        { "data": "postId" },
-                                        { "data": "id" },
-                                        { "data": "name" },
-                                        { "data": "email" },
-                                        { "data": "body" }
-                                    ],
+                            { "data": "postId" },
+                            { "data": "id" },
+                            { "data": "name" },
+                            { "data": "email" },
+                            { "data": "body" }
+                            ],
                         buttons: [
                             {
                                 extend: "pageLength",

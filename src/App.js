@@ -14,7 +14,9 @@ import Profile from "./pages/Profile";
 import { LanguageContext, UserContext } from ".";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Spinner from "./components/Spinner";
-import { useUsers } from "./utilities/utility";
+import { useUsers } from "./hooks/utilityHooks";
+import ResetPassword from "./pages/ResetPassword";
+import ResetSuccessfull from "./pages/ResetSuccessfull";
 
 // axios.defaults.baseURL = "https://api.minaplay.com";
 axios.defaults.baseURL = "http://localhost:8000";
@@ -38,61 +40,38 @@ axios.interceptors.request.use(function (config) {
 function App() {
     const location = useLocation();
     const [currentUser, setCurrentUser] = useState();
-    // useEffect(()=>{
 
-    // }, [currentUser])
     const onSuccess = (data) => {
-        // console
-        // console.log('object');
 
         if (data?.data.status === 500) {
             localStorage.removeItem("auth_token");
-            setCurrentUser(null) 
+            setCurrentUser(null)
         } else if (data?.data.status === 200) {
             // setIsVerified(data?.data.user.email_verified_at ? true : false);
             setCurrentUser(data?.data)
         }
     }
     const onError = (error) => {
-        // console.log(error.message)
         setCurrentUser(null)
-    } 
+    }
 
 
-    const { isFetching, isLoading, isFetched, data, isError, error  } = useUsers(onSuccess, onError);
-    // useUsers()
-    // console.log(data?.data)
+    const { isFetching, isLoading, isFetched, data, isError, error } = useUsers(onSuccess, onError);
 
-    // Set User context
+    if(isLoading){
+        return <Spinner />
+    }
 
     return (
         <div className="App relative font-comfortaa ">
-            <UserContext.Provider value={
-                currentUser
-                // userCont
-                // {
-                //     user: {created_at: "2022-12-22T13:26:28.000000Z",
-                //             deleted: 0,
-                //             email: "yeabsiragetahungy@gmail.com",
-                //             email_verified_at: "2023-01-19T17:11:12.000000Z",
-                //             first_name: "Yeabsiraaa",
-                //             id: 2,
-                //             last_name: "Getahun",
-                //             phone_number: "0946723520",
-                //             points: 27.28,
-                //             status: 1,
-                //             updated_at: "2023-01-19T17:11:12.000000Z"
-                //         }
-                // }
-                }
-                >
+            <UserContext.Provider value={currentUser}>
                 <Routes>
                     <Route path="/" element={<Home />}></Route>
                     <Route path="/dashboard" element={<ProtectedWrapper />}></Route>
                     <Route path="/profile" element={<Profile />}></Route>
                     <Route
                         path="/watch/:id"
-                        element={<VideoPlayer />}
+                        element={currentUser?.user.status ? <VideoPlayer /> : <Signin />}
                         replace
                         key="1"
                         state={{ location }}
@@ -121,9 +100,20 @@ function App() {
                         }
                     ></Route>
 
-                    <Route path="/admin" element={<AdminHome />}>
+                    <Route 
+                        path="/admin"
+                        element={
+                            // isLoading ? <Spinner /> :
+                                currentUser?.user.role === "admin" ? (<AdminHome/>) : 
+                                (<Navigate to="/" replace state={{ location }} />)
+                                // <>{currentUser?.user.role}</>
+                        }
+                        >
                         {/* <Route path="/*" element={<Home/>}></Route>   */}
                     </Route>
+
+                    <Route path="/forgotPassword" element={<ResetPassword />} />
+                    <Route path="/resetPassword/:token" element={<ResetSuccessfull />} />
                 </Routes>
             </UserContext.Provider>
 

@@ -8,7 +8,7 @@ import "../App.css";
 import UserDashboard from '../pages/UserDashboard';
 import { Navigate, useLocation } from 'react-router-dom';
 import { UserContext } from '..';
-import { useUsers } from '../utilities/utility';
+import { useUsers } from '../hooks/utilityHooks';
 
 function ProtectedWrapper(props) {
     // const [confirmed, setConfirmed] = useState();

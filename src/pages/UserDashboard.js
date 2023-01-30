@@ -9,7 +9,7 @@ import { LanguageContext } from '..';
 import swal from 'sweetalert2';
 import VerifyCard from '../components/VerifyCard';
 import LanguageSelector from '../components/LanguageSelector';
-import { useDashboardVideos, useFetchThumbnail, useLogout, useVideos } from '../utilities/utility';
+import { useDashboardVideos, useFetchThumbnail, useLogout, useVideos } from '../hooks/utilityHooks';
 import Spinner from '../components/Spinner';
 
 function UserDashboard({ isVerified }) {

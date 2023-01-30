@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDashboard, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { LanguageContext } from "..";
 import LanguageSelector from "./LanguageSelector";
-import { useInvalidateQuery, useLogout,  } from "../utilities/utility";
+import { useInvalidateQuery, useLogout,  } from "../hooks/utilityHooks";
 import { useQueryClient } from "react-query";
 import { UserContext } from "../";
 

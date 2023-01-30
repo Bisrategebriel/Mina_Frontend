@@ -17,6 +17,13 @@ import TransactionCard from "../components/dashboard/TransactionCard";
 import { useEffect } from "react";
 import { LanguageContext } from "..";
 import LanguageSelector from "../components/LanguageSelector";
+import {
+	useLogout,
+	useSettings,
+	useTransactionHistory,
+	useUsers,
+	useWatchHistory,
+} from "../hooks/utilityHooks";
 
 function Profile(props) {
 	const navigate = useNavigate();
@@ -24,37 +31,39 @@ function Profile(props) {
 	const [withdrawAmount, setWithdrawAmount] = useState(100);
 	const [transactions, setTransactions] = useState([]);
 	const [watchHistory, setWatchHistory] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-    const [pointMultiplier, setPointMultiplier] = useState(0);
-    const [settingsInput, setSettingsInput] = useState({
-        is_signup_active: "",
-        point_value: "",
-        bank1: "",
-        bank2: "",
-        bank3: "",
-        bank4: "",
-        registration_fee: "",
-        ad1: "",
-        ad2: "",
-        error_list: [{ confirm_password: "Passwords do not match" }],
-    });
+	// const [isLoading, setIsLoading] = useState(true);
+	const [pointMultiplier, setPointMultiplier] = useState(0);
+	const [settingsInput, setSettingsInput] = useState({
+		is_signup_active: "",
+		point_value: "",
+		bank1: "",
+		bank2: "",
+		bank3: "",
+		bank4: "",
+		registration_fee: "",
+		ad1: "",
+		ad2: "",
+		error_list: [{ confirm_password: "Passwords do not match" }],
+	});
 	// const pointMultiplier = 15;
 
+	// Logout
+	const onLogoutSuccess = (data) => {
+		if (data?.data.status === 200) {
+			localStorage.removeItem("auth_token");
+			localStorage.removeItem("auth_name");
+			// useInvalidateQuery('currentUser')
+
+			// navigate("/signin");
+		} else {
+			// console.log(data?.data);
+		}
+	};
+	const { refetch } = useLogout(onLogoutSuccess);
 	const logout = (e) => {
 		e.preventDefault();
-
-		axios.post(`api/auth/logout`).then((res) => {
-			if (res.data.status === 200) {
-				console.log(res.data);
-				localStorage.removeItem("auth_token");
-				localStorage.removeItem("auth_name");
-
-				// swal("Success", res.data.message, "success");
-				navigate("/signin");
-			} else {
-				console.log(res.data);
-			}
-		});
+		refetch();
+		navigate("/signin");
 	};
 	const [registerInputs, setRegInputs] = useState({
 		first_name: "",
@@ -99,7 +108,7 @@ function Profile(props) {
 
 		axios.get("/sanctum/csrf-cookie").then((response) => {
 			axios.post(`/api/user/update`, data).then((res) => {
-				console.log(res.data.message);
+				// console.log(res.data.message);
 				if (res.data.status === 200) {
 					swal("Success", res.data.message, "success");
 					// navigate("/signin");
@@ -109,84 +118,6 @@ function Profile(props) {
 			});
 		});
 	};
-
-	useEffect(() => {
-		setIsLoading(true);
-		// Fetch Current User Information
-		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios.get(`/api/auth/currentUser`).then((res) => {
-				// console.log(res.data.user);
-				if (res.data.status === 200) {
-					// swal("Success", res.data.message, "success");
-					setRegInputs({
-						...registerInputs,
-						first_name: res.data.user.first_name,
-						last_name: res.data.user.last_name,
-						email: res.data.user.email,
-						phone_number: res.data.user.phone_number,
-						points: res.data.user.points,
-						password: "",
-						new_password: "",
-						confirm_password: "",
-					});
-					// navigate("/signin");
-				} else {
-					setRegInputs({ ...registerInputs, error_list: res.data.errors });
-				}
-			});
-		});
-
-		// Fetch Current User's Transaction History
-		axios.get("/sanctum/csrf-cookie").then((response) => {
-			// setIsLoading(true)
-			axios.get(`/api/transaction/show`).then((res) => {
-				// setIsLoading(false)
-				if (res.data.status === 200) {
-					setTransactions(res.data.transactions);
-				} else {
-				}
-			});
-		});
-
-		// Fetch Current User's Watch History
-		axios.get("/sanctum/csrf-cookie").then((response) => {
-			// setIsLoading(true)
-			axios.get(`/api/view/watchHistory`).then((res) => {
-				setIsLoading(false);
-				if (res.data.status === 200) {
-					setWatchHistory(res.data.watch_history);
-					console.log(res.data);
-				} else {
-				}
-			});
-		});
-	}, []);
-
-    useEffect(() => {
-        axios.get("/sanctum/csrf-cookie").then((response) => {
-            axios.get(`/api/settings`).then((res) => {
-                console.log(res.data.settings.registration_fee);
-                if (res.data.status === 200) {
-                    setPointMultiplier(res.data.settings.point_value)
-                    setSettingsInput({
-                        ...settingsInput,
-                        is_signup_active: res.data.settings.is_signup_active,
-                        point_value: res.data.settings.point_value,
-                        bank1: res.data.settings.bank1,
-                        bank2: res.data.settings.bank2,
-                        bank3: res.data.settings.bank3,
-                        bank4: res.data.settings.bank4,
-                        registration_fee: res.data.settings.registration_fee,
-                        ad1: res.data.settings.ad1,
-                        ad2: res.data.settings.ad2,
-                    })
-                    // setIsSignupActive(res.data.settings.is_signup_active)
-                } else {
-
-                }
-            });
-        });
-    }, [])
 
 	const handleWithdraw = () => {
 		if (
@@ -204,14 +135,12 @@ function Profile(props) {
 		}
 		// Submit withdrawal
 		axios.get("/sanctum/csrf-cookie").then((response) => {
-			// setIsLoading(true)
 			axios
 				.post(`/api/transaction/create`, {
 					amount: withdrawAmount,
 					points: (withdrawAmount / pointMultiplier).toFixed(2),
 				})
 				.then((res) => {
-					// setIsLoading(false)
 					if (res.data.status === 200) {
 						setTransactions([...transactions, res.data.transaction]);
 						console.log(res.data.transaction);
@@ -225,6 +154,54 @@ function Profile(props) {
 				});
 		});
 	};
+    // Fetch User Info
+	const onUserSuccess = (data) => {
+		if (data?.data.status === 200) {
+			setRegInputs({
+				...registerInputs,
+				first_name: data?.data.user.first_name,
+				last_name: data?.data.user.last_name,
+				email: data?.data.user.email,
+				phone_number: data?.data.user.phone_number,
+				points: data?.data.user.points,
+				password: "",
+				new_password: "",
+				confirm_password: "",
+			});
+		} else {
+			setRegInputs({ ...registerInputs, error_list: data?.data.errors });
+		}
+	};
+	const onUserError = (error) => {};
+	const { data: userData } = useUsers(onUserSuccess, onUserError);
+
+	//Fetch Transaction History
+	const onTransactionHistorySuccess = (data) => {
+		setTransactions(data?.data.transactions);
+	};
+	const onTransactionHistoryError = () => {};
+	const { data: transactionHistoryData, isLoading: isTransactionsLoading } =
+		useTransactionHistory(onTransactionHistorySuccess, onTransactionHistoryError);
+
+	//Fetch Watch History
+	const onWatchHistorySuccess = (data) => {
+		setWatchHistory(data?.data.watch_history);
+	};
+	const onWatchHistoryError = () => {};
+	const { data: watchHistoryData, isLoading: isWatchHistoryLoading } =
+		useWatchHistory(onWatchHistorySuccess, onWatchHistoryError);
+
+	//Fetch Settings
+	const onSettingsSuccess = (data) => {
+		setPointMultiplier(data?.data.settings.point_value);
+		
+	};
+	const onSettingsError = () => {};
+	const { data: settingsData, isLoading: isSettingsLoading } = useSettings(
+		onSettingsSuccess,
+		onSettingsError
+	);
+
 	const languageContext = useContext(LanguageContext);
 	const ln = languageContext[0];
 	return (
@@ -248,15 +225,10 @@ function Profile(props) {
 						<FontAwesomeIcon icon={faSignOut} />
 						<p className="md:inline-block hidden">&nbsp; {ln.logout}</p>
 					</button>
-					<LanguageSelector/>
+					<LanguageSelector />
 				</div>
 			</div>
 
-			{isLoading ? (
-				<div className="col-span-12 h-full flex justify-center items-center">
-					<div className="blob"></div>
-				</div>
-			) : (
 				<React.Fragment>
 					<div className="col-span-12 md:col-span-4 flex flex-col">
 						<div className="flex flex-col bg-white m-4 p-4 rounded-xl text-start ">
@@ -300,7 +272,12 @@ function Profile(props) {
 								{ln.transactionHistory}
 							</p>
 
-							{transactions.map((transaction, key) => (
+							{
+                            isTransactionsLoading ? (
+                                <div className="col-span-12 h-full flex justify-center items-center">
+                                    <div className="blob"></div>
+                                </div>
+                            ) : transactions?.map((transaction, key) => (
 								<TransactionCard
 									amount={transaction.amount}
 									paid_at={transaction.paid_at}
@@ -454,13 +431,18 @@ function Profile(props) {
 							{ln.watchHistory}
 						</div>
 						<div className="col-span-12 md:col-span-8 bg-white p-4 rounded-xl overflow-x-scroll flex space-x-4">
-							{watchHistory.map((video_id) => (
+							{
+                            isTransactionsLoading ? 
+                            <div className="col-span-12 h-full flex justify-center items-center">
+			                    <div className="blob"></div>
+				            </div> :
+                            watchHistory?.map((video_id) => (
 								<WatchedThumbnail video_id={video_id} />
 							))}
 						</div>
 					</div>
 				</React.Fragment>
-			)}
+			
 		</div>
 	);
 }

@@ -4,6 +4,7 @@ import awash from "../images/awash.png";
 import dashen from "../images/dashen.png";
 import abyssinia from "../images/abyssinia.png";
 import axios from "axios";
+import { useSettings } from "../hooks/utilityHooks";
 
 function PaymentInfo(props) {
     const handleConfirm = (e)=>{
@@ -21,26 +22,25 @@ function PaymentInfo(props) {
         registration_fee: "",
         error_list: [{ confirm_password: "Passwords do not match" }],
     });
-    useEffect(() => {
-        axios.get("/sanctum/csrf-cookie").then((response) => {
-            axios.get(`/api/settings`).then((res) => {
-                if (res.data.status === 200) {
-                    setSettingsInput({
-                        ...settingsInput,
-                        is_signup_active: res.data.settings.is_signup_active,
-                        point_value: res.data.settings.point_value,
-                        bank1: res.data.settings.bank1,
-                        bank2: res.data.settings.bank2,
-                        bank3: res.data.settings.bank3,
-                        bank4: res.data.settings.bank4,
-                        registration_fee: res.data.settings.registration_fee,
-                    })
-                } else {
 
-                }
-            });
-        });
-    }, [])
+    //Fetch Settings
+	const onSettingsSuccess = (data) => {
+		setSettingsInput({
+            ...settingsInput,
+            is_signup_active: data?.data.settings.is_signup_active,
+            point_value: data?.data.settings.point_value,
+            bank1: data?.data.settings.bank1,
+            bank2: data?.data.settings.bank2,
+            bank3: data?.data.settings.bank3,
+            bank4: data?.data.settings.bank4,
+            registration_fee: data?.data.settings.registration_fee,
+        })
+	};
+	const onSettingsError = () => {};
+	const { data: settingsData, isLoading: isSettingsLoading } = useSettings(
+		onSettingsSuccess,
+		onSettingsError
+	);
 	return (
 		<form className="col-span-12 grid-cols-12 grid gap-4">
 			{/* Payment Information */}

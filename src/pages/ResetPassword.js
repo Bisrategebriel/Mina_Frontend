@@ -2,19 +2,15 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png';
-import swal from 'sweetalert';
-import { useUsers } from '../hooks/utilityHooks';
-import { useQueryClient } from 'react-query';
+import swal from 'sweetalert2';
 
-function Signin() {
+function ResetPassword() {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [loginInputs, setLoginInputs] = useState({
         email : '',
-        password : '',
         error_list : [],
     });
-    const queryClient = useQueryClient();
 
     const handleLogininput = (e)=>{
         e.persist();
@@ -25,22 +21,19 @@ function Signin() {
         })
     }
 
-    const loginSubmit = (e)=>{
+    const resetSubmit = (e)=>{
         e.preventDefault();
         setErrorMessage("")
+        e.target.disabled = true;
         const data = {
             email : loginInputs.email,
-            password : loginInputs.password,
             _token : "{{ csrf_token() }}"
         }
         axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post(`api/auth/login`, data).then( res=>{
+            axios.post(`api/forgotPassword`, data).then( res=>{
                 if(res.data.status === 200){
-                    console.log(res.data);
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("confirmed", res.data.user.status);
-                    navigate("/dashboard");
-                    queryClient.invalidateQueries("currentUser"); // Retry current user
+                    // navigate("/");
+                    swal.fire("Success", res.data.message, "success");
                     // res.data.user.status ? navigate("/") : navigate("/confirmPayment")
                 } else if(res.data.status === 403){
                     setLoginInputs({ ...loginInputs, error_list: res.data.errors});
@@ -50,6 +43,7 @@ function Signin() {
             });
         });
     }
+
     return (
         <>
             <div className="w-screen h-24 p-3 md:px-24 px-6 flex justify-between items-center fixed z-50 bg-mina-blue-dark">
@@ -68,36 +62,29 @@ function Signin() {
                     
                         <div className="col-span-12 flex flex-col items-center space-y-4">
                             <img className="w-36" src={logo} alt="mina logo" srcSet="" />
-                            <p className="text-lg">Welcome Back!</p>
+                            <p className="text-lg">Reset Password!</p>
                         </div>
 
 
-                        <form className="col-span-12 grid-cols-12 grid gap-4" onSubmit={loginSubmit}>
+                        <form className="col-span-12 grid-cols-12 grid gap-4" onSubmit={resetSubmit}>
                             {/* signin form */}
                             <div  className="col-span-12 grid-cols-12 grid gap-4">
                                 <div className="col-span-12 flex flex-col space-y-2 justify-start">
                                     <label className="text-sm text-start" htmlFor="email">Email</label>
                                     <input type="email" name="email" id="email" placeholder="Email" className="p-3 bg-gray-200 rounded-lg" onChange={handleLogininput} value={loginInputs.email} required />
-                                    <span className="">{loginInputs.error_list.email}</span>
-                                </div>
-                                <div className="col-span-12 flex flex-col space-y-2 justify-start">
-                                    <label className="text-sm text-start" htmlFor="password">Password</label>
-                                    <input type="password" name="password" id="password" placeholder="Password" className="p-3 bg-gray-200 rounded-lg" onChange={handleLogininput} value={loginInputs.password} required />
-                                    <span className="text-sm text-red-500">{loginInputs.error_list.password}</span>
+                                    <span>{loginInputs.error_list.email}</span>
                                 </div>
                                 <div className="col-span-12 flex justify-end">
-                                    <input type="submit" value="Submit" className="cursor-pointer hover:bg-mina-blue-dark bg-mina-blue-light py-2 px-4 text-white rounded-lg"/>
+                                    <input type="submit" value="Reset Password" className="cursor-pointer hover:bg-mina-blue-dark bg-mina-blue-light py-2 px-4 text-white rounded-lg"/>
+                                    <span>{loginInputs.error_list.password}</span>
                                 </div>
-                                    <span className="col-span-12 text-sm text-red-500">{errorMessage}</span>
+                                <span className="col-span-12 text-sm text-red-500">{errorMessage}</span>
                             </div>
 
                         </form>
 
                         <div className="col-span-12 flex justify-center">
-                            Forgot Password? <Link className="text-mina-blue-dark font-bold" to="/forgotPassword" > Reset Password </Link>
-                        </div>
-                        <div className="col-span-12 flex justify-center">
-                            Don't have an account? <Link className="text-mina-blue-dark font-bold" to="/signup" > Register </Link>
+                            Go to &nbsp;<Link className="text-mina-blue-light italic font-bold" to="/signin" > Signin </Link>
                         </div>
                     </div>
 
@@ -107,4 +94,4 @@ function Signin() {
     );
 }
 
-export default Signin;
+export default ResetPassword;

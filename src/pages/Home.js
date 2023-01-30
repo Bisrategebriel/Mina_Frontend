@@ -8,10 +8,9 @@ import HowToRegister from "../components/landing/HowToRegister";
 import FAQs from "../components/landing/FAQs";
 import Contact from "../components/landing/Contact";
 import Footer from "../components/landing/Footer";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import { useQuery } from "react-query";
-import { useAds } from "../utilities/utility";
+import { useSettings } from "../hooks/utilityHooks";
+import { useState } from "react";
 
 function Home() {
     const [ad1, setAd1] = useState();
@@ -23,7 +22,7 @@ function Home() {
         setAd2(data?.data.settings.ad2)
     }
     
-    const { isFetched, data } = useAds(onSuccess);
+    const { isFetched, data } = useSettings(onSuccess);
 	
     return (
 		<div>
@@ -58,7 +57,7 @@ function Home() {
 			<FAQs></FAQs>
 
 			{/* Contact  */}
-			<Contact></Contact>
+			{/* <Contact></Contact> */}
 
 			{/* Footer */}
 			<Footer></Footer>
