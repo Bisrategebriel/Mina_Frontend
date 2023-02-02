@@ -50,13 +50,14 @@ function Profile(props) {
 	// Logout
 	const onLogoutSuccess = (data) => {
 		if (data?.data.status === 200) {
-			localStorage.removeItem("auth_token");
-			localStorage.removeItem("auth_name");
+			// localStorage.removeItem("auth_token");
+			sessionStorage.removeItem("auth_token");
+			// localStorage.removeItem("auth_name");
 			// useInvalidateQuery('currentUser')
 
 			// navigate("/signin");
 		} else {
-			// console.log(data?.data);
+			// console.log(data?.data); 
 		}
 	};
 	const { refetch } = useLogout(onLogoutSuccess);
@@ -89,7 +90,7 @@ function Profile(props) {
 			error_list: [{ confirm_password: "" }],
 		});
 		if (registerInputs.new_password !== registerInputs.confirm_password) {
-			console.log("password don't match");
+			// console.log("password don't match");
 			setRegInputs({
 				...registerInputs,
 				error_list: { confirm_password: "Passwords do not match" },
@@ -143,7 +144,7 @@ function Profile(props) {
 				.then((res) => {
 					if (res.data.status === 200) {
 						setTransactions([...transactions, res.data.transaction]);
-						console.log(res.data.transaction);
+						// console.log(res.data.transaction);
 					} else {
 						swal.fire({
 							title: "Error",
@@ -245,7 +246,7 @@ function Profile(props) {
 								</div>
 							</div>
 
-							<div className="grid grid-cols-12 my-3 gap-2 w-full">
+							{/* <div className="grid grid-cols-12 my-3 gap-2 w-full">
 								<input
 									className="col-span-12 lg:col-span-8 p-3 bg-slate-100"
 									type="number"
@@ -264,8 +265,58 @@ function Profile(props) {
 								>
 									{ln.withdraw}
 								</button>
-							</div>
+							</div> */}
 						</div>
+
+                        <div className="flex flex-col bg-white px-4 py-4 pb-4 m-4 rounded-xl relative items-stretch space-y-3 overflow-auto">
+                            <h5 className="font-bold text-lg">{ln.pointAllocation}</h5>
+                            <p className="text-start">
+                                {ln.pap1}
+                            </p>
+
+                            <table className="w-full text-start">
+                                <thead>
+                                    <tr>
+                                        <th className="text-start">{ln.duration}</th>
+                                        <th className="text-start">{ln.points}</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="">
+                                    <tr className="odd:bg-slate-200 even:bg-white">
+                                        <td className="p-2">30 {ln.minutes}</td>
+                                        <td className="p-2">20 {ln.birr}</td>
+                                    </tr>
+                                    <tr className="odd:bg-slate-200 even:bg-white">
+                                        <td className="p-2">30 {ln.minutes} - 1 {ln.hour}</td>
+                                        <td className="p-2">15 {ln.birr}</td>
+                                    </tr>
+                                    <tr className="odd:bg-slate-200 even:bg-white">
+                                        <td className="p-2">1 {ln.hour} - 1 {ln.day}</td>
+                                        <td className="p-2">10 {ln.birr}</td>
+                                    </tr>
+                                    <tr className="odd:bg-slate-200 even:bg-white">
+                                        <td className="p-2">1 {ln.day} - 1 {ln.week}</td>
+                                        <td className="p-2">5 {ln.birr}</td>
+                                    </tr>
+                                    <tr className="odd:bg-slate-200 even:bg-white">
+                                        <td className="p-2">1 {ln.week} - 1 {ln.month}</td>
+                                        <td className="p-2">1 {ln.birr}</td>
+                                    </tr>
+                                    <tr className="odd:bg-slate-200 even:bg-white">
+                                        <td className="p-2">&gt;1 {ln.month}</td>
+                                        <td className="p-2">0.5 {ln.birr}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p className="text-justify">
+                            {ln.pap2}
+                            <br />
+                            {ln.pap3}
+                            <br />
+                            {ln.pap4}
+                            </p>
+                        </div>
 
 						<div className="flex flex-col bg-white px-4 pb-4 m-4 rounded-xl relative items-stretch space-y-3 max-h-[600px] overflow-auto">
 							<p className="text-xl font-bold my-3 sticky top-0 p-2 bg-gradient-to-b from-white via-white to-white/10">
@@ -286,6 +337,7 @@ function Profile(props) {
 								/>
 							))}
 						</div>
+
 					</div>
 
 					<div className="col-span-12 md:col-span-8 m-4 grid-auto-rows auto-rows-max h-fit space-y-2">

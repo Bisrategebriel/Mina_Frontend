@@ -41,7 +41,7 @@ function Home() {
 			{/* Banner 1 */}
             {
                 isFetched &&
-                <AdBanner banner={axios.defaults.baseURL+"/uploads/ads/"+ad1}></AdBanner>
+                <AdBanner banner={axios.defaults.baseURL+"/public/uploads/ads/"+ad1}></AdBanner>
             }
 
 			{/* How to Register */}
@@ -50,7 +50,7 @@ function Home() {
 			{/* Banner 2 */}
             {
                 isFetched &&
-                <AdBanner banner={axios.defaults.baseURL+"/uploads/ads/"+ad2}></AdBanner>
+                <AdBanner banner={axios.defaults.baseURL+"/public/uploads/ads/"+ad2}></AdBanner>
             }
 
 			{/* FAQs */}

@@ -168,7 +168,8 @@ function Videos(props) {
     useEffect(() => {
         let val;
         let url;
-        if (localStorage.getItem("auth_token" == null)) {
+        // if (localStorage.getItem("auth_token" == null)) {
+        if (sessionStorage.getItem("auth_token" == null)) {
             setConfirmed(false);
             return false;
         }

@@ -16,8 +16,9 @@ function Confirm() {
         axios.post(`api/auth/logout`).then(res=>{
             if(res.data.status === 200){
                 console.log(res.data);
-                localStorage.removeItem("auth_token");
-                localStorage.removeItem("auth_name");
+                // localStorage.removeItem("auth_token");
+                sessionStorage.removeItem("auth_token");
+                // localStorage.removeItem("auth_name");
 
                 // swal("Success", res.data.message, "success");
                 navigate("/signin");
@@ -41,7 +42,8 @@ function Confirm() {
 
                 <div className=" font-comfortaa space-x-3">
                     {
-                        localStorage.getItem("auth_token") ? 
+                        // localStorage.getItem("auth_token") ? 
+                        sessionStorage.getItem("auth_token") ? 
                             <>
                                 <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                                     Logout

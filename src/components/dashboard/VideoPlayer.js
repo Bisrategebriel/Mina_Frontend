@@ -247,8 +247,9 @@ function VideoPlayer(props) {
 	// Logout
 	const onLogoutSuccess = (data) => {
 		if (data?.data.status === 200) {
-			localStorage.removeItem("auth_token");
-			localStorage.removeItem("auth_name");
+			// localStorage.removeItem("auth_token");
+			sessionStorage.removeItem("auth_token");
+			// localStorage.removeItem("auth_name");
 		} else {
 			// console.log(data?.data);
 		}
@@ -399,7 +400,7 @@ function VideoPlayer(props) {
 			<div className="md:col-span-4 col-span-12 grid grid-cols-12 gap-4 items-center p-3 grid-auto-rows auto-rows-max max-h-screen overflow-y-scroll">
 				<div className="h-64 col-span-12 bg-mina-orange-light rounded-xl items-center flex justify-center overflow-clip">
 					<img
-						src={axios.defaults.baseURL + "/uploads/ads/" + ad3}
+						src={axios.defaults.baseURL + "/public/uploads/ads/" + ad3}
 						alt="ad space"
 						className="min-h-full min-w-full object-cover object-left"
 					></img>

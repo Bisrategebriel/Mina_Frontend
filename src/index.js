@@ -39,11 +39,7 @@ root.render(
 		<QueryClientProvider client={queryClient}>
 			<LanguageContextProvider>
 				<Router>
-					{/* <Routes> */}
-					{/* <Route path="/" element={ <App />}></Route> */}
 					<App />
-
-					{/* </Routes> */}
 				</Router>
 			</LanguageContextProvider>
 			<ReactQueryDevtools />

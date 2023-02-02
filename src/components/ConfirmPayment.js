@@ -60,9 +60,10 @@ function ConfirmPayment(props) {
 		<form className="col-span-12 grid-cols-12 grid gap-4" onSubmit={handleSubmit}>
 			{/* Confirm Payment */}
 			<div className="col-span-12 grid gap-4 grid-cols-12">
-				<div className="col-span-12 md:col-span-4 flex flex-row md:flex-col items-center justify-around md:justify-center space-x-2 space-y-0 md:space-x-0 md:space-y-4">
-					<div className="">
-						<input onChange={handleConfirmInput}  type="radio" name="bank" id="cbe" value="cbe" className="hidden peer" />
+				<div className="col-span-12 md:col-span-4 flex flex-row overflow-x-auto justify-start md:flex-col items-center md:justify-center space-x-2 space-y-0 md:space-x-0 md:space-y-4">
+					<p> Select Bank:</p>
+                    <div className="">
+						<input onChange={handleConfirmInput}  type="radio" name="bank" id="cbe" value="cbe" className="hidden peer" checked />
 						<label
 							className="bg-white p-2 peer-checked:bg-mina-blue-light peer-checked:rounded-md w-12 md:w-20 h-12 md:h-20 flex"
 							htmlFor="cbe"
@@ -70,8 +71,8 @@ function ConfirmPayment(props) {
 							<img src={cbe} alt="" srcSet="" className="w-24 auto" />
 						</label>
 					</div>
-
-					<div>
+					
+                    <div>
 						<input onChange={handleConfirmInput}  type="radio" name="bank" id="abyssinia" value="abyssinia" className="hidden peer" />
 						<label
 							className="bg-white p-2 peer-checked:bg-mina-blue-light peer-checked:rounded-md w-12 md:w-20 h-12 md:h-20 flex"

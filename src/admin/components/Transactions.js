@@ -100,7 +100,8 @@ function Transactions(props) {
     let [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         let val;
-        if (localStorage.getItem("auth_token" == null)) {
+        // if (localStorage.getItem("auth_token" == null)) {
+        if (sessionStorage.getItem("auth_token" == null)) {
             setConfirmed(false);
             return false;
         }

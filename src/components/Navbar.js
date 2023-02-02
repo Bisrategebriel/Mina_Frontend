@@ -22,61 +22,12 @@ function Navbar(props) {
 	const ln = languageContext[0];
 	const scrollPosition = useScrollPosition();
 	const navigate = useNavigate();
-	// const logout = (e) => {
-        // 	e.preventDefault();
-        // 	axios.post(`api/auth/logout`).then((res) => {
-	// 		if (res.data.status === 200) {
-	// 			localStorage.removeItem("auth_token");
-	// 			localStorage.removeItem("auth_name");
-    //             // useInvalidateQuery('currentUser')
-	// 			navigate("/signin");
-	// 		} else {
-        // 			console.log(res.data);
-        // 		}
-        // 	});
-        // };
-        // const [currentUser, setCurrentUser] = useState();
-        // let userContext = useContext(UserContext)
-        let currentUser = useContext(UserContext)
-        // useEffect(()=>{
-        //     setCurrentUser(userContext)
-            // console.log(currentUser)
-        // })
-        // console.log(useContext(UserContext))
-
-    // const onSuccess = (data) => {
-    //     console.log(`jji`)
-    //     // console
-    //     if (data?.data.status === 500) {
-    //         localStorage.removeItem("auth_token");
-    //         setCurrentUser(null) 
-    //     } else if (data?.data.status === 200) {
-    //         // setIsVerified(data?.data.user.email_verified_at ? true : false);
-    //         setCurrentUser(data?.data)
-    //     }
-    // }
-    // const onError = (error) => {
-    //     // console.log(error.message)
-    //     setCurrentUser(null)
-    // }
-    // const { isFetching, isLoading, isFetched, data, isError, error  } = useUsers(onSuccess, onError);
-
-    // const queryClient = useQueryClient();
-    // const onSuccess = (data) => {
-    //     if (data?.data.status === 200) {
-    //         localStorage.removeItem("auth_token");
-    //         localStorage.removeItem("auth_name");
-    //         // useInvalidateQuery('currentUser')
-
-    //         queryClient.removeQueries('currentUser')
-    //     } else {
-    //         console.log(data?.data);
-    //     }
-    // }
+    let currentUser = useContext(UserContext)
     const onLogoutSuccess = (data) => {
         if (data?.data.status === 200) {
-            localStorage.removeItem("auth_token");
-            localStorage.removeItem("auth_name");
+            // localStorage.removeItem("auth_token");
+            sessionStorage.removeItem("auth_token");
+            // localStorage.removeItem("auth_name");
             // useInvalidateQuery('currentUser')
     
             // navigate("/signin");

@@ -23,7 +23,8 @@ function Table(props) {
                             url: 'https://api.minaplay.com/api/payment/get',
                             type: 'GET',
                             headers: {
-                                'Authorization' : 'Bearer '+localStorage.getItem("auth_token"),
+                                // 'Authorization' : 'Bearer '+localStorage.getItem("auth_token"),
+                                'Authorization' : 'Bearer '+sessionStorage.getItem("auth_token"),
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json'
                             }

@@ -36,9 +36,11 @@ function Signin() {
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post(`api/auth/login`, data).then( res=>{
                 if(res.data.status === 200){
-                    console.log(res.data);
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("confirmed", res.data.user.status);
+                    // console.log(res.data);
+                    // localStorage.setItem("auth_token", res.data.token);
+                    sessionStorage.setItem("auth_token", res.data.token);
+                    // localStorage.setItem("confirmed", res.data.user.status);
+                    sessionStorage.setItem("confirmed", res.data.user.status);
                     navigate("/dashboard");
                     queryClient.invalidateQueries("currentUser"); // Retry current user
                     // res.data.user.status ? navigate("/") : navigate("/confirmPayment")

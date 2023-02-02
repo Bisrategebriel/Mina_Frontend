@@ -25,10 +25,13 @@ function Signup() {
 	};
 
 	const registerSubmit = (e) => {
-		e.preventDefault();
-
+		e.preventDefault(e);
+        e.nativeEvent.submitter.disabled = true
+        console.log(e.nativeEvent.submitter.disabled)
 		if (registerInputs.password !== registerInputs.confirm_password) {
-			console.log("password don't match");
+            swal.fire("Error", "Password Doesn't match", "error");
+            e.nativeEvent.submitter.disabled = false
+            return;
 		}
 
 		const data = {
@@ -41,7 +44,6 @@ function Signup() {
 
 		axios.get("/sanctum/csrf-cookie").then((response) => {
 			axios.post(`/api/auth/register`, data).then((res) => {
-				console.log(res.data.status);
 				if (res.data.status === 200) {
 					swal.fire("Success", res.data.message, "success");
 					navigate("/signin");
@@ -50,12 +52,13 @@ function Signup() {
 				}
 			});
 		});
+
+        e.nativeEvent.submitter.disabled = false
 	};
 
     useEffect(()=>{
         axios.get("/sanctum/csrf-cookie").then((response) => {
 			axios.get(`/api/settings`).then((res) => {
-                console.log(res.data.settings.is_signup_active);
                 if (res.data.status === 200) {
                     setIsSignupActive(res.data.settings.is_signup_active)
 				} else {
