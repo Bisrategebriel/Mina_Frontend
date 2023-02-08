@@ -19,6 +19,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ResetSuccessfull from "./pages/ResetSuccessfull";
 import VerifyEmail from "./pages/VerifyEmail";
 import NoticePopup from "./components/NoticePopup";
+import Payment from "./pages/Payment";
 
 // axios.defaults.baseURL = "https://api.minaplay.com";
 axios.defaults.baseURL = "http://localhost:8000";
@@ -73,6 +74,7 @@ function App() {
                     <Route path="/" element={<Home />}></Route>
                     <Route path="/dashboard" element={<ProtectedWrapper />}></Route>
                     <Route path="/profile" element={ currentUser?.user.status ? <Profile /> : <Signin />}></Route>
+                    <Route path="/payment" element={ currentUser?.user.status ? <Payment /> : <Signin />}></Route>
                     <Route
                         path="/watch/:id"
                         element={currentUser?.user.status ? <VideoPlayer /> : <Signin />}
@@ -122,7 +124,7 @@ function App() {
                     } />
                 </Routes>
             </UserContext.Provider>
-            <NoticePopup/>
+            {/* <NoticePopup/> */}
         </div>
     );
 }

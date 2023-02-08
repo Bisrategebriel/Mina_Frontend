@@ -75,7 +75,7 @@ function VideoPlayer(props) {
 			search_query: "",
 		},
 	});
-
+	// Fetch thumbnails
 	const onThumbnailSuccess = (data) => {
 		setVideos((videos) => [...videos, data.data]);
 	};
@@ -87,6 +87,16 @@ function VideoPlayer(props) {
 			videoLinks,
 		}
 	);
+
+	useEffect(() => {
+		const handleContextmenu = (e) => {
+			e.preventDefault();
+		};
+		document.addEventListener("contextmenu", handleContextmenu);
+		return function cleanup() {
+			document.removeEventListener("contextmenu", handleContextmenu);
+		};
+	}, []);
 
 	function watch(video_id) {
 		// console.log(video_id);

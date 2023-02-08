@@ -11,50 +11,7 @@ import { UserContext } from '..';
 import { useUsers } from '../hooks/utilityHooks';
 
 function ProtectedWrapper(props) {
-    // const [confirmed, setConfirmed] = useState();
-    // const [isVerified, setIsVerified] = useState(false);
-    
-    // useUsers();//Update User
     let currentUser = useContext(UserContext)
-    // console.log((!! currentUser?.user.email_verified_at) & (!currentUser?.user.status))
-    // useEffect(()=>{
-    //     let val;
-    //     if(localStorage.getItem("auth_token" == null)){
-    //         setConfirmed(false);
-    //         return false;
-    //     }
-    //     const fetchData = async ()=>{
-    //         val = await 
-    //         axios.get('/sanctum/csrf-cookie').then(response => {
-    //             // console.log(response.config.headers.X-XSRF-TOKEN")
-    //             axios.get(`api/auth/currentUser`, {headers: {"X-XSRF-TOKEN": `${response.data}`}}).then( res=>{
-    //                 // console.log(res.data.user);
-    //                 // console.log(localStorage.getItem("auth_token"))
-    //                 if(res.data.user == null){
-    //                     setConfirmed(false);
-    //                     return
-    //                 }
-    //                 if(res.data.status === 200){
-    //                     val = res.data.user.status ? true : false;
-    //                     setIsVerified(res.data.user.email_verified_at ? true : false);
-    //                     // return res.data.user.status ? true : false;
-
-    //                 } else {
-    //                     val = false;
-    //                     // return false;
-    //                 }
-    //                 // console.log(val)
-    //                 setConfirmed(val);
-    //             }).catch(error => {
-    //                 // console.log(error.response.data.error)
-    //                 setConfirmed(false);
-    //              });
-    //         });
-    //     }
-    //     fetchData()
-
-    // },[])
-    // console.log(confirmed)
     const location = useLocation();
     return (
         <>
