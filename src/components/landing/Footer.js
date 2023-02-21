@@ -16,12 +16,16 @@ function Footer(props) {
               {ln.getStarted}
             </a>
             <a href="#howToRegister">{ln.howMinaWorks}</a>
-            <a href="#contact">{ln.contactUs}</a>
+            {/* <a href="#contact">{ln.contactUs}</a> */}
             <a href="#about">{ln.aboutUs}</a>
             {/* <a href="#">Privacy</a> */}
           </div>
 
-          <div className="col-span-12 md:col-span-12 flex flex-wrap flex-row justify-center gap-4 my-8">
+
+        <div className="col-span-12 md:col-span-12 flex my-2 justify-center text-mina-orange-light">
+            Contact us through our telegram channel: <a href="https://t.me/rakeb1234"> @rakeb1234</a>
+        </div>
+          {/* <div className="col-span-12 md:col-span-12 flex flex-wrap flex-row justify-center gap-4 my-8">
             <img
               src={playstore}
               alt="playstore icon"
@@ -34,7 +38,7 @@ function Footer(props) {
               srcSet=""
               className="h-[50px] object-contain"
             />
-          </div>
+          </div> */}
 
           <div className="col-span-12 flex flex-wrap justify-around text-white mt-12">
             <p>Mina Plays © 2022 All rights reserved</p>

@@ -6,6 +6,7 @@ import "../App.css";
 import PaymentInfo from "../components/PaymentInfo";
 import ConfirmPayment from "../components/ConfirmPayment";
 import axios from "axios";
+import { getCookie, unsetCookie } from "../utilities/cookies.util";
 
 function Confirm() {
     const navigate = useNavigate();
@@ -17,7 +18,8 @@ function Confirm() {
             if(res.data.status === 200){
                 console.log(res.data);
                 // localStorage.removeItem("auth_token");
-                sessionStorage.removeItem("auth_token");
+                //sessionStorage.removeItem("auth_token");
+            unsetCookie("auth_token");
                 // localStorage.removeItem("auth_name");
 
                 // swal("Success", res.data.message, "success");
@@ -43,7 +45,8 @@ function Confirm() {
                 <div className=" font-comfortaa space-x-3">
                     {
                         // localStorage.getItem("auth_token") ? 
-                        sessionStorage.getItem("auth_token") ? 
+                        // sessionStorage.getItem("auth_token") ? 
+                        getCookie("auth_token") ? 
                             <>
                                 <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                                     Logout

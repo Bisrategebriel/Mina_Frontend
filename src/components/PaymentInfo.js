@@ -4,9 +4,10 @@ import awash from "../images/awash.png";
 import dashen from "../images/dashen.png";
 import abyssinia from "../images/abyssinia.png";
 import axios from "axios";
-import { useSettings } from "../hooks/utilityHooks";
+import { useSettings, useUsers } from "../hooks/utilityHooks";
 import swal from "sweetalert2";
 import { LanguageContext } from "..";
+import { setCookie, unsetCookie, getCookie } from "../utilities/cookies.util";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,6 +27,25 @@ function PaymentInfo(props) {
 		registration_fee: "",
 		error_list: [{ confirm_password: "Passwords do not match" }],
 	});
+    const [currentUser, setCurrentUser] = useState(null);
+    // Fetch Current User
+    const onSuccess = (data) => {
+
+        if (data?.data.status === 500) {
+            // localStorage.removeItem("auth_token");
+            //sessionStorage.removeItem("auth_token");
+            unsetCookie("auth_token");
+            unsetCookie("auth_token");
+            setCurrentUser(null)
+        } else if (data?.data.status === 200) {
+            // setIsVerified(data?.data.user.email_verified_at ? true : false);
+            setCurrentUser(data?.data)
+        }
+    }
+    const onError = (error) => {
+        setCurrentUser(null)
+    }
+    const { isFetching, isLoading, isFetched, data, isError, error } = useUsers(onSuccess, onError);
 
 	//Fetch Settings
 	const onSettingsSuccess = (data) => {
@@ -38,6 +58,7 @@ function PaymentInfo(props) {
 			bank3: data?.data.settings.bank3,
 			bank4: data?.data.settings.bank4,
 			registration_fee: data?.data.settings.registration_fee,
+			registration_fee_usd: data?.data.settings.registration_fee_usd,
 		});
 	};
 	const onSettingsError = () => {};
@@ -71,8 +92,9 @@ function PaymentInfo(props) {
 			first_name: registerInputs.first_name,
 			last_name: registerInputs.last_name,
 			email: registerInputs.email,
-			phone_number: registerInputs.phone_number,
+			phone_number: registerInputs.phone_number.toString(),
 			currency: registerInputs.currency,
+            user_id: currentUser?.user.id,
 		};
 
 		axios.post(`/api/getChapaCheckout`, data).then((res) => {
@@ -89,13 +111,15 @@ function PaymentInfo(props) {
 					.then((res2) => {
 						if (res2.isConfirmed) {
 						// navigate("/signin");
-						onCloseModal();
+                        onCloseModal();
+
 						// console.log(res);
 						window.location.replace(res.data.res.data.checkout_url);
 						}
 					});
 				// navigate("/signin");
 			} else if (res.data.status === 200 && res.data.res.status === "failed") {
+                console.log(res.data)
 				swal.fire(
 					"Error",
 					"Make sure you filled the required fields correctly",
@@ -140,6 +164,9 @@ function PaymentInfo(props) {
 							<h1 className="text-xl">Registration Fee</h1>
 							<h1 className="text-3xl font-bold">
 								{settingsInput.registration_fee} ETB
+							</h1>
+							<h1 className="text-3xl font-bold">
+								${settingsInput.registration_fee_usd}
 							</h1>
 						</div>
 					</div>
@@ -249,7 +276,7 @@ function PaymentInfo(props) {
 					<div id="payerInfo" className="col-span-12 grid-cols-12 grid gap-4">
 						<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
 							<label className="text-sm text-start" htmlFor="first_name">
-								{ln.firstName}
+								{ln.firstName} *
 							</label>
 							<input
 								type="text"
@@ -265,7 +292,7 @@ function PaymentInfo(props) {
 						</div>
 						<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
 							<label className="text-sm text-start" htmlFor="first_name">
-								{ln.lastName}
+								{ln.lastName} *
 							</label>
 							<input
 								type="text"
@@ -281,7 +308,7 @@ function PaymentInfo(props) {
 						</div>
 						<div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
 							<label className="text-sm text-start" htmlFor="email">
-								{ln.email}
+								{ln.email} *
 							</label>
 							<input
 								type="email"
@@ -309,6 +336,16 @@ function PaymentInfo(props) {
 								value={registerInputs.phone_number}
 							/>
 							<span>{registerInputs.error_list?.phone_number}</span>
+						</div>
+                        <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+							<label className="text-sm text-start" htmlFor="currency">
+								{ln.currency}*
+							</label>
+                            <select id="currency" name="currency" value={registerInputs.currency} className="p-3 bg-gray-200 rounded-lg" onChange={handleRegInput}>
+                                <option value="ETB">ETB</option>
+                                <option value="USD">USD</option>
+                            </select>
+							<span>{registerInputs.error_list?.currency}</span>
 						</div>
 						<div className="col-span-12 flex justify-end space-y-4 space-x-0 md:space-y-0 md:space-x-4 flex-col md:flex-row md:items-center">
 							<div className="col-span-12 flex justify-end">

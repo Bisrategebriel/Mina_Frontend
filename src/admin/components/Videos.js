@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faClose, faMinusCircle, faTimesCircle, faUserPlus, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "../../utilities/cookies.util";
 
 function Videos(props) {
     // Table Column Headers
@@ -169,7 +170,8 @@ function Videos(props) {
         let val;
         let url;
         // if (localStorage.getItem("auth_token" == null)) {
-        if (sessionStorage.getItem("auth_token" == null)) {
+        // if (sessionStorage.getItem("auth_token" == null)) {
+            if (getCookie("auth_token") == null) {
             setConfirmed(false);
             return false;
         }

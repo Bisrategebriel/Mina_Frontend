@@ -19,7 +19,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ResetSuccessfull from "./pages/ResetSuccessfull";
 import VerifyEmail from "./pages/VerifyEmail";
 import NoticePopup from "./components/NoticePopup";
-import Payment from "./pages/Payment";
+import { getCookie, unsetCookie } from "./utilities/cookies.util";
 
 // axios.defaults.baseURL = "https://api.minaplay.com";
 axios.defaults.baseURL = "http://localhost:8000";
@@ -29,7 +29,8 @@ axios.defaults.headers.post["Accept"] = "application/json";
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(function (config) {  
     // const token = localStorage.getItem("auth_token");
-    const token = sessionStorage.getItem("auth_token");
+    // const token = sessionStorage.getItem("auth_token");
+    const token = getCookie("auth_token");
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
 });
@@ -49,7 +50,8 @@ function App() {
 
         if (data?.data.status === 500) {
             // localStorage.removeItem("auth_token");
-            sessionStorage.removeItem("auth_token");
+            //sessionStorage.removeItem("auth_token");
+            unsetCookie("auth_token");
             setCurrentUser(null)
         } else if (data?.data.status === 200) {
             // setIsVerified(data?.data.user.email_verified_at ? true : false);
@@ -59,7 +61,6 @@ function App() {
     const onError = (error) => {
         setCurrentUser(null)
     }
-
 
     const { isFetching, isLoading, isFetched, data, isError, error } = useUsers(onSuccess, onError);
 
@@ -72,12 +73,12 @@ function App() {
             <UserContext.Provider value={currentUser}>
                 <Routes>
                     <Route path="/" element={<Home />}></Route>
-                    <Route path="/dashboard" element={<ProtectedWrapper />}></Route>
-                    <Route path="/profile" element={ currentUser?.user.status ? <Profile /> : <Signin />}></Route>
-                    <Route path="/payment" element={ currentUser?.user.status ? <Payment /> : <Signin />}></Route>
+                    <Route path="/dashboard" element={currentUser ? (<ProtectedWrapper />) : (<Signin/>)}></Route>
+                    <Route path="/profile" element={ <Profile />}></Route>
+                    {/* <Route path="/payment" element={ currentUser?.user.status ? <Payment /> : <Signin />}></Route> */}
                     <Route
                         path="/watch/:id"
-                        element={currentUser?.user.status ? <VideoPlayer /> : <Signin />}
+                        element={currentUser?.user.status ? <VideoPlayer /> : (<Navigate to="/dashboard" replace state={{location}}/>)}
                         replace
                         key="1"
                         state={{ location }}
@@ -122,9 +123,11 @@ function App() {
                         :
                         (<Navigate to="/" replace state={{ location }}/>)
                     } />
+
+                    {/* <Route path="/verifyRf" element={<VerifyRf />} /> */}
                 </Routes>
             </UserContext.Provider>
-            {/* <NoticePopup/> */}
+            <NoticePopup/>
         </div>
     );
 }

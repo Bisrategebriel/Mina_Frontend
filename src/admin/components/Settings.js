@@ -21,6 +21,7 @@ function Settings(props) {
         bank3: "",
         bank4: "",
         registration_fee: "",
+        registration_fee_usd: "",
         ad1: "",
         ad2: "",
         error_list: [{ confirm_password: "Passwords do not match" }],
@@ -48,6 +49,7 @@ function Settings(props) {
             bank3: settingsInput.bank3,
             bank4: settingsInput.bank4,
             registration_fee: settingsInput.registration_fee,
+            registration_fee_usd: settingsInput.registration_fee_usd,
             // ad1: settingsInput.ad1,
             // ad2: settingsInput.ad2,
         };
@@ -93,6 +95,7 @@ function Settings(props) {
                         bank3: res.data.settings.bank3,
                         bank4: res.data.settings.bank4,
                         registration_fee: res.data.settings.registration_fee,
+                        registration_fee_usd: res.data.settings.registration_fee_usd,
                         ad1: res.data.settings.ad1,
                         ad2: res.data.settings.ad2,
                         ad3: res.data.settings.ad3,
@@ -244,8 +247,24 @@ function Settings(props) {
                             <span className="text-red-500 text-sm">{settingsInput.error_list.registration_fee}</span>
                         </div>
                         <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
+                            <label className="text-sm text-start" htmlFor="registration_fee">
+                                Registration Fee in USD
+                            </label>
+                            <input
+                                type="text"
+                                name="registration_fee_usd"
+                                id="registration_fee_usd"
+                                placeholder="Registration Fee USD"
+                                className="p-3 bg-gray-200 rounded-lg"
+                                onChange={handleSettingsInput}
+                                value={settingsInput.registration_fee_usd}
+                                required
+                            />
+                            <span className="text-red-500 text-sm">{settingsInput.error_list.registration_fee_usd}</span>
+                        </div>
+                        <div className="col-span-12 md:col-span-6 flex flex-col space-y-2 justify-start">
                             <label className="text-sm text-start" htmlFor="ad1">
-                                Advertisement Banner 1
+                                Advertisement Banner 1  
                             </label>
                             <input type="file" name="ad1" id="ad1"
                                 className="p-3 bg-gray-200 rounded-lg"

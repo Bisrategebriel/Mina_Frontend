@@ -24,6 +24,7 @@ import {
 	useUsers,
 	useWatchHistory,
 } from "../hooks/utilityHooks";
+import { unsetCookie } from "../utilities/cookies.util";
 
 function Profile(props) {
 	const navigate = useNavigate();
@@ -51,7 +52,8 @@ function Profile(props) {
 	const onLogoutSuccess = (data) => {
 		if (data?.data.status === 200) {
 			// localStorage.removeItem("auth_token");
-			sessionStorage.removeItem("auth_token");
+			//sessionStorage.removeItem("auth_token");
+            unsetCookie("auth_token");
 			// localStorage.removeItem("auth_name");
 			// useInvalidateQuery('currentUser')
 
@@ -111,7 +113,7 @@ function Profile(props) {
 			axios.post(`/api/user/update`, data).then((res) => {
 				// console.log(res.data.message);
 				if (res.data.status === 200) {
-					swal("Success", res.data.message, "success");
+					swal.fire("Success", res.data.message, "success");
 					// navigate("/signin");
 				} else {
 					setRegInputs({ ...registerInputs, error_list: res.data.errors });
@@ -401,6 +403,7 @@ function Profile(props) {
 											onChange={handleRegInput}
 											value={registerInputs.email}
 											required
+                                            disabled
 										/>
 										<span>{registerInputs.error_list.email}</span>
 									</div>

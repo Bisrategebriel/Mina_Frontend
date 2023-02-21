@@ -24,6 +24,7 @@ import {
 	useVideos,
 } from "../../hooks/utilityHooks";
 import LanguageSelector from "../LanguageSelector";
+import { unsetCookie } from "../../utilities/cookies.util";
 
 function VideoPlayer(props) {
 	const playerRef = useRef(null);
@@ -258,7 +259,8 @@ function VideoPlayer(props) {
 	const onLogoutSuccess = (data) => {
 		if (data?.data.status === 200) {
 			// localStorage.removeItem("auth_token");
-			sessionStorage.removeItem("auth_token");
+			//sessionStorage.removeItem("auth_token");
+            unsetCookie("auth_token");
 			// localStorage.removeItem("auth_name");
 		} else {
 			// console.log(data?.data);

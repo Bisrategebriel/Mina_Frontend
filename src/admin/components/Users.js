@@ -5,6 +5,7 @@ import axios from "axios";
 import swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { getCookie } from "../../utilities/cookies.util";
 
 
 function Users(props) {
@@ -96,7 +97,8 @@ function Users(props) {
     useEffect(() => {
         // let val;
         // if (localStorage.getItem("auth_token" == null)) {
-        if (sessionStorage.getItem("auth_token" == null)) {
+        // if (sessionStorage.getItem("auth_token" == null)) {
+            if (getCookie("auth_token") == null) {
             setConfirmed(false);
             return false;
         }

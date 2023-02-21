@@ -5,6 +5,7 @@ import logo from '../images/logo.png';
 import swal from 'sweetalert';
 import { useUsers } from '../hooks/utilityHooks';
 import { useQueryClient } from 'react-query';
+import { setCookie } from '../utilities/cookies.util';
 
 function Signin() {
     const navigate = useNavigate();
@@ -38,9 +39,10 @@ function Signin() {
                 if(res.data.status === 200){
                     // console.log(res.data);
                     // localStorage.setItem("auth_token", res.data.token);
-                    sessionStorage.setItem("auth_token", res.data.token);
+                    // sessionStorage.setItem("auth_token", res.data.token);
+                    setCookie("auth_token", res.data.token,1);
                     // localStorage.setItem("confirmed", res.data.user.status);
-                    sessionStorage.setItem("confirmed", res.data.user.status);
+                    setCookie("confirmed", res.data.user.status,1);
                     navigate("/dashboard");
                     queryClient.invalidateQueries("currentUser"); // Retry current user
                     // res.data.user.status ? navigate("/") : navigate("/confirmPayment")

@@ -12,6 +12,7 @@ import LanguageSelector from "./LanguageSelector";
 import { useInvalidateQuery, useLogout,  } from "../hooks/utilityHooks";
 import { useQueryClient } from "react-query";
 import { UserContext } from "../";
+import { unsetCookie } from "../utilities/cookies.util";
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
@@ -26,7 +27,8 @@ function Navbar(props) {
     const onLogoutSuccess = (data) => {
         if (data?.data.status === 200) {
             // localStorage.removeItem("auth_token");
-            sessionStorage.removeItem("auth_token");
+            //sessionStorage.removeItem("auth_token");
+            unsetCookie("auth_token");
             // localStorage.removeItem("auth_name");
             // useInvalidateQuery('currentUser')
     
