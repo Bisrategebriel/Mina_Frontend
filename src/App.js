@@ -20,9 +20,10 @@ import ResetSuccessfull from "./pages/ResetSuccessfull";
 import VerifyEmail from "./pages/VerifyEmail";
 import NoticePopup from "./components/NoticePopup";
 import { getCookie, unsetCookie } from "./utilities/cookies.util";
+import ThankYou from "./pages/ThankYou";
 
-// axios.defaults.baseURL = "https://api.minaplay.com";
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://api.minaplay.com";
+// axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
 
@@ -35,10 +36,21 @@ axios.interceptors.request.use(function (config) {
     return config;
 });
 
-// axios.get('/sanctum/csrf-cookie').then(response => {
-//     localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
-//     // console.log(response.config.headers["X-XSRF-TOKEN"])
-// })
+axios.interceptors.response.use(undefined, function (error) {
+    const statusCode = error.response ? error.response.status : null;
+    if (statusCode === 401) {
+        console.log("error");
+    }
+
+    return Promise.reject(error);
+})
+
+
+
+axios.get('/sanctum/csrf-cookie').then(response => {
+    localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
+    // console.log(response.config.headers["X-XSRF-TOKEN"])
+})
 
 
 
@@ -59,6 +71,9 @@ function App() {
         }
     }
     const onError = (error) => {
+        // console.log(error.response)
+        if(error.response.status === 401){//handle error}
+        }
         setCurrentUser(null)
     }
 
@@ -117,6 +132,7 @@ function App() {
                     </Route>
 
                     <Route path="/forgotPassword" element={<ResetPassword />} />
+                    <Route path="/thankyou" element={ <ThankYou />} />
                     <Route path="/resetPassword/:token" element={<ResetSuccessfull />} />
                     <Route path="/verify/:url" element={
                         currentUser?.user.email_verified_at == null ? <VerifyEmail/>

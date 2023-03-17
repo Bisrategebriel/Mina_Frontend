@@ -1,20 +1,30 @@
 import React, { useState } from "react";
 
 function NoticePopup(props) {
-    const [visible, setVisible] = useState(true)
+	const [visible, setVisible] = useState(true);
 	return (
-		<div className={visible ? "fixed bottom-0 z-50 w-screen p-4 bg-yellow-300 flex flex-col items-center" : "hidden" } >
+		<div
+			className={
+				visible
+					? "fixed bottom-0 z-50 w-screen p-4 bg-yellow-300 flex flex-col items-center"
+					: "hidden"
+			}
+		>
 			<p>
-				This is the testing phase of Minaplay. The points you collect during the
-				testing phase will not be transferred when it is launched.
+				በአሁኑ ወቅት በዌብሳይቱ ላይ የምታገኙዋቸውን ቪዲዮዎች መመልከት ገቢ የማያስገኝ መሆኑን እያሳወቅን። ምዝገባ ተጠናቆ
+				በምናሳውቃችሁ ወቅት የሚለቀቁ አዳዲስ ቪዲዮዎች ከተመለከታችሁ በኋላ የምታገኙት ነጥብ ተሰብስቦ ተከፋይ የሚያደርጋችሁ
+				ይሆናል። 
 				<br />
-				ይህ የሚናፕሌይ ሙከራ ድህረገፅ ነው። ይህንን የሙከራ ድህረገፅ በመጠቀም የምትሰበስቡት ነጥብ በጊዜያዊነት ለሙከራ ብቻ
-				ይሆናል የሚጠቅመው።
+                The points that you will collect by watching the videos that are
+				currently posted will not be counted when we launch the website officially.
 			</p>
 
-			<button className="bg-white p-2 rounded-md w-fit" onClick={() => {
-                setVisible(false)
-            }}>
+			<button
+				className="bg-white p-2 rounded-md w-fit"
+				onClick={() => {
+					setVisible(false);
+				}}
+			>
 				I understand
 			</button>
 		</div>

@@ -5,6 +5,7 @@ import dashen from "../images/dashen.png";
 import abyssinia from "../images/abyssinia.png";
 import axios from "axios";
 import swal from "sweetalert";
+import swal2 from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 function ConfirmPayment(props) {
@@ -34,19 +35,31 @@ function ConfirmPayment(props) {
             paid_at : paymentInputs.paid_at 
         }
         // console.log(data)
-        axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post(`/api/payment/create`, data).then(res => {
-                console.log(res.data.status)
-                if(res.data.status === 200){
-                    // console.log(res.data);
-
-                    swal("Success", "Confirmation Sent. Your account will be activted after it is reviewed.", "success");
-                    navigate("/signin");
-                } else {
-                    setPaymentInputs({ ...paymentInputs, error_list: res.data.errors});
-                }
-            });
-        });
+		swal2.fire({
+			icon :"info", 
+			title : "Confirm",
+			text : "ገንዘቡን በምታስገቡበት ጊዜ የሚመጣላችሁን የትራንዛክሽን ቁጥር በትክክል ማስገባትዎን ያረጋግጡ።",
+			showCancelButton : true,
+			cancelButtonText : "Cancel",
+			confirmButtonText : "Confirm"
+			
+		}).then((response) => {
+			if(response.isConfirmed){
+				axios.get('/sanctum/csrf-cookie').then(response => {
+					axios.post(`/api/payment/create`, data).then(res => {
+						console.log(res.data.status)
+						if(res.data.status === 200){
+							// console.log(res.data);
+		
+							swal("Success", "Confirmation Sent. Your account will be activted after it is reviewed.", "success");
+							navigate("/signin");
+						} else {
+							setPaymentInputs({ ...paymentInputs, error_list: res.data.errors});
+						}
+					});
+				});
+			}
+		})
     }
 
     const handleTerms = (e)=>{
@@ -82,7 +95,7 @@ function ConfirmPayment(props) {
 						</label>
 					</div>
 
-					<div>
+					{/* <div>
 						<input onChange={handleConfirmInput}  type="radio" name="bank" id="awash" value="awash" className="hidden peer" />
 						<label
 							className="bg-white p-2 peer-checked:bg-mina-blue-light peer-checked:rounded-md w-12 md:w-20 h-12 md:h-20 flex"
@@ -90,9 +103,9 @@ function ConfirmPayment(props) {
 						>
 							<img src={awash} alt="" srcSet="" />
 						</label>
-					</div>
+					</div> */}
 
-					<div>
+					{/* <div>
 						<input onChange={handleConfirmInput}  type="radio" name="bank" id="dashen" value="dashen" className="hidden peer" />
 						<label
 							className="bg-white p-2 peer-checked:bg-mina-blue-light peer-checked:rounded-md w-12 md:w-20 h-12 md:h-20 flex"
@@ -100,7 +113,7 @@ function ConfirmPayment(props) {
 						>
 							<img src={dashen} alt="" srcSet="" />
 						</label>
-					</div>
+					</div> */}
 				</div>
 
 				<div className="col-span-12 md:col-span-8 grid-cols-12 space-y-4">

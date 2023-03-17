@@ -48,7 +48,7 @@ function Navbar(props) {
 		<nav
 			className={classNames(
 				scrollPosition > 100 ? "bg-mina" : "bg-transparent",
-				"transition-all w-screen h-24 p-3 md:px-24 px-6 flex justify-between items-center fixed z-50"
+				"transition-all w-full h-24 p-3 md:px-24 px-6 flex justify-between items-center fixed z-50"
 			)}
 		>
 			<Link to="/">

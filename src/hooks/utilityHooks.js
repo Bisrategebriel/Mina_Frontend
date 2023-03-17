@@ -15,7 +15,9 @@ export const useInvalidateQuery = (name) => {
 };
 //Fetch Currently Signed In User
 const fetchCurrentUser = () => {
-	return axios.get(`api/auth/currentUser`);
+	return axios.get(`api/auth/currentUser`).catch(error => {
+		
+	});
 };
 export const useUsers = (onSuccess, onError) =>
 	useQuery("currentUser", fetchCurrentUser, {

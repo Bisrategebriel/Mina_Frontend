@@ -5,8 +5,8 @@ function LanguageSelector() {
 	const languageContext = useContext(LanguageContext);
 	return (
 		<select
-			className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light"
-			value={localStorage.getItem("lang")}
+			className="bg-transparent p-1 border-1 border-mina-orange-light text-mina-orange-light text-xs"
+			value={localStorage.getItem("lang")?localStorage.getItem("lang"): "en"}
 			onChange={(val) => {
 				languageContext[1](val.target.value);
 				localStorage.setItem("lang", val.target.value);

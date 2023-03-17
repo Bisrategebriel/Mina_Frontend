@@ -11,6 +11,7 @@ import Footer from "../components/landing/Footer";
 import axios from "axios";
 import { useSettings } from "../hooks/utilityHooks";
 import { useState } from "react";
+import SupportUs from "../components/landing/SupportUs";
 
 function Home() {
     const [ad1, setAd1] = useState();
@@ -37,6 +38,9 @@ function Home() {
 			
             {/* About */}
 			<About></About>
+
+            {/* Support Us */}
+			<SupportUs></SupportUs>
 
 			{/* Banner 1 */}
             {

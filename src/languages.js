@@ -76,7 +76,10 @@ const languages = {
         hour : "Hour",
         day : "Day",
         week : "Week",
-        currency : "Currency"
+        currency : "Currency",
+        amount : "Amount",
+        supportUs : "Support Us",
+        supportUsTxt : "If you like our work, send us a tip right from where you are."
     },
     am : {
         mainHeader : "የኢንተርኔት አገልግሎት መጠቀምዎ ካልቀረ ተጨማሪ ገቢን ለምን አያገኙም? ",
@@ -155,7 +158,10 @@ const languages = {
         hour : "ሰዓት",
         day : "ቀን",
         week : "ሳምንት",
-        currency: "መገበያያ"
+        currency: "መገበያያ",
+        amount : "መጠን",
+        supportUs : "ልታግዙን ለምትፈልጉ",
+        supportUsTxt : "ይህንን ዌብሳይት እና ስራችንን ወዳችሁ በገንዘብ ማገዝ ለምትፈልጉ ከታች ባለው ቅጽ ካሉበት ሆነው ማገዝ ይችላሉ።"
     }
 }
 

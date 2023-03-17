@@ -180,7 +180,7 @@ function PaymentInfo(props) {
 							<p className="text-start">
 								{" "}
 								<span className="text-sm font-bold"> Account Name: </span>
-								Mina Entertainment
+								Hana Sahile
 							</p>
 							<p className="text-start">
 								<span className="text-sm font-bold">Account Number: </span>
@@ -198,7 +198,7 @@ function PaymentInfo(props) {
 							<p className="text-start">
 								{" "}
 								<span className="text-sm font-bold"> Account Name: </span>
-								Mina Entertainment
+								Rakeb Alemayehu
 							</p>
 							<p className="text-start">
 								<span className="text-sm font-bold">Account Number: </span>
@@ -207,7 +207,7 @@ function PaymentInfo(props) {
 						</div>
 					</div>
 
-					<div className="col-span-12 2xl:col-span-6 p-3 border border-1 border-mina-blue-light rounded-lg flex items-center space-x-2 space-between">
+					{/* <div className="col-span-12 2xl:col-span-6 p-3 border border-1 border-mina-blue-light rounded-lg flex items-center space-x-2 space-between">
 						<div className="w-12 h-12 bg-white">
 							<img src={awash} alt="" srcSet="" />
 						</div>
@@ -241,7 +241,7 @@ function PaymentInfo(props) {
 								{settingsInput.bank4}
 							</p>
 						</div>
-					</div>
+					</div> */}
 
 					<div className="col-span-12 flex justify-end space-y-4 space-x-0 md:space-y-0 md:space-x-4 flex-col md:flex-row md:items-center">
 						<button
