@@ -28,7 +28,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
 
 axios.defaults.withCredentials = true;
-axios.interceptors.request.use(function (config) {  
+axios.interceptors.request.use(function (config) {
     // const token = localStorage.getItem("auth_token");
     // const token = sessionStorage.getItem("auth_token");
     const token = getCookie("auth_token");
@@ -36,16 +36,44 @@ axios.interceptors.request.use(function (config) {
     return config;
 });
 
-axios.interceptors.response.use(undefined, function (error) {
-    const statusCode = error.response ? error.response.status : null;
-    if (statusCode === 401) {
-        console.log("error");
-    }
+// Add a 401 response interceptor
+// axios.interceptors.response.use(function (response) {
+//     return response;
+// }, function (error) {
+//     if (401 === error.response.status) {
+//         // handle error: inform user, go to login, etc
+//         console.log("err")
+//         // return
+//     } else {
+//         return Promise.reject(error);
+//     }
+// });
 
-    return Promise.reject(error);
-})
+// axios.interceptors.response.use(
+//     (response) => {
+//       // Return the response if successful
+//       return response;
+//     },
+//     (error) => {
+//       // Handle errors here
+//       if (error.response) {
+//         // The request was made and the server responded with a status code
+//         // that falls out of the range of 2xx
+//         console.log(error.response.data);
+//         console.log(error.response.status);
+//         console.log(error.response.headers);
+//       } else if (error.request) {
+//         // The request was made but no response was received
+//         console.log(error.request);
+//       } else {
+//         // Something happened in setting up the request that triggered an Error
+//         console.log('Error', error.message);
+//       }
 
-
+//       // Return a rejected promise with the error object
+//       return Promise.reject(error);
+//     }
+//   );
 
 axios.get('/sanctum/csrf-cookie').then(response => {
     localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
@@ -71,15 +99,16 @@ function App() {
         }
     }
     const onError = (error) => {
-        // console.log(error.response)
-        if(error.response.status === 401){//handle error}
+        if (error.response.status === 401) {
+            console.log(error)
         }
         setCurrentUser(null)
-    }
+        return
 
+    }
     const { isFetching, isLoading, isFetched, data, isError, error } = useUsers(onSuccess, onError);
 
-    if(isLoading){
+    if (isLoading) {
         return <Spinner />
     }
 
@@ -88,12 +117,12 @@ function App() {
             <UserContext.Provider value={currentUser}>
                 <Routes>
                     <Route path="/" element={<Home />}></Route>
-                    <Route path="/dashboard" element={currentUser ? (<ProtectedWrapper />) : (<Signin/>)}></Route>
-                    <Route path="/profile" element={ <Profile />}></Route>
+                    <Route path="/dashboard" element={currentUser ? (<ProtectedWrapper />) : (<Signin />)}></Route>
+                    <Route path="/profile" element={<Profile />}></Route>
                     {/* <Route path="/payment" element={ currentUser?.user.status ? <Payment /> : <Signin />}></Route> */}
                     <Route
                         path="/watch/:id"
-                        element={currentUser?.user.status ? <VideoPlayer /> : (<Navigate to="/dashboard" replace state={{location}}/>)}
+                        element={currentUser?.user.status ? <VideoPlayer /> : (<Navigate to="/dashboard" replace state={{ location }} />)}
                         replace
                         key="1"
                         state={{ location }}
@@ -122,28 +151,28 @@ function App() {
                         }
                     ></Route>
 
-                    <Route 
+                    <Route
                         path="/admin"
                         element={
-                                currentUser?.user.role === "admin" ? (<AdminHome/>) : 
+                            currentUser?.user.role === "admin" ? (<AdminHome />) :
                                 (<Navigate to="/" replace state={{ location }} />)
                         }
-                        >
+                    >
                     </Route>
 
                     <Route path="/forgotPassword" element={<ResetPassword />} />
-                    <Route path="/thankyou" element={ <ThankYou />} />
+                    <Route path="/thankyou" element={<ThankYou />} />
                     <Route path="/resetPassword/:token" element={<ResetSuccessfull />} />
                     <Route path="/verify/:url" element={
-                        currentUser?.user.email_verified_at == null ? <VerifyEmail/>
-                        :
-                        (<Navigate to="/" replace state={{ location }}/>)
+                        currentUser?.user.email_verified_at == null ? <VerifyEmail />
+                            :
+                            (<Navigate to="/" replace state={{ location }} />)
                     } />
 
                     {/* <Route path="/verifyRf" element={<VerifyRf />} /> */}
                 </Routes>
             </UserContext.Provider>
-            <NoticePopup/>
+            <NoticePopup />
         </div>
     );
 }
