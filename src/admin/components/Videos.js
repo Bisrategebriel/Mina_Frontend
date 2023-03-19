@@ -128,7 +128,7 @@ function Videos(props) {
 
     const handleRegInput = (e) => {
         e.persist();
-        console.log(e.target.name)
+        // console.log(e.target.name)
         setRegInputs({ ...registerInputs, [e.target.name]: e.target.value });
     };
 
@@ -194,7 +194,7 @@ function Videos(props) {
                     .then((res) => {
                         if (res.data.status === 200) {
                             // setAsc(!asc)
-                            console.log(res.data);
+                            // console.log(res.data);
                             // res.data.payments.paid_at = res.data.payments.paid_at.split("T")[0].split("T")[0]
 
                             setConfirmed({ ...confirmed, payments: res.data.videos.data });
@@ -203,7 +203,7 @@ function Videos(props) {
                                 pageSize: res.data.videos.per_page,
                                 currentPage: res.data.videos.current_page,
                             });
-                            console.log(tableData);
+                            // console.log(tableData);
                             setIsLoading(false);
                         } else {
                             val = false;
@@ -216,7 +216,7 @@ function Videos(props) {
 
     const handleAllow = (e) => {
         let vidId = e.target.getAttribute("data-id");
-        console.log(vidId);
+        // console.log(vidId);
         let url = "";
         url =
             e.target.getAttribute("data-action") == "activate"
@@ -235,7 +235,7 @@ function Videos(props) {
                             icon: "success",
                             toast: true,
                         });
-                        console.log(res.data.message, pageStatus);
+                        // console.log(res.data.message, pageStatus);
 
                         setPageStatus((pageStatus) => !pageStatus);
                     } else {
@@ -255,7 +255,7 @@ function Videos(props) {
 
     const handleSearch = (e) => {
         // e.persist();
-        console.log(e.target);
+        // console.log(e.target);
         setSearchQuery(e.target.value);
     };
 

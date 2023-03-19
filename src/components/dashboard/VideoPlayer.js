@@ -25,6 +25,7 @@ import {
 } from "../../hooks/utilityHooks";
 import LanguageSelector from "../LanguageSelector";
 import { unsetCookie } from "../../utilities/cookies.util";
+import Swal from "sweetalert2";
 
 function VideoPlayer(props) {
 	const playerRef = useRef(null);
@@ -264,6 +265,10 @@ function VideoPlayer(props) {
 			// localStorage.removeItem("auth_name");
 		} else {
 			// console.log(data?.data);
+			Swal.fire({
+				text: 'Something went wrong. Refresh your browser and try Again',
+				icon: "error"
+			})
 		}
 	};
 	const { refetch } = useLogout(onLogoutSuccess);
@@ -279,7 +284,7 @@ function VideoPlayer(props) {
 				title: "warning",
 				icon: "warning",
 				text:
-					"After submitting your point, you won't be able to collect any more points from this video. Make sure you watched the whole video if you want to get the maximum point available",
+					ln.warnSubmit,
 				showCancelButton: true,
 			})
 			.then((res) => {

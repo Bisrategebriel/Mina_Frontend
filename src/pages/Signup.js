@@ -27,7 +27,7 @@ function Signup() {
 	const registerSubmit = (e) => {
 		e.preventDefault(e);
         e.nativeEvent.submitter.disabled = true
-        console.log(e.nativeEvent.submitter.disabled)
+        // console.log(e.nativeEvent.submitter.disabled)
 		if (registerInputs.password !== registerInputs.confirm_password) {
             swal.fire("Error", "Password Doesn't match", "error");
             e.nativeEvent.submitter.disabled = false

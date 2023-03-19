@@ -144,7 +144,7 @@ function Transactions(props) {
 
     const handleAllow = (e) => {
         let vidId = e.target.getAttribute("data-id");
-        console.log(vidId)
+        // console.log(vidId)
         let url = ""
         url = e.target.getAttribute("data-action") == "activate" ? `api/transaction/approve/${vidId}` : `api/transaction/disapprove/${vidId}`
         axios.get("/sanctum/csrf-cookie").then((response) => {
@@ -160,7 +160,7 @@ function Transactions(props) {
                             icon: "success",
                             toast: true,
                         })
-                        console.log(res.data.message, pageStatus)
+                        // console.log(res.data.message, pageStatus)
 
                         setPageStatus(pageStatus => !pageStatus)
                     } else {

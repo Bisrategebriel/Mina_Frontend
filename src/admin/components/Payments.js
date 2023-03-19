@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import Table from "./table/Table";
 import axios from "axios";
@@ -80,10 +80,12 @@ function Payments(props) {
         }
     )
     let [tableRefreshed, setTableRefreshed] = useState(0)
+    let [searchQuery, setSearchQuery] = useState('')
     let [sortBy, setSortBy] = useState('id')
     let [asc, setAsc] = useState(true)
     let [pageStatus, setPageStatus] = useState(true)
     let [isLoading, setIsLoading] = useState(true)
+    let url;
     useEffect(() => {
         let val;
         // if (localStorage.getItem("auth_token" == null)) {
@@ -93,21 +95,22 @@ function Payments(props) {
             return false;
         }
         const fetchData = async () => {
-            
+            url = searchQuery.length === 0 ? `api/payment/get?page=${tableRefreshed}` : `api/payment/search?page=${tableRefreshed}`
             val = await axios.get("/sanctum/csrf-cookie").then((response) => {
                 axios
-                    .get(`api/payment/get?page=${tableRefreshed}`, {
+                    .get(url, {
                         headers: { "X-XSRF-TOKEN": `${response.data}` },
                         params: {
                             per_page: tableData.pageSize,
                             sort_by: sortBy,
-                            asc: asc?'asc':'desc'
+                            asc: asc?'asc':'desc',
+                            search_query: searchQuery
                         }
                     })
                     .then((res) => {
                         if (res.data.status === 200) {
                             // setAsc(!asc)
-                            console.log(res.data)
+                            // console.log(res.data)
                             // res.data.payments.paid_at = res.data.payments.paid_at.split("T")[0].split("T")[0]
                             setConfirmed({ ...confirmed, payments: res.data.payments.data });
                             setTableData({
@@ -118,14 +121,14 @@ function Payments(props) {
                             setIsLoading(false)
                             // console.log(tableData)
                         } else {
-                            
+                            console.log('Fetching not complete')
                             val = false;
                         }
                     });
             });
         };
         fetchData();
-    }, [tableRefreshed,asc,tableData.pageSize,pageStatus]);
+    }, [tableRefreshed,asc,tableData.pageSize,pageStatus, searchQuery]);
 
 
     const handleAllow = (e) => {
@@ -151,7 +154,7 @@ function Payments(props) {
                             toast: true,
                         })
                         setPageStatus(pageStatus => !pageStatus)
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         swal.fire({
                             title: "Failure",
@@ -166,8 +169,47 @@ function Payments(props) {
 
         })
     }
+
+    const handleSearch = (e) => {
+        // e.persist();
+        // console.log(e.target)
+        setSearchQuery(e.target.value)
+    }
+
+    // utility to optimize search function
+    const debounce = (func) => {
+        let timer;
+        return function (...args) {
+            const context = this;
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                timer = null;
+                func.apply(context, args);
+            }, 300);
+        };
+    };
+
+
+    const optimizedSearch = useCallback(debounce(handleSearch), []);
     return (
-        <div>
+        <div className="h-full w-full flex flex-col gap-2 max-w-screen overflow-x-auto">
+            <div className="w-full flex justify-end items-center space-x-2">
+                    {/* <button onClick={onOpenModal} className="text-white gap-3 bg-mina-blue-light hover:bg-mina-blue-light/80 py-2   p-3 rounded-lg">
+                        <FontAwesomeIcon icon={faUserPlus} /> &nbsp;
+
+                        Add User</button> */}
+                <input type="text"
+                    onChange={(e) => {
+                        optimizedSearch(e)
+                    }}
+                    // value={searchQuery}
+                    name="searchQuery"
+                    id="searchQuery"
+                    placeholder="Search"
+                    className="p-2 border-2 border-solid border-2-mina-blue-dark rounded-md self-end"
+                />
+
+            </div>
             {
                 isLoading ?
                     <div className="w-full h-full flex justify-center items-center">

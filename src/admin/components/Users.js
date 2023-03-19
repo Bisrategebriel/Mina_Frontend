@@ -118,7 +118,7 @@ function Users(props) {
                     .then((res) => {
                         if (res.data.status === 200) {
                             // setAsc(!asc)
-                            console.log(res.data)
+                            // console.log(res.data)
                             // res.data.payments.paid_at = res.data.payments.paid_at.split("T")[0].split("T")[0]
                             setConfirmed({ ...confirmed, payments: res.data.users.data });
                             setTableData({
@@ -127,10 +127,10 @@ function Users(props) {
                                 currentPage: res.data.users.current_page,
                             })
                             setIsLoading(false)
-                            console.log(tableData)
+                            // console.log(tableData)
                         } else {
                             // val = false;
-                            console.log(res.data)
+                            // console.log(res.data)
                         }
                     });
             });
@@ -157,7 +157,7 @@ function Users(props) {
                             icon: "success",
                             toast: true,
                         })
-                        console.log(res.data.message, pageStatus)
+                        // console.log(res.data.message, pageStatus)
 
                         setPageStatus(pageStatus => !pageStatus)
                     } else {
@@ -184,7 +184,7 @@ function Users(props) {
             .then((res) => {
                 if (res.data.status === 200) {
                     // setAsc(!asc)
-                    console.log(res.data)
+                    // console.log(res.data)
                     // res.data.payments.paid_at = res.data.payments.paid_at.split("T")[0].split("T")[0]
                     setConfirmed(confirmed.filter(function (value, index, confirmed) {
                         return value > 5;
@@ -195,15 +195,21 @@ function Users(props) {
                         currentPage: res.data.users.current_page,
                     })
                     setIsLoading(false)
-                    console.log(tableData)
+                    // console.log(tableData)
                 } else {
+                    swal.fire({
+                        title: "Failure",
+                        text: res.data.message,
+                        icon: 'error',
+                        toast: true
+                    })
                     // val = false;
-                    console.log(res.data)
+                    // console.log(res.data)
                 }
             });
     }
     const handleDelete = (e) => {
-        console.log(confirmed)
+        // console.log(confirmed)
         url = `api/user/destroy/${e.target.getAttribute("data-id")}`
         axios
             .post(url, {
@@ -213,7 +219,7 @@ function Users(props) {
                     // let val = confirmed.payments.filter(function(value){ 
                     //     return value.id != e.target.getAttribute("data-id");
                     // })
-                    console.log(e.target)
+                    // console.log(e.target)
                     // setConfirmed({...confirmed, payments: val });
                     swal.fire({
                         title: "Success",
@@ -231,13 +237,13 @@ function Users(props) {
                     // setIsLoading(false)
                 } else {
                     // val = false;
-                    console.log(res.data)
+                    // console.log(res.data)
                 }
             });
     }
     const handleSearch = (e) => {
         // e.persist();
-        console.log(e.target)
+        // console.log(e.target)
         setSearchQuery(e.target.value)
     }
 

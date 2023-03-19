@@ -62,7 +62,7 @@ function SupportUs(props) {
 					});
 				// navigate("/signin");
 			} else if (res.data.status === 200 && res.data.res.status === "failed") {
-				console.log(res.data)
+				// console.log(res.data)
 				swal.fire(
 					"Error",
 					"Make sure you filled the required fields correctly",

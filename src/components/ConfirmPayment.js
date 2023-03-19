@@ -47,7 +47,7 @@ function ConfirmPayment(props) {
 			if(response.isConfirmed){
 				axios.get('/sanctum/csrf-cookie').then(response => {
 					axios.post(`/api/payment/create`, data).then(res => {
-						console.log(res.data.status)
+						// console.log(res.data.status)
 						if(res.data.status === 200){
 							// console.log(res.data);
 		

@@ -13,6 +13,7 @@ import { useInvalidateQuery, useLogout,  } from "../hooks/utilityHooks";
 import { useQueryClient } from "react-query";
 import { UserContext } from "../";
 import { unsetCookie } from "../utilities/cookies.util";
+import Swal from "sweetalert2";
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
@@ -34,7 +35,10 @@ function Navbar(props) {
     
             // navigate("/signin");
         } else {
-            console.log(data?.data);
+            Swal.fire({
+				text: 'Something went wrong. Refresh your browser and try Again',
+				icon: "error"
+			})
         }
     };
     const { refetch } = useLogout(onLogoutSuccess); 

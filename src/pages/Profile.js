@@ -25,6 +25,7 @@ import {
 	useWatchHistory,
 } from "../hooks/utilityHooks";
 import { unsetCookie } from "../utilities/cookies.util";
+import Swal from "sweetalert2";
 
 function Profile(props) {
 	const navigate = useNavigate();
@@ -60,6 +61,10 @@ function Profile(props) {
 			// navigate("/signin");
 		} else {
 			// console.log(data?.data); 
+			Swal.fire({
+				text: 'Something went wrong. Refresh your browser and try Again',
+				icon: "error"
+			})
 		}
 	};
 	const { refetch } = useLogout(onLogoutSuccess);

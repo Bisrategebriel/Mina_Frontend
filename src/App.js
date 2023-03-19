@@ -21,6 +21,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import NoticePopup from "./components/NoticePopup";
 import { getCookie, unsetCookie } from "./utilities/cookies.util";
 import ThankYou from "./pages/ThankYou";
+import Swal from "sweetalert2";
 
 axios.defaults.baseURL = "https://api.minaplay.com";
 // axios.defaults.baseURL = "http://localhost:8000";
@@ -35,19 +36,18 @@ axios.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
 });
+axios.defaults.validateStatus = () => true;
 
 // Add a 401 response interceptor
-// axios.interceptors.response.use(function (response) {
-//     return response;
-// }, function (error) {
-//     if (401 === error.response.status) {
-//         // handle error: inform user, go to login, etc
-//         console.log("err")
-//         // return
-//     } else {
-//         return Promise.reject(error);
-//     }
-// });
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (401 === error.response.status) {
+        console.log("err")
+    } else {
+        return Promise.reject(error);
+    }
+});
 
 // axios.interceptors.response.use(
 //     (response) => {
@@ -78,7 +78,7 @@ axios.interceptors.request.use(function (config) {
 axios.get('/sanctum/csrf-cookie').then(response => {
     localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
     // console.log(response.config.headers["X-XSRF-TOKEN"])
-})
+})  
 
 
 
@@ -87,7 +87,7 @@ function App() {
     const [currentUser, setCurrentUser] = useState();
 
     const onSuccess = (data) => {
-
+        // console.log(data)
         if (data?.data.status === 500) {
             // localStorage.removeItem("auth_token");
             //sessionStorage.removeItem("auth_token");
@@ -96,14 +96,21 @@ function App() {
         } else if (data?.data.status === 200) {
             // setIsVerified(data?.data.user.email_verified_at ? true : false);
             setCurrentUser(data?.data)
+        } else {
+            // console.log(data?.status)
+            // Swal.fire({
+			// 	text: 'Something went wrong. Refresh your browser and try Again',
+			// 	icon: "error"
+			// })
         }
     }
     const onError = (error) => {
-        if (error.response.status === 401) {
-            console.log(error)
-        }
+        // console.log(error)
+        // if (error.response.status === 500) {
+        //     console.log(error)
+        // }
+        
         setCurrentUser(null)
-        return
 
     }
     const { isFetching, isLoading, isFetched, data, isError, error } = useUsers(onSuccess, onError);

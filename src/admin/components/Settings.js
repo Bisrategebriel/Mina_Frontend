@@ -71,7 +71,7 @@ function Settings(props) {
                     'Content-Type': 'multipart/form-data'
                   }
             }).then((res) => {
-                console.log(res.data.message);
+                // console.log(res.data.message);
                 if (res.data.status === 200) {
                     swal.fire("Success", res.data.message, "success");
                     // navigate("/signin");
@@ -84,7 +84,7 @@ function Settings(props) {
     useEffect(() => {
         axios.get("/sanctum/csrf-cookie").then((response) => {
             axios.get(`/api/settings`).then((res) => {
-                console.log(res.data.settings.registration_fee);
+                // console.log(res.data.settings.registration_fee);
                 if (res.data.status === 200) {
                     setSettingsInput({
                         ...settingsInput,

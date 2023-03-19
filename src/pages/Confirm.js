@@ -7,6 +7,7 @@ import PaymentInfo from "../components/PaymentInfo";
 import ConfirmPayment from "../components/ConfirmPayment";
 import axios from "axios";
 import { getCookie, unsetCookie } from "../utilities/cookies.util";
+import Swal from "sweetalert2";
 
 function Confirm() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ function Confirm() {
 
         axios.post(`api/auth/logout`).then(res=>{
             if(res.data.status === 200){
-                console.log(res.data);
+                // console.log(res.data);
                 // localStorage.removeItem("auth_token");
                 //sessionStorage.removeItem("auth_token");
             unsetCookie("auth_token");
@@ -26,7 +27,11 @@ function Confirm() {
                 navigate("/signin");
             }
             else {
-                console.log(res.data)
+                // console.log(res.data)
+                Swal.fire({
+                    text: 'Something went wrong. Try Again',
+                    icon: "error"
+                })
             }
         });
     }

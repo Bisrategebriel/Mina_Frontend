@@ -9,7 +9,7 @@ const submitResendVerification = (e) => {
             // swal("Success", res.data.message, "success");
         }
         else {
-            console.log(res.data.message)
+            // console.log(res.data.message)
             console.log("Couldn't send Verification")
         }
     });
