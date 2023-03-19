@@ -16,7 +16,7 @@ function UserDashboard({ isVerified }) {
     var navigate = useNavigate();
     var [videos, setVideos] = useState([]);
     let [searchQuery, setSearchQuery] = useState(""); //search query variable
-    let [pages, setPages] = useState({  
+    let [pages, setPages] = useState({
         currentPage: 1,
         totalCount: 1
 
@@ -26,6 +26,9 @@ function UserDashboard({ isVerified }) {
     // Fetch available Videos
     const [videoLinks, setVideoLinks] = useState([])
     const onSuccess = (data) => {
+        if (data?.data.videos.data.length == 0) {
+            setVideos([])
+        }
         searchQuery.length === 0 ? setVideoLinks([...videoLinks, ...data?.data.videos.data.map(video => video.video_id)]) :
             setVideoLinks(data?.data.videos.data.map(video => video.video_id))
         setPages({
@@ -46,12 +49,12 @@ function UserDashboard({ isVerified }) {
 
     const onThumbnailSuccess = (data) => {
         searchQuery.length === 0 ?
-        setVideos(videos => [
-            ...videos,
-            data.data
-        ]) 
-        :
-        setVideos([data?.data])
+            setVideos(videos => [
+                ...videos,
+                data?.data
+            ])
+            :
+            setVideos([data?.data])
     }
     const onThumbnailError = (data) => {
     }
@@ -84,7 +87,7 @@ function UserDashboard({ isVerified }) {
             timer = setTimeout(() => {
                 timer = null;
                 func.apply(context, args);
-            }, 600);
+            }, 400);
         };
     };
 
@@ -131,21 +134,27 @@ function UserDashboard({ isVerified }) {
                         />
                     </div>
                     <div className='col-span-12 p-3 grid grid-cols-12 gap-3'>
+                        {/* {
+                            videoLinks.length === 0 ? (<>no video</>) : 
+                        } */}
                         {
-                            videos.map((content, key) => (
-                                // <Link to="/watch/103">
-                                // if(content.status)
-                                <div key={key} onClick={() => { watch(content.video_id) }} className='xl:col-span-3 md:col-span-3 sm:col-span-6 col-span-12 p-3 bg-white rounded-2xl cursor-pointer'>
-                                    <div className="w-full aspect-video overflow-hidden rounded-xl ">
-                                        <img src={content.thumbnail_url} alt="" srcSet="" className='object-center w-full overflow-hidden aspect-video object-cover' />
+                            videoLinks.length === 0 ? (
+                                <>No Video Found</>
+                            ) :
+                                videos.map((content, key) => (
+                                    // <Link to="/watch/103">
+                                    // if(content.status)
+                                    <div key={key} onClick={() => { watch(content.video_id) }} className='xl:col-span-3 md:col-span-3 sm:col-span-6 col-span-12 p-3 bg-white rounded-2xl cursor-pointer'>
+                                        <div className="w-full aspect-video overflow-hidden rounded-xl ">
+                                            <img src={content.thumbnail_url} alt="" srcSet="" className='object-center w-full overflow-hidden aspect-video object-cover' />
+                                        </div>
+                                        <h1 className='my-2 font-bold text-start'>{content.title}</h1>
                                     </div>
-                                    <h1 className='my-2 font-bold text-start'>{content.title}</h1>
-                                </div>
 
-                                // </Link>
+                                    // </Link>
 
-                            )
-                            )
+                                )
+                                )
                         }
                         {
                             isLoading && <Spinner />
