@@ -5,6 +5,7 @@ import {
 	useQuery,
 	useQueryClient,
 } from "react-query";
+import { unsetCookie } from "../utilities/cookies.util";
 
 //Invalidate query
 export const useInvalidateQuery = (name) => {
@@ -40,9 +41,9 @@ export const useLogout = (onSuccess, onError) => {
 
 	return useQuery("logout", logout, {
 		enabled: false,
-		onSuccess: () => {
-			onSuccess();
+		onSuccess: (res) => {
 			queryClient.invalidateQueries("currentUser");
+			onSuccess(res);
 		},
 		onError,
 	});

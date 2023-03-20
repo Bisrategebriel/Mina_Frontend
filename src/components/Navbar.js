@@ -26,6 +26,7 @@ function Navbar(props) {
 	const navigate = useNavigate();
     let currentUser = useContext(UserContext)
     const onLogoutSuccess = (data) => {
+		// console.log(data)
         if (data?.data.status === 200) {
             // localStorage.removeItem("auth_token");
             //sessionStorage.removeItem("auth_token");
@@ -35,16 +36,19 @@ function Navbar(props) {
     
             // navigate("/signin");
         } else {
-            Swal.fire({
-				text: 'Something went wrong. Refresh your browser and try Again',
-				icon: "error"
-			})
+            // Swal.fire({
+			// 	text: 'Something went wrong. Refresh your browser and try Again',
+			// 	icon: "error"
+			// })
+			// navigate("/signin")
         }
     };
-    const { refetch } = useLogout(onLogoutSuccess); 
+	const onLogoutError = (data) => {
+	}
+    const { refetch } = useLogout(onLogoutSuccess, onLogoutError); 
     const logout = (e) => {
         e.preventDefault();
-        refetch()	
+        refetch();
         navigate("/signin");
 	};
 

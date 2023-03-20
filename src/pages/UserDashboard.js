@@ -11,6 +11,7 @@ import VerifyCard from '../components/VerifyCard';
 import LanguageSelector from '../components/LanguageSelector';
 import { useDashboardVideos, useFetchThumbnail, useLogout, useVideos } from '../hooks/utilityHooks';
 import Spinner from '../components/Spinner';
+import { unsetCookie } from '../utilities/cookies.util';
 
 function UserDashboard({ isVerified }) {
     var navigate = useNavigate();
@@ -67,7 +68,16 @@ function UserDashboard({ isVerified }) {
         navigate(`/watch/${video_id}`)
     }
 
-    const { refetch } = useLogout();
+    const onLogoutSuccess = (data) => {
+		// console.log(data)
+        if (data?.data.status === 200) {
+            unsetCookie("auth_token");
+        } else {
+        }
+    };
+	const onLogoutError = (data) => {
+	}
+    const { refetch } = useLogout(onLogoutSuccess, onLogoutError);
     const logout = (e) => {
         e.preventDefault();
         refetch();

@@ -170,7 +170,8 @@ function ConfirmPayment(props) {
 						<input type="checkbox" name="terms_agreement" id="terms_agreement" onChange={handleTerms} checked={confirmDisabled} />
 						<label htmlFor="terms_agreement">
 							<p className="text-start text-xs">
-								By Signing up, you agree to our Terms and Privacy Policy
+								By Signing up, you agree to our 
+								<a href="/terms"> Terms and Privacy Policy</a>
 							</p>
 						</label>
 					</div>

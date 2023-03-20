@@ -8,55 +8,41 @@ import ConfirmPayment from "../components/ConfirmPayment";
 import axios from "axios";
 import { getCookie, unsetCookie } from "../utilities/cookies.util";
 import Swal from "sweetalert2";
+import { useLogout } from "../hooks/utilityHooks";
 
 function Confirm() {
     const navigate = useNavigate();
     
+    const onLogoutSuccess = (data) => {
+        if (data?.data.status === 200) {
+            unsetCookie("auth_token");
+        } else {
+        }
+    };
+	const onLogoutError = (data) => {
+	}
+    const { refetch } = useLogout(onLogoutSuccess, onLogoutError); 
     const logout = (e) => {
         e.preventDefault();
-
-        axios.post(`api/auth/logout`).then(res=>{
-            if(res.data.status === 200){
-                // console.log(res.data);
-                // localStorage.removeItem("auth_token");
-                //sessionStorage.removeItem("auth_token");
-            unsetCookie("auth_token");
-                // localStorage.removeItem("auth_name");
-
-                // swal("Success", res.data.message, "success");
-                navigate("/signin");
-            }
-            else {
-                // console.log(res.data)
-                Swal.fire({
-                    text: 'Something went wrong. Try Again',
-                    icon: "error"
-                })
-            }
-        });
-    }
+        refetch();
+        navigate("/signin");
+	};
     const [paymentInfo, setPaymentInfo] = useState(true);
     const [confirmPayment, setConfirmPayment] = useState(false);
     return (
         <>
             <div className="w-screen h-24 p-3 md:px-24 px-6 flex justify-between items-center fixed z-50 bg-mina-blue-dark">
-                {/* <Link to="/">
-                    <img src={logo} alt="mina logo" className="h-16 object-cover" />
-                </Link> */}
                 <Link to="/">
                     <img src={logo} alt="mina logo" className="h-16 object-cover" />
                 </Link>
 
                 <div className=" font-comfortaa space-x-3">
                     {
-                        // localStorage.getItem("auth_token") ? 
-                        // sessionStorage.getItem("auth_token") ? 
                         getCookie("auth_token") ? 
                             <>
                                 <button onClick={logout} className="p-2 px-4 bg-transparent border-2 border-mina-orange-light hover:bg-mina-orange-light hover:text-white text-mina-orange-light font-bold rounded-lg">
                                     Logout
                                 </button>
-                                {/* {localStorage.getItem("auth_name")} */}
                             </>
                         : 
                             <>

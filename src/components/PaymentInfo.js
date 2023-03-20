@@ -159,7 +159,7 @@ function PaymentInfo(props) {
 			<form className={open ? "hidden" : "col-span-12 grid-cols-12 grid gap-4"}>
 				{/* Payment Information */}
 				<div className="col-span-12 grid-cols-12 grid gap-4 ">
-					<div className="col-span-12 flex justify-between p-8 bg-mina-blue-light text-white rounded-lg">
+					<div className="col-span-12 flex justify-between p-2 md:p-8 bg-mina-blue-light text-white rounded-lg">
 						<div className="flex flex-col justify-around h-full items-start">
 							<h1 className="text-xl">Registration Fee</h1>
 							<h1 className="text-3xl font-bold">
@@ -169,6 +169,9 @@ function PaymentInfo(props) {
 								${settingsInput.registration_fee_usd}
 							</h1>
 						</div>
+					</div>
+					<div className="col-span-12 flex justify-between p-2	 bg-mina-blue-light text-white rounded-lg">
+						<p>{ln.waitPatiently} </p>
 					</div>
 
 					<div className="col-span-12 2xl:col-span-6 p-3 border border-1 border-mina-blue-light rounded-lg flex items-center space-x-2 space-between">
@@ -243,19 +246,22 @@ function PaymentInfo(props) {
 						</div>
 					</div> */}
 
-					<div className="col-span-12 flex justify-end space-y-4 space-x-0 md:space-y-0 md:space-x-4 flex-col md:flex-row md:items-center">
-						<button
-							onClick={onOpenModal}
-							className="bg-mina-blue-light py-2 px-4 text-lg rounded-lg text-white font-bold"
-						>
-							Pay with Chapa
-						</button>
-						<button
-							onClick={handleConfirm}
-							className="bg-mina-orange-light py-2 px-4 text-lg rounded-lg text-white font-bold"
-						>
-							Confirm Direct Deposit
-						</button>
+					<div className="col-span-12 flex justify-end space-y-4 space-x-0 md:space-y-0 md:space-x-4 flex-col md:flex-row md:items-start">
+						<p>በቴሌብር፣ ሲቢኢ ብር እና ሌሎች የክፍያ አማራጮች ለመክፈል ይሄን ይጠቀሙ:</p>
+						<div className="flex flex-col gap-4">
+							<button
+								onClick={onOpenModal}
+								className="bg-mina-blue-light py-2 px-4 text-lg rounded-lg text-white font-bold"
+							>
+								Pay with Chapa
+							</button>
+							<button
+								onClick={handleConfirm}
+								className="bg-transparent py-2 px-4 text-sm rounded-lg text-mina-blue-light font-bold"
+							>
+								Confirm Direct Deposit
+							</button>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -264,12 +270,12 @@ function PaymentInfo(props) {
 				id="modal"
 				className={
 					open
-						? "fixed top-0 left-0 w-screen h-screen bg-white grid grid-cols-12 items-center overflow-hidden p-3"
+						? "fixed top-8 left-0 w-screen h-screen bg-white grid grid-cols-12 items-center p-3"
 						: "hidden"
 				}
 			>
 				<form
-					className="col-span-12 grid-cols-12 grid gap-4 xl:px-96 md:px-24 px-12"
+					className="col-span-12 grid-cols-12 grid gap-4 xl:px-96 md:px-24 px-12 overflow-y-auto"
 					onSubmit={handleEdit}
 				>
 					{/* user form */}

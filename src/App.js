@@ -22,6 +22,7 @@ import NoticePopup from "./components/NoticePopup";
 import { getCookie, unsetCookie } from "./utilities/cookies.util";
 import ThankYou from "./pages/ThankYou";
 import Swal from "sweetalert2";
+import Terms from "./pages/Terms";
 
 axios.defaults.baseURL = "https://api.minaplay.com";
 // axios.defaults.baseURL = "http://localhost:8000";
@@ -30,54 +31,26 @@ axios.defaults.headers.post["Accept"] = "application/json";
 
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(function (config) {
-    // const token = localStorage.getItem("auth_token");
-    // const token = sessionStorage.getItem("auth_token");
     const token = getCookie("auth_token");
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
 });
-axios.defaults.validateStatus = () => true;
+// axios.defaults.validateStatus = () => true;
 
-// Add a 401 response interceptor
-axios.interceptors.response.use(function (response) {
-    return response;
-}, function (error) {
-    if (401 === error.response.status) {
-        console.log("err")
-    } else {
-        return Promise.reject(error);
-    }
-});
-
-// axios.interceptors.response.use(
-//     (response) => {
-//       // Return the response if successful
-//       return response;
-//     },
-//     (error) => {
-//       // Handle errors here
-//       if (error.response) {
-//         // The request was made and the server responded with a status code
-//         // that falls out of the range of 2xx
-//         console.log(error.response.data);
-//         console.log(error.response.status);
-//         console.log(error.response.headers);
-//       } else if (error.request) {
-//         // The request was made but no response was received
-//         console.log(error.request);
-//       } else {
-//         // Something happened in setting up the request that triggered an Error
-//         console.log('Error', error.message);
-//       }
-
-//       // Return a rejected promise with the error object
-//       return Promise.reject(error);
+// // Add a 401 response interceptor
+// axios.interceptors.response.use(function (response) {
+//     return response;
+// }, function (error) {
+//     if (401 === error?.response?.status) {
+//         console.log("err")
+//     } else {
+//         // return Promise.reject(error);
 //     }
-//   );
+// });
+
 
 axios.get('/sanctum/csrf-cookie').then(response => {
     localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
-    // console.log(response.config.headers["X-XSRF-TOKEN"])
 })  
 
 
@@ -87,29 +60,16 @@ function App() {
     const [currentUser, setCurrentUser] = useState();
 
     const onSuccess = (data) => {
-        // console.log(data)
         if (data?.data.status === 500) {
-            // localStorage.removeItem("auth_token");
-            //sessionStorage.removeItem("auth_token");
             unsetCookie("auth_token");
             setCurrentUser(null)
         } else if (data?.data.status === 200) {
-            // setIsVerified(data?.data.user.email_verified_at ? true : false);
             setCurrentUser(data?.data)
         } else {
-            // console.log(data?.status)
-            // Swal.fire({
-			// 	text: 'Something went wrong. Refresh your browser and try Again',
-			// 	icon: "error"
-			// })
         }
     }
     const onError = (error) => {
-        // console.log(error)
-        // if (error.response.status === 500) {
-        //     console.log(error)
-        // }
-        
+        // console.log("User not signed in.")
         setCurrentUser(null)
 
     }
@@ -126,7 +86,6 @@ function App() {
                     <Route path="/" element={<Home />}></Route>
                     <Route path="/dashboard" element={currentUser ? (<ProtectedWrapper />) : (<Signin />)}></Route>
                     <Route path="/profile" element={<Profile />}></Route>
-                    {/* <Route path="/payment" element={ currentUser?.user.status ? <Payment /> : <Signin />}></Route> */}
                     <Route
                         path="/watch/:id"
                         element={currentUser?.user.status ? <VideoPlayer /> : (<Navigate to="/dashboard" replace state={{ location }} />)}
@@ -174,6 +133,9 @@ function App() {
                         currentUser?.user.email_verified_at == null ? <VerifyEmail />
                             :
                             (<Navigate to="/" replace state={{ location }} />)
+                    } />
+                    <Route path="/terms" element={
+                        <Terms />
                     } />
 
                     {/* <Route path="/verifyRf" element={<VerifyRf />} /> */}

@@ -80,7 +80,8 @@ const languages = {
         amount : "Amount",
         supportUs : "Support Us",
         supportUsTxt : "If you like our work, send us a tip right from where you are.",
-        warnSubmit : "After submitting your point, you won't be able to collect any more points from this video. Make sure you watched the whole video if you want to get the maximum point available."
+        warnSubmit : "After submitting your point, you won't be able to collect any more points from this video. Make sure you watched the whole video if you want to get the maximum point available.",
+        waitPatiently : "After submitting, please wait patiently while we confirm your payment. It could take upto 2 days. Pay with chapa for immediate confirmation."
     },
     am : {
         mainHeader : "የኢንተርኔት አገልግሎት መጠቀምዎ ካልቀረ ተጨማሪ ገቢን ለምን አያገኙም? ",
@@ -163,7 +164,8 @@ const languages = {
         amount : "መጠን",
         supportUs : "ልታግዙን ለምትፈልጉ",
         supportUsTxt : "ይህንን ዌብሳይት እና ስራችንን ወዳችሁ በገንዘብ ማገዝ ለምትፈልጉ ከታች ባለው ቅጽ ካሉበት ሆነው ማገዝ ይችላሉ።",
-        warnSubmit : "ነጥባችሁን ካስገባችሁ በኋላ ከዚህ ቪድዮ ተጨማሪ ነጥብ መሰብሰብ አይቻልም። ከዚህ ቪድዮ ማግኘት የምትችሉትን ሙሉ ነጥብ ለማግኘት ሙሉ ቪድዮውን ማየታችሁን ያረጋግጡ።"
+        warnSubmit : "ነጥባችሁን ካስገባችሁ በኋላ ከዚህ ቪድዮ ተጨማሪ ነጥብ መሰብሰብ አይቻልም። ከዚህ ቪድዮ ማግኘት የምትችሉትን ሙሉ ነጥብ ለማግኘት ሙሉ ቪድዮውን ማየታችሁን ያረጋግጡ።",
+        waitPatiently : "በባንክ የከፈላችሁበትን ማስረጃ ለማረጋገጥ እስከ 2 ቀን ሊፈጅ ስለሚችል በትዕግስት ይጠብቁን። ወድያውኑ እንዲረጋገጥላችሁ በቻፓ የክፍያ መንገድ ይጠቀሙ።"
     }
 }
 
