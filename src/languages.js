@@ -31,7 +31,7 @@ const languages = {
         q2 : "How does Mina play work?",
         a2 : "After completing the registration process, you get a membership, which allows you to access the videos. Once you register, you have a personal code to access your account.",
         q3 : "Is Mina play legit?",
-        a3 : "Mina play is a legit website and application which you do as a side hassle.",
+        a3 : "Mina play is a legit website and application which you do as a side hustle.",
         q4 : "How to withdraw money?",
         a4 : "The collected coins or points from mina play can be converted into cash and can be withdrawn or transferred via telebirr.",
         faq : "Frequently Asked Questions",

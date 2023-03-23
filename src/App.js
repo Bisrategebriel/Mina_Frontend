@@ -49,9 +49,9 @@ axios.interceptors.request.use(function (config) {
 // });
 
 
-axios.get('/sanctum/csrf-cookie').then(response => {
-    localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
-})  
+// axios.get('/sanctum/csrf-cookie').then(response => {
+//     localStorage.auth_token = response.config.headers["X-XSRF-TOKEN"]
+// })  
 
 
 

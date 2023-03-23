@@ -34,7 +34,9 @@ function Signin() {
             password : loginInputs.password,
             _token : "{{ csrf_token() }}"
         }
-        axios.get('/sanctum/csrf-cookie').then(response => {
+        axios.get('/sanctum/csrf-cookie', {
+            withCredentials: false
+        }).then(response => {
             axios.post(`api/auth/login`, data).then( res=>{
                 if(res.data.status === 200){
                     // console.log(res.data);
