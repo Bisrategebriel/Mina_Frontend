@@ -172,7 +172,7 @@ function PaymentInfo(props) {
 					</div>
 					<div className="col-span-12 flex justify-between p-2	 bg-mina-blue-light text-white rounded-lg">
 						{/* <p>{ln.waitPatiently} </p> */}
-						በባንክ ቁጥሮቻችን አስገብታችሁ የትራንዛክሽን ቁጥር የላካችሁ ሰዎች ክፍያውን አረጋግጠን እስከምናሳልፋችሁ በትዕግስት ይጠብቁን።
+						በባንክ ቁጥሮቻችን ያስገባችሁ ሰዎች የከፈላችሁበትን ትራንዛክሽን ቁጥር እና ኢሜል በቴሌግራም ግሩፓችን<a href="https://t.me/minaplaysupport">@minaplaysupport</a> ይላኩልን።
 					</div>
 
 					{/* <div className="col-span-12 2xl:col-span-6 p-3 border border-1 border-mina-blue-light rounded-lg flex items-center space-x-2 space-between">

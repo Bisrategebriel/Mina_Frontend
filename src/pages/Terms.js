@@ -31,7 +31,7 @@ export default function Terms() {
                 <li>Redistribute content from Mina Play</li>
             </ul>
 
-            <p>This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the <a href="https://www.termsfeed.com/terms-conditions-generator/">Terms and Conditions Generator</a>.</p>
+            {/* <p>This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the <a href="https://www.termsfeed.com/terms-conditions-generator/">Terms and Conditions Generator</a>.</p> */}
 
             <p>Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. Mina Play does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of Mina Play,its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, Mina Play shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.</p>
 
