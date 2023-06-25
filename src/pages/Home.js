@@ -40,7 +40,7 @@ function Home() {
 			<About></About>
 
             {/* Support Us */}
-			<SupportUs></SupportUs>
+			{/* <SupportUs></SupportUs> */}
 
 			{/* Banner 1 */}
             {

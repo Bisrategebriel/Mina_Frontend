@@ -159,7 +159,7 @@ function PaymentInfo(props) {
 			<form className={open ? "hidden" : "col-span-12 grid-cols-12 grid gap-4"}>
 				{/* Payment Information */}
 				<div className="col-span-12 grid-cols-12 grid gap-4 ">
-					<div className="col-span-12 flex justify-between p-2 md:p-8 bg-mina-blue-light text-white rounded-lg">
+					{/* <div className="col-span-12 flex justify-between p-2 md:p-8 bg-mina-blue-light text-white rounded-lg">
 						<div className="flex flex-col justify-around h-full items-start">
 							<h1 className="text-xl">Registration Fee</h1>
 							<h1 className="text-3xl font-bold">
@@ -169,10 +169,13 @@ function PaymentInfo(props) {
 								${settingsInput.registration_fee_usd}
 							</h1>
 						</div>
-					</div>
-					<div className="col-span-12 flex justify-between p-2	 bg-mina-blue-light text-white rounded-lg">
+					</div> */}
+					<p className="col-span-12 text-2xl p-3 rounded-lg bg-red-200">አዳዲስ ክፍያ እና ምዝገባ ማቆማችንን በአክብሮት እንገልጻለን።</p>
+					<div className="col-span-12 inline-block  p-2	 bg-mina-blue-light text-white rounded-lg">
 						{/* <p>{ln.waitPatiently} </p> */}
-						በባንክ ቁጥሮቻችን ያስገባችሁ ሰዎች የከፈላችሁበትን ትራንዛክሽን ቁጥር እና ኢሜል በቴሌግራም ግሩፓችን<a href="https://t.me/minaplaysupport">@minaplaysupport</a> ይላኩልን።
+						<span>
+						ከመጋቢት 24/2015 በፊት ያስገባችሁ ሰዎች በባንክ ቁጥሮቻችን ያስገባችሁ ሰዎች የከፈላችሁበትን ትራንዛክሽን ቁጥር እና ኢሜል በቴሌግራም ግሩፓችን
+						</span> <span><a href="https://t.me/minaplaysupport">@minaplaysupport</a></span> <span> ይላኩልን።</span>
 					</div>
 
 					{/* <div className="col-span-12 2xl:col-span-6 p-3 border border-1 border-mina-blue-light rounded-lg flex items-center space-x-2 space-between">
@@ -247,7 +250,7 @@ function PaymentInfo(props) {
 						</div>
 					</div> */}
 
-					<div className="col-span-12 flex justify-end space-y-4 space-x-0 md:space-y-0 md:space-x-4 flex-col md:flex-row md:items-start">
+					{/* <div className="col-span-12 flex justify-end space-y-4 space-x-0 md:space-y-0 md:space-x-4 flex-col md:flex-row md:items-start">
 						<p>በቴሌብር፣ ሲቢኢ ብር እና ሌሎች የክፍያ አማራጮች ለመክፈል ይሄን ይጠቀሙ:</p>
 						<div className="flex flex-col gap-4">
 							<button
@@ -256,14 +259,14 @@ function PaymentInfo(props) {
 							>
 								Pay with Chapa
 							</button>
-							{/* <button
+							<button
 								onClick={handleConfirm}
 								className="bg-transparent py-2 px-4 text-sm rounded-lg text-mina-blue-light font-bold"
 							>
 								Confirm Direct Deposit
-							</button> */}
+							</button>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</form>
 			{/* Popup payment window */}

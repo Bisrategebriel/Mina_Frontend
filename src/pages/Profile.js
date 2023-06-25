@@ -31,10 +31,11 @@ function Profile(props) {
 	const navigate = useNavigate();
 
 	const [withdrawAmount, setWithdrawAmount] = useState(100);
+	const [phoneNumber, setPhoneNumber] = useState("");
 	const [transactions, setTransactions] = useState([]);
 	const [watchHistory, setWatchHistory] = useState([]);
 	// const [isLoading, setIsLoading] = useState(true);
-	const [pointMultiplier, setPointMultiplier] = useState(0);
+	const [pointMultiplier, setPointMultiplier] = useState(1);
 	const [settingsInput, setSettingsInput] = useState({
 		is_signup_active: "",
 		point_value: "",
@@ -128,39 +129,65 @@ function Profile(props) {
 	};
 
 	const handleWithdraw = () => {
-		if (
-			registerInputs.points * pointMultiplier < withdrawAmount ||
-			withdrawAmount < 100
-		) {
-			swal.fire({
-				title: "Error",
-				text: `Your withdraw amount can't be larger than ${
-					registerInputs.points * pointMultiplier
-				} & less than 100 ETB`,
-				icon: "error",
-			});
-			return;
-		}
-		// Submit withdrawal
-		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios
-				.post(`/api/transaction/create`, {
-					amount: withdrawAmount,
-					points: (withdrawAmount / pointMultiplier).toFixed(2),
-				})
-				.then((res) => {
-					if (res.data.status === 200) {
-						setTransactions([...transactions, res.data.transaction]);
-						// console.log(res.data.transaction);
-					} else {
-						swal.fire({
-							title: "Error",
-							text: res.data.message,
-							icon: "error",
+		swal.fire({
+			title: "Warning",
+			icon: "warning",
+			text: "ያስገባችሁት ስልክ ቁጥር የእርስዎ መሆኑን ያረጋግጡ። በስህተት በገባ ቁጥር ምክንያት ለሚፈጠር ማንኛውም ነገር ኃላፊነቱን አንወስድም።",
+			showCancelButton: true
+		}).then((result)=>{
+			if(result.isConfirmed){
+				if (
+					phoneNumber.length != 10
+				) {
+					swal.fire({
+						title: "Error",
+						text: `የቴሌብር አካውንታችሁ 10 ዲጂት መሆኑን ያረጋግጡ። ምሳሌ፡ 0912345678`,
+						icon: "error",
+					});
+					return;
+				}
+				if (
+					registerInputs.points * pointMultiplier < withdrawAmount ||
+					withdrawAmount < 100
+				) {
+					swal.fire({
+						title: "Error",
+						text: `Your withdraw amount can't be larger than ${
+							registerInputs.points * pointMultiplier
+						} & less than 100 ETB and it can't be larger than your balance`,
+						icon: "error",
+					});
+					return;
+				}
+				// Submit withdrawal
+				axios.get("/sanctum/csrf-cookie").then((response) => {
+					axios
+						.post(`/api/transaction/create`, {
+							amount: withdrawAmount,
+							phone_number: phoneNumber,
+							points: (withdrawAmount / pointMultiplier).toFixed(2),
+						})
+						.then((res) => {
+							if (res.data.status === 200) {
+								setTransactions([...transactions, res.data.transaction]);
+								swal.fire({
+									title: "Success",
+									text: "Successfully requested withdrawal",
+									icon: "success"
+								})
+								// console.log(res.data.transaction);
+							} else {
+								swal.fire({
+									title: "Error",
+									text: res.data.message,
+									icon: "error",
+								});
+							}
 						});
-					}
 				});
-		});
+
+			}
+		})
 	};
     // Fetch User Info
 	const onUserSuccess = (data) => {
@@ -247,13 +274,24 @@ function Profile(props) {
 										{(registerInputs.points * pointMultiplier).toFixed(2)} {ln.etb}
 									</h1>
 								</div>
-								<div className="flex flex-col">
+								{/* <div className="flex flex-col">
 									<h1 className="text-lg">{ln.points}:</h1>
-									<h1 className="text-3xl">{registerInputs.points.toFixed(2)}</h1>
-								</div>
+									<h1 className="text-3xl">{(registerInputs.points).toFixed(2)}</h1>
+								</div> */}
 							</div>
 
-							{/* <div className="grid grid-cols-12 my-3 gap-2 w-full">
+							<div className="grid grid-cols-12 my-3 gap-2 w-full">
+								<input
+									className="col-span-12 lg:col-span-8 p-3 bg-slate-100"
+									type="text"
+									name="phone_number"
+									id="phone_number"
+									placeholder="Telebirr Phone Number"
+									value={phoneNumber}
+									onChange={(e) => {
+										setPhoneNumber(e.target.value);
+									}}
+								/>
 								<input
 									className="col-span-12 lg:col-span-8 p-3 bg-slate-100"
 									type="number"
@@ -272,7 +310,7 @@ function Profile(props) {
 								>
 									{ln.withdraw}
 								</button>
-							</div> */}
+							</div>
 						</div>
 
                         <div className="flex flex-col bg-white px-4 py-4 pb-4 m-4 rounded-xl relative items-stretch space-y-3 overflow-auto">

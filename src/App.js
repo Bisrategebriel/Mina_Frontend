@@ -141,7 +141,7 @@ function App() {
                     {/* <Route path="/verifyRf" element={<VerifyRf />} /> */}
                 </Routes>
             </UserContext.Provider>
-            <NoticePopup />
+            {/* <NoticePopup /> */}
         </div>
     );
 }

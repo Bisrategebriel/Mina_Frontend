@@ -10,6 +10,9 @@ import {
 	faUpload,
 	faChevronCircleDown,
 	faVideo,
+	faVolumeMute,
+	faPhoneVolume,
+	faVolumeHigh,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../images/logo.png";
 import YouTube from "react-youtube";
@@ -68,7 +71,7 @@ function VideoPlayer(props) {
 			totalCount: data?.data.videos.last_page,
 		});
 	};
-	const onError = (data) => {};
+	const onError = (data) => { };
 	const { data, isLoading } = useVideos(onSuccess, onError, {
 		pages,
 		axiosParams: {
@@ -81,7 +84,7 @@ function VideoPlayer(props) {
 	const onThumbnailSuccess = (data) => {
 		setVideos((videos) => [...videos, data.data]);
 	};
-	const onThumbnailError = (data) => {};
+	const onThumbnailError = (data) => { };
 	const { data: thumbnail_data } = useFetchThumbnail(
 		onThumbnailSuccess,
 		onThumbnailError,
@@ -135,6 +138,19 @@ function VideoPlayer(props) {
 			},
 		});
 	}
+	// formatTime takes a time length in seconds and returns the time in
+	// minutes and seconds
+	function formatTime(timeInSeconds) {
+		const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
+
+		return {
+			minutes: result.substr(3, 2),
+			seconds: result.substr(6, 2),
+		};
+	};
+
+	const [currentTime, setCurrentTime] = useState({ minutes: 0, seconds: 0 });
+	const [totalDuration, setTotalDuration] = useState({ minutes: 0, seconds: 0 });
 
 	useEffect(() => {
 		if (!isWatched) {
@@ -142,11 +158,17 @@ function VideoPlayer(props) {
 			setCurrentPoint(0);
 			//Update points every 5 second
 			const interval = setInterval(() => {
+				setCurrentTime(formatTime(playerRef.current.getCurrentTime()))
 				updatePoint();
-			}, 5000);
+			}, 2000);
 
 			return () => clearInterval(interval);
 		} else {
+			const interval = setInterval(() => {
+				setCurrentTime(formatTime(playerRef.current.getCurrentTime()))
+			}, 1000);
+
+			return () => clearInterval(interval);
 			// setWatchStat("Video already watched!")
 		}
 	}, [isWatched]);
@@ -182,6 +204,9 @@ function VideoPlayer(props) {
 	}
 
 	function onReady(event) {
+
+		setTotalDuration(formatTime(playerRef.current.getDuration()))
+
 		// console.log(event);
 	}
 
@@ -230,30 +255,41 @@ function VideoPlayer(props) {
 		isPlaying ? playerRef.current.pauseVideo() : playerRef.current.playVideo();
 		setIsPlaying(!isPlaying);
 	}
+	const [isMute, setIsMute] = useState(false)
+	function muteVid() {
+		console.log(playerRef.current)
+		if (isMute) {
+			playerRef.current.unMute()
+		} else {
+			playerRef.current.mute()
+		}
+		setIsMute(!isMute)
+	}
 
 	// Check if video is watched
 	function isViewed() {
 		// Fetch Video Links
-		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios
-				.get(`/api/view/isViewed`, {
-					params: {
-						video_id: id,
-					},
-				})
-				.then((res) => {
-					if (res.data.status === 200) {
-						if (res.data.view_exists) {
-							setIsWatched(true);
-							setCurrentPoint(parseFloat(res.data.view_exists.points).toFixed(2));
-							setWatchStat("Video already watched!");
-						} else {
-							setIsWatched(false);
-						}
+		// axios.get("/sanctum/csrf-cookie").then((response) => {
+		axios
+			.get(`/api/view/isViewed`, {
+				params: {
+					video_id: id,
+				},
+			})
+			.then((res) => {
+				if (res.data.status === 200) {
+					if (res.data.view_exists) {
+						setIsWatched(true);
+						setCurrentPoint(parseFloat(res.data.view_exists.points).toFixed(2));
+						setWatchStat("Video already watched!");
 					} else {
+						setIsWatched(false);
 					}
-				});
-		});
+				} else {
+					window.location.replace("/dashboard")
+				}
+			});
+		// });
 	}
 
 	// Logout
@@ -261,7 +297,7 @@ function VideoPlayer(props) {
 		if (data?.data.status === 200) {
 			// localStorage.removeItem("auth_token");
 			//sessionStorage.removeItem("auth_token");
-            unsetCookie("auth_token");
+			unsetCookie("auth_token");
 			// localStorage.removeItem("auth_name");
 		} else {
 			// console.log(data?.data);
@@ -279,6 +315,7 @@ function VideoPlayer(props) {
 	};
 
 	const submitPoint = (e) => {
+		// console.log(e)
 		swal
 			.fire({
 				title: "warning",
@@ -289,29 +326,36 @@ function VideoPlayer(props) {
 			})
 			.then((res) => {
 				if (res.isConfirmed) {
+					e.target.disabled = true;
 					// Submit point
-					axios.get("/sanctum/csrf-cookie").then((response) => {
-						// setIsLoading(true)
-						// console.log(currentPoint)
-						axios
-							.post(`/api/view/create`, {
-								points: currentPoint,
-								video_id: id,
-							})
-							.then((res) => {
-								// setIsLoading(false)
-								if (res.data.status === 200) {
-									// console.log(res.data.user)
-									swal.fire({
-										title: "success",
-										icon: "success",
-										text: "Successfully Submitted Point",
-									});
-									setIsWatched(true);
-								} else {
-								}
-							});
-					});
+					// axios.get("/sanctum/csrf-cookie").then((response) => {
+					// setIsLoading(true)
+					// console.log(currentPoint)
+					axios
+						.post(`/api/view/create`, {
+							points: currentPoint,
+							video_id: id,
+						})
+						.then((res) => {
+							// setIsLoading(false)
+							if (res.data.status === 200) {
+								// console.log(res.data.user)
+								swal.fire({
+									title: "success",
+									icon: "success",
+									text: "Successfully Submitted Point",
+								});
+								setIsWatched(true);
+							} else {
+								swal.fire({
+									title: "error",
+									icon: "error",
+									text: "Point not submitted",
+								});
+								e.target.disabled = false;
+							}
+						});
+					// });
 				}
 			});
 	};
@@ -360,6 +404,38 @@ function VideoPlayer(props) {
 					<div className="h-full w-full bg-slate-100"></div>
 				</div>
 
+				<div className="w-full items-start justify-between flex px-4 ">
+					<div className="w-full items-center justify-between flex ">
+						<div className="flex space-x-2 items-center">
+							<button
+								className="p-3 bg-slate-100 rounded-xl hover:bg-slate-200"
+								onClick={() => {
+									playVid();
+								}}
+							>
+								{isPlaying ? (
+									<>
+										<FontAwesomeIcon
+											icon={faPauseCircle}
+											className="text-mina-orange-light"
+										/>{" "}
+										{ln.pause}
+									</>
+								) : (
+									<>
+										<FontAwesomeIcon
+											icon={faPlayCircle}
+											className="text-mina-blue-light"
+										/>{" "}
+										{ln.play}
+									</>
+								)}
+							</button>
+							<p>{currentTime.minutes}:{currentTime.seconds} / {totalDuration.minutes}:{totalDuration.seconds}</p>
+						</div>
+						<button onClick={() => { muteVid() }}>{isMute ? <FontAwesomeIcon icon={faVolumeMute} /> : <FontAwesomeIcon icon={faVolumeHigh} />}</button>
+					</div>
+				</div>
 				<div className="w-full p-3 flex justify-between">
 					<div className="flex sm:flex-row flex-col items-start sm:items-center sm:space-x-2 sm:space-y-0 space-y-2">
 						<div className="w-36 md:w-48 h-fit p-2 md:p-3 bg-mina-blue-dark text-white text-sm md:text-xl font-bold flex rounded-full justify-start space-x-4 items-center">
@@ -370,9 +446,9 @@ function VideoPlayer(props) {
 						<div className="">
 							{!isWatched ? (
 								<button
-									className="p-3 bg-mina-orange-light rounded-xl hover:bg-orange-200"
-									onClick={() => {
-										submitPoint();
+									className="p-3 bg-mina-orange-light rounded-xl hover:bg-orange-200 disabled:bg-gray-400"
+									onClick={(e) => {
+										submitPoint(e);
 									}}
 								>
 									<FontAwesomeIcon icon={faUpload} /> {ln.submit}
