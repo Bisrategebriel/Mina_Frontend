@@ -433,7 +433,7 @@ function VideoPlayer(props) {
 							</button>
 							<p>{currentTime.minutes}:{currentTime.seconds} / {totalDuration.minutes}:{totalDuration.seconds}</p>
 						</div>
-						<button onClick={() => { muteVid() }}>{isMute ? <FontAwesomeIcon icon={faVolumeMute} /> : <FontAwesomeIcon icon={faVolumeHigh} />}</button>
+						<button className="p-3 bg-slate-100 rounded-xl hover:bg-slate-200" onClick={() => { muteVid() }}>{isMute ? <FontAwesomeIcon icon={faVolumeMute} /> : <FontAwesomeIcon icon={faVolumeHigh} />}</button>
 					</div>
 				</div>
 				<div className="w-full p-3 flex justify-between">
@@ -443,49 +443,22 @@ function VideoPlayer(props) {
 							<p>{ln.points}: </p>
 							<p>{currentPoint}</p>
 						</div>
-						<div className="">
-							{!isWatched ? (
-								<button
-									className="p-3 bg-mina-orange-light rounded-xl hover:bg-orange-200 disabled:bg-gray-400"
-									onClick={(e) => {
-										submitPoint(e);
-									}}
-								>
-									<FontAwesomeIcon icon={faUpload} /> {ln.submit}
-								</button>
-							) : (
-								<div className="p-3 text-sm rounded-full bg-mina-orange-light/20">
-									{watchStat}
-								</div>
-							)}
-						</div>
 					</div>
-
 					<div className="">
-						<button
-							className="p-3 bg-slate-100 rounded-xl hover:bg-slate-200"
-							onClick={() => {
-								playVid();
-							}}
-						>
-							{isPlaying ? (
-								<>
-									<FontAwesomeIcon
-										icon={faPauseCircle}
-										className="text-mina-orange-light"
-									/>{" "}
-									{ln.pause}
-								</>
-							) : (
-								<>
-									<FontAwesomeIcon
-										icon={faPlayCircle}
-										className="text-mina-blue-light"
-									/>{" "}
-									{ln.play}
-								</>
-							)}
-						</button>
+						{!isWatched ? (
+							<button
+								className="p-2 md:p-3 bg-mina-orange-light rounded-xl hover:bg-orange-200 disabled:bg-gray-400"
+								onClick={(e) => {
+									submitPoint(e);
+								}}
+							>
+								<FontAwesomeIcon icon={faUpload} /> {ln.submit}
+							</button>
+						) : (
+							<div className="p-3 text-sm rounded-full bg-mina-orange-light/20">
+								{watchStat}
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
